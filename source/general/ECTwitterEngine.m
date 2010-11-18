@@ -165,6 +165,8 @@ ECPropertySynthesize(token);
 
 - (void) doneRequest: (NSString*) request
 {
+	ECTwitterHandler* handler = [self.requests objectForKey: request];
+	handler.operation = nil;
 	[self.requests removeObjectForKey: request];
 }
 
@@ -319,16 +321,14 @@ ECPropertySynthesize(token);
 //! Handle receiving geo results.
 // --------------------------------------------------------------------------
 
-- (void) genericResultsReceived:(NSArray*) dataArray forRequest:(NSString *) request;
+- (void) genericResultsReceived:(NSArray*) results forRequest:(NSString *) request;
 {
-	ECDebug(TwitterChannel, @"generic results %@ for request %@", dataArray, request);
+	ECDebug(TwitterChannel, @"generic results %@ for request %@", results, request);
 
-	NSDictionary* dataDictionary = (NSDictionary*) dataArray;
-//	NSDictionary* query = [results objectForKey: @"query"];
-	NSDictionary* results = [dataDictionary objectForKey: @"result"];
-	
 	ECTwitterHandler* handler = [self handlerForRequest: request];
 	[handler invokeWithResults: results];
+	
+	[self doneRequest: request];
 }
 
 // --------------------------------------------------------------------------
@@ -338,6 +338,11 @@ ECPropertySynthesize(token);
 
 - (void) callMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
 {
+	if (parameters == nil)
+	{
+		parameters = [NSDictionary dictionary];
+	}
+	
     NSString* request = [self.engine genericRequestWithMethod: nil path: method queryParameters: parameters body: nil];
 	ECTwitterHandler* handler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
 	[self setHandler: handler forRequest:request];

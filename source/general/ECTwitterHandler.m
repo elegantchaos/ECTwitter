@@ -80,7 +80,6 @@ ECPropertySynthesize(engine);
 {
 	self.status = status;
 	[[NSOperationQueue mainQueue] addOperation: self.operation];
-	self.operation = nil;
 }
 
 // --------------------------------------------------------------------------
