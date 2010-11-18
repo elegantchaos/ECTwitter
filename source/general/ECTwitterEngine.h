@@ -7,12 +7,12 @@
 
 #import "MGTwitterEngine.h"
 
-
 // --------------------------------------------------------------------------
 // Handler Protocol.
 // --------------------------------------------------------------------------
 
 @class ECTwitterEngine;
+@class ECTwitterHandler;
 @protocol ECTwitterEngineHandler
 @optional
 
@@ -49,11 +49,11 @@ ECPropertyRetained(requests, NSMutableDictionary*);
 // --------------------------------------------------------------------------
 
 - (id) initWithKey: (NSString*) key secret: (NSString*) secret;
-- (void) authenticateForUser: (NSString*) user password: (NSString*) password handler: (NSObject<ECTwitterEngineHandler>*) handler;
+- (void) authenticateForUser: (NSString*) user password: (NSString*) password target: (id) target selector: (SEL) selector ;
 - (BOOL) isAuthenticated;
-- (void) setHandler: (NSObject<ECTwitterEngineHandler>*) handler forRequest: (NSString*) request;
+- (void) setHandler: (ECTwitterHandler*) handler forRequest: (NSString*) request;
+//- (void) getGeoSearchAt: (CLLocation*) location handler: (ECTwitterHandler) handler;
 
-- (void) getGeoSearchAt: (CLLocation*) location handler: (NSObject<ECTwitterEngineHandler>*) handler;
 
 // --------------------------------------------------------------------------
 // Notifications

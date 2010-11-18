@@ -9,6 +9,7 @@
 #import "ECTwitterTweet.h"
 #import "ECTwitterUser.h"
 #import "ECTwitterPlace.h"
+#import "ECTwitterHandler.h"
 
 #import "MGTwitterParserFactoryYAJLGeneric.h"
 
@@ -18,7 +19,7 @@
 
 @interface ECTwitterEngine()
 
-- (id<ECTwitterEngineHandler>) handlerForRequest: (NSString*) request;
+- (ECTwitterHandler*) handlerForRequest: (NSString*) request;
 - (void) doneRequest: (NSString*) request;
 
 @end
@@ -82,7 +83,7 @@ ECPropertySynthesize(token);
 //! Calling with nil for the user will clear any saved token.
 // --------------------------------------------------------------------------
 
-- (void) authenticateForUser: (NSString*) user password: (NSString*) password handler: (NSObject<ECTwitterEngineHandler>*) handler
+- (void) authenticateForUser: (NSString*) user password: (NSString*) password target: (id) target selector: (SEL) selector
 {
 	ECDebug(TwitterChannel, @"requesting authentication for %@ password %@", user, password);
 
@@ -90,14 +91,13 @@ ECPropertySynthesize(token);
 	NSString* savedUser = [defaults stringForKey: kSavedUserKey];
 	OAToken* savedToken = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName: kProvider prefix: kPrefix];
 	
+	ECTwitterHandler* handler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
+
 	if (user && savedToken && [savedToken isValid] && ([savedUser isEqualToString: user]))
 	{
 		[self.engine setAccessToken: savedToken];
 		self.token = savedToken;
-		if ([handler respondsToSelector: @selector(twitterEngine:didAuthenticateWithToken:)])
-		{
-			[handler twitterEngine: self didAuthenticateWithToken: savedToken];
-		}
+		[handler invokeWithStatus: StatusResults];
 	}
 	else
 	{
@@ -114,6 +114,7 @@ ECPropertySynthesize(token);
 		}
 	}
 	
+	[handler release];
 	[savedToken release];
 }
 
@@ -143,7 +144,7 @@ ECPropertySynthesize(token);
 //! Remember a request id and associate it with a handler.
 // --------------------------------------------------------------------------
 
-- (void) setHandler: (NSObject<ECTwitterEngineHandler>*) handler forRequest: (NSString*) request
+- (void) setHandler: (ECTwitterHandler*) handler forRequest: (NSString*) request
 {
 	[self.requests setObject: handler forKey: request];
 }
@@ -152,7 +153,7 @@ ECPropertySynthesize(token);
 //! Return the handler for a request id.
 // --------------------------------------------------------------------------
 
-- (NSObject<ECTwitterEngineHandler>*) handlerForRequest: (NSString*) request
+- (ECTwitterHandler*) handlerForRequest: (NSString*) request
 {
 	return [self.requests objectForKey: request];
 }
@@ -179,7 +180,7 @@ ECPropertySynthesize(token);
 
 - (void) requestSucceeded: (NSString *) request
 {
-	NSObject<ECTwitterEngineHandler>* handler EC_HINT_UNUSED = [self handlerForRequest: request];
+	ECTwitterHandler* handler EC_HINT_UNUSED = [self handlerForRequest: request];
 	ECAssertNonNil(handler);
 	
 	ECDebug(TwitterChannel, @"request %@ for handler %@ succeeded", request, handler);
@@ -191,14 +192,11 @@ ECPropertySynthesize(token);
 
 - (void) requestFailed: (NSString*) request withError: (NSError*) error
 {
-	NSObject<ECTwitterEngineHandler>* handler = [self handlerForRequest: request];
+	ECTwitterHandler* handler = [self handlerForRequest: request];
 	ECAssertNonNil(handler);
 	
 	ECDebug(TwitterChannel, @"request %@ for handler %@ failed with error %@ %@", request, handler, error, error.userInfo);
-	if ([handler respondsToSelector: @selector(twitterEngine:failedWithError:)])
-	{
-		[handler twitterEngine: self failedWithError: error];
-	}
+	[handler invokeWithStatus: StatusFailed];
 	[self doneRequest: request];
 }
 
@@ -211,7 +209,8 @@ ECPropertySynthesize(token);
 - (void) statusesReceived:(NSArray *)statuses forRequest: (NSString*) request
 {
 	ECDebug(TwitterChannel, @"received %d tweets for request %@", [statuses count], request);
-	NSObject<ECTwitterEngineHandler>* handler = [self handlerForRequest: request];	
+#if 0
+	ECTwitterHandler* handler = [self handlerForRequest: request];	
 	if ([handler respondsToSelector: @selector(twitterEngine:didReceiveTweets:)])
 	{
 		NSMutableArray* tweets = [[NSMutableArray alloc] init];
@@ -226,6 +225,8 @@ ECPropertySynthesize(token);
 		[handler twitterEngine: self didReceiveTweets: tweets];
 		[tweets release];
 	}
+#endif
+
 	[self doneRequest: request];
 }
 
@@ -248,7 +249,8 @@ ECPropertySynthesize(token);
 {
 	ECDebug(TwitterChannel, @"received %d users for request %@\n%@", [userInfos count], request, userInfos);
 
-	NSObject<ECTwitterEngineHandler>* handler = [self handlerForRequest: request];
+#if 0
+	ECTwitterHandler* handler = [self handlerForRequest: request];
 	if ([handler respondsToSelector: @selector(twitterEngine:didReceiveUsers:)])
 	{
 		NSMutableArray* users = [[NSMutableArray alloc] init];
@@ -263,6 +265,8 @@ ECPropertySynthesize(token);
 		[handler twitterEngine: self didReceiveUsers: users];
 		[users release];
 	}
+#endif
+	
 	[self doneRequest: request];
 	
 }
@@ -280,14 +284,9 @@ ECPropertySynthesize(token);
     [engine setAccessToken:token];
 	[token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
 	
-	NSObject<ECTwitterEngineHandler>* handler = [self handlerForRequest: request];
-	if ([handler respondsToSelector: @selector(twitterEngine:didAuthenticateWithToken:)])
-	{
-		[handler twitterEngine: self didAuthenticateWithToken: token];
-	}
-	
+	ECTwitterHandler* handler = [self handlerForRequest: request];
+	[handler invokeWithStatus: StatusResults];
 	[self doneRequest: request];
-	
 }
 
 // --------------------------------------------------------------------------
@@ -296,6 +295,7 @@ ECPropertySynthesize(token);
 
 - (void) socialGraphInfoReceived: (NSArray*) socialGraphInfo forRequest: (NSString*) request
 {
+#if 0
 	NSDictionary* info = [socialGraphInfo objectAtIndex: 0];
 	
 	NSArray* ids = [info objectForKey: @"ids"];
@@ -304,12 +304,13 @@ ECPropertySynthesize(token);
 	
 	ECDebug(TwitterChannel, @"received %d user ids for request %@", [ids count], request);
 	
-	NSObject<ECTwitterEngineHandler>* handler = [self handlerForRequest: request];
+	ECTwitterHandler* handler = [self handlerForRequest: request];
 	if ([handler respondsToSelector: @selector(twitterEngine:didReceiveUserIds:nextCursor:previousCursor:)])
 	{
 		[handler twitterEngine: self didReceiveUserIds: ids nextCursor: next previousCursor: previous];
 	}
-
+#endif
+	
 	[self doneRequest: request];
 }
 
@@ -322,7 +323,7 @@ ECPropertySynthesize(token);
 	ECDebug(TwitterChannel, @"generic results %@ for request %@", genericResults, request);
 
 	NSDictionary* results = (NSDictionary*) genericResults;
-	NSDictionary* query = [results objectForKey: @"query"];
+//	NSDictionary* query = [results objectForKey: @"query"];
 	NSDictionary* result = [results objectForKey: @"result"];
 	
 	NSArray* placesInfo = [result objectForKey: @"places"];
@@ -336,20 +337,23 @@ ECPropertySynthesize(token);
 			[place release];
 		}
 		
-		NSObject<ECTwitterEngineHandler>* handler = [self handlerForRequest: request];
+#if 0
+		ECTwitterHandler* handler = [self handlerForRequest: request];
 		if ([handler respondsToSelector: @selector(twitterEngine:didReceiveGeoResults:forQuery:)])
 		{
 			[handler twitterEngine: self didReceiveGeoResults: places forQuery: query];
 		}
+#endif
 		[places release];
 	}
 }
 
+#if 0
 // --------------------------------------------------------------------------
 //! Perform a geo lookup using a given location.
 // --------------------------------------------------------------------------
 
-- (void) getGeoSearchAt: (CLLocation*) location handler: (NSObject<ECTwitterEngineHandler>*) handler
+- (void) getGeoSearchAt: (CLLocation*) location handler: (ECTwitterHandler*) handler
 {
 	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:0];
 	
@@ -362,5 +366,7 @@ ECPropertySynthesize(token);
     NSString* request = [self.engine genericRequestWithMethod: nil path: @"geo/search" queryParameters: params body: nil];
 	[self setHandler: handler forRequest:request];
 }
+
+#endif
 
 @end
