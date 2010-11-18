@@ -5,12 +5,17 @@
 //  Copyright 2010 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
+// --------------------------------------------------------------------------
+// Status Values
+// --------------------------------------------------------------------------
+
 typedef enum 
 {
 	StatusSucceeded,
 	StatusResults,
 	StatusFailed,
 } ECTwitterStatus;
+
 
 @class ECTwitterEngine;
 
@@ -19,6 +24,7 @@ typedef enum
 	ECPropertyVariable(operation, NSOperation*);
 	ECPropertyVariable(status, ECTwitterStatus);
 	ECPropertyVariable(engine, ECTwitterEngine*);
+	ECPropertyVariable(results, NSObject*);
 
 }
 
@@ -28,6 +34,7 @@ typedef enum
 
 ECPropertyRetained(operation, NSOperation*);
 ECPropertyRetained(engine, ECTwitterEngine*);
+ECPropertyRetained(results, NSObject*);
 ECPropertyAssigned(status, ECTwitterStatus);
 
 // --------------------------------------------------------------------------
@@ -36,5 +43,6 @@ ECPropertyAssigned(status, ECTwitterStatus);
 
 - (id) initWithEngine: (ECTwitterEngine*) engine target: (id) target selector: (SEL) selector;
 - (void) invokeWithStatus: (ECTwitterStatus) status;
+- (void) invokeWithResults: (NSObject*) results;
 
 @end

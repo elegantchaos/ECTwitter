@@ -13,23 +13,12 @@
 
 @class ECTwitterEngine;
 @class ECTwitterHandler;
-@protocol ECTwitterEngineHandler
-@optional
-
-- (void) twitterEngine: (ECTwitterEngine*) engine failedWithError: (NSError*) error;
-- (void) twitterEngine: (ECTwitterEngine*) engine didReceiveTweets: (NSArray*) tweets;
-- (void) twitterEngine: (ECTwitterEngine*) engine didReceiveUsers: (NSArray*) users;
-- (void) twitterEngine: (ECTwitterEngine*) engine didAuthenticateWithToken: (OAToken*) token;
-- (void) twitterEngine: (ECTwitterEngine*) engine didReceiveUserIds: (NSArray*) ids nextCursor: (MGTwitterEngineCursorID) next previousCursor: (MGTwitterEngineCursorID) previous;
-- (void) twitterEngine: (ECTwitterEngine*) engine didReceiveGeoResults: (NSArray*) places forQuery: (NSDictionary*) query;
-
-@end
 
 // --------------------------------------------------------------------------
 //! Higher level wrapper for MGTwitterEngine.
 // --------------------------------------------------------------------------
 
-@interface ECTwitterEngine : NSObject <MGTwitterEngineDelegate, ECTwitterEngineHandler> 
+@interface ECTwitterEngine : NSObject <MGTwitterEngineDelegate> 
 {
 	ECPropertyVariable(engine, MGTwitterEngine*);
 	ECPropertyVariable(token, OAToken*);
@@ -49,10 +38,10 @@ ECPropertyRetained(requests, NSMutableDictionary*);
 // --------------------------------------------------------------------------
 
 - (id) initWithKey: (NSString*) key secret: (NSString*) secret;
-- (void) authenticateForUser: (NSString*) user password: (NSString*) password target: (id) target selector: (SEL) selector ;
+- (void) authenticateForUser: (NSString*) user password: (NSString*) password target: (id) target selector: (SEL) selector;
+- (void) callMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
+
 - (BOOL) isAuthenticated;
-- (void) setHandler: (ECTwitterHandler*) handler forRequest: (NSString*) request;
-//- (void) getGeoSearchAt: (CLLocation*) location handler: (ECTwitterHandler) handler;
 
 
 // --------------------------------------------------------------------------

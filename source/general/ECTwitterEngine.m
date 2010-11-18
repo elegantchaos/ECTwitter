@@ -19,6 +19,7 @@
 
 @interface ECTwitterEngine()
 
+- (void) setHandler: (ECTwitterHandler*) handler forRequest: (NSString*) request;
 - (ECTwitterHandler*) handlerForRequest: (NSString*) request;
 - (void) doneRequest: (NSString*) request;
 
@@ -97,7 +98,7 @@ ECPropertySynthesize(token);
 	{
 		[self.engine setAccessToken: savedToken];
 		self.token = savedToken;
-		[handler invokeWithStatus: StatusResults];
+		[handler invokeWithResults: savedToken];
 	}
 	else
 	{
@@ -285,7 +286,7 @@ ECPropertySynthesize(token);
 	[token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
 	
 	ECTwitterHandler* handler = [self handlerForRequest: request];
-	[handler invokeWithStatus: StatusResults];
+	[handler invokeWithResults: token];
 	[self doneRequest: request];
 }
 
@@ -318,34 +319,28 @@ ECPropertySynthesize(token);
 //! Handle receiving geo results.
 // --------------------------------------------------------------------------
 
-- (void) genericResultsReceived:(NSArray*) genericResults forRequest:(NSString *) request;
+- (void) genericResultsReceived:(NSArray*) dataArray forRequest:(NSString *) request;
 {
-	ECDebug(TwitterChannel, @"generic results %@ for request %@", genericResults, request);
+	ECDebug(TwitterChannel, @"generic results %@ for request %@", dataArray, request);
 
-	NSDictionary* results = (NSDictionary*) genericResults;
+	NSDictionary* dataDictionary = (NSDictionary*) dataArray;
 //	NSDictionary* query = [results objectForKey: @"query"];
-	NSDictionary* result = [results objectForKey: @"result"];
+	NSDictionary* results = [dataDictionary objectForKey: @"result"];
 	
-	NSArray* placesInfo = [result objectForKey: @"places"];
-	if (placesInfo)
-	{
-		NSMutableArray* places = [[NSMutableArray alloc] init];
-		for (NSDictionary* placeInfo in placesInfo)
-		{
-			ECTwitterPlace* place = [[ECTwitterPlace alloc] initWithPlaceInfo: placeInfo];
-			[places addObject: place];
-			[place release];
-		}
-		
-#if 0
-		ECTwitterHandler* handler = [self handlerForRequest: request];
-		if ([handler respondsToSelector: @selector(twitterEngine:didReceiveGeoResults:forQuery:)])
-		{
-			[handler twitterEngine: self didReceiveGeoResults: places forQuery: query];
-		}
-#endif
-		[places release];
-	}
+	ECTwitterHandler* handler = [self handlerForRequest: request];
+	[handler invokeWithResults: results];
+}
+
+// --------------------------------------------------------------------------
+//! Call a twitter method. 
+//! When it's done, the engine will call back to the specified target/selector.
+// --------------------------------------------------------------------------
+
+- (void) callMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
+{
+    NSString* request = [self.engine genericRequestWithMethod: nil path: method queryParameters: parameters body: nil];
+	ECTwitterHandler* handler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
+	[self setHandler: handler forRequest:request];
 }
 
 #if 0

@@ -8,9 +8,9 @@
 #import "ECTwitterHandler.h"
 
 
-// --------------------------------------------------------------------------
+// ==============================================
 // Private Methods
-// --------------------------------------------------------------------------
+// ==============================================
 
 @interface ECTwitterHandler()
 
@@ -19,20 +19,24 @@
 
 @implementation ECTwitterHandler
 
-// --------------------------------------------------------------------------
+// ==============================================
 // Properties
-// --------------------------------------------------------------------------
+// ==============================================
 
 ECPropertySynthesize(operation);
 ECPropertySynthesize(status);
+ECPropertySynthesize(results);
 ECPropertySynthesize(engine);
 
-// --------------------------------------------------------------------------
-// Constants
-// --------------------------------------------------------------------------
+// ==============================================
+// Lifecycle
+// ==============================================
+
+#pragma mark -
+#pragma mark Lifecycle methods
 
 // --------------------------------------------------------------------------
-// Methods
+//! Initialise a handler to call a selector on a target.
 // --------------------------------------------------------------------------
 
 - (id) initWithEngine: (ECTwitterEngine*) engine target: (id) target selector: (SEL) selector
@@ -49,20 +53,44 @@ ECPropertySynthesize(engine);
 }
 
 // --------------------------------------------------------------------------
-//! Return the handler for a request id.
+//! Clean up and release retained objects.
+// --------------------------------------------------------------------------
+
+- (void) dealloc
+{
+	ECPropertyDealloc(operation);
+	ECPropertyDealloc(engine);
+	ECPropertyDealloc(results);
+	
+	[super dealloc];
+}
+
+// ==============================================
+// Invocation
+// ==============================================
+
+#pragma mark -
+#pragma mark Invocation methods
+
+// --------------------------------------------------------------------------
+//! Invoke the handler with a given status.
 // --------------------------------------------------------------------------
 
 - (void) invokeWithStatus: (ECTwitterStatus) status
 {
 	self.status = status;
 	[[NSOperationQueue mainQueue] addOperation: self.operation];
+	self.operation = nil;
 }
 
-- (void) dealloc
+// --------------------------------------------------------------------------
+//! Invoke the handler with a given result object.
+// --------------------------------------------------------------------------
+
+- (void) invokeWithResults: (NSObject*) results
 {
-	ECPropertyDealloc(operation);
-	ECPropertyDealloc(engine);
-	
-	[super dealloc];
+	self.results = results;
+	[self invokeWithStatus: StatusResults];
 }
+
 @end
