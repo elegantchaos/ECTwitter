@@ -10,7 +10,7 @@
 #import "ECTwitterUser.h"
 #import "ECTwitterPlace.h"
 
-#import "MGTwitterParserFactoryTouchJSON.h"
+#import "MGTwitterParserFactoryYAJLGeneric.h"
 
 // --------------------------------------------------------------------------
 // Private Methods
@@ -57,7 +57,7 @@ ECPropertySynthesize(token);
 {
 	if ((self = [super init]) != nil)
 	{
-		MGTwitterParserFactory* parser = [[MGTwitterParserFactoryTouchJSON alloc] init];
+		MGTwitterParserFactory* parser = [[MGTwitterParserFactoryYAJLGeneric alloc] init];
 		MGTwitterEngine* engine = [[MGTwitterEngine alloc] initWithDelegate:self parser: parser];
 		
 		[engine setConsumerKey: key secret: secret];

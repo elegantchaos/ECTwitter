@@ -7,7 +7,8 @@
 
 @interface ECTwitterPlace : NSObject 
 {
-
+	ECPropertyVariable(data, NSDictionary*);
+	ECPropertyVariable(containers, NSArray*);
 }
 
 // --------------------------------------------------------------------------

@@ -10,6 +10,10 @@
 
 @interface ECTwitterTweet : NSObject 
 {
+	ECPropertyVariable(data, NSMutableDictionary*);
+	ECPropertyVariable(user, NSMutableDictionary*);
+	ECPropertyVariable(text, NSString*);
+	ECPropertyVariable(source, NSString*);
 }
 
 // --------------------------------------------------------------------------

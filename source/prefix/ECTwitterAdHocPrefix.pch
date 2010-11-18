@@ -5,5 +5,4 @@
 //  Copyright 2010 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import "ECFoundationAdHocPrefix.pch"
-#import "ECTouchReleasePrefix.pch"
+#import "ECTwitterSharedPrefix.pch"

@@ -31,7 +31,9 @@
 
 @interface ECTwitterEngine : NSObject <MGTwitterEngineDelegate, ECTwitterEngineHandler> 
 {
-
+	ECPropertyVariable(engine, MGTwitterEngine*);
+	ECPropertyVariable(token, OAToken*);
+	ECPropertyVariable(requests, NSMutableDictionary*);
 }
 
 // --------------------------------------------------------------------------

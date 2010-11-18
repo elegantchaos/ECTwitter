@@ -10,6 +10,7 @@
 
 @interface ECTwitterUser : NSObject 
 {
+	ECPropertyVariable(data, NSMutableDictionary*);
 }
 
 // --------------------------------------------------------------------------
