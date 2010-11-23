@@ -7,10 +7,11 @@
 
 #import <Foundation/Foundation.h>
 
+@class CLLocation;
 
 @interface ECTwitterTweet : NSObject 
 {
-	ECPropertyVariable(data, NSMutableDictionary*);
+	ECPropertyVariable(data, NSDictionary*);
 	ECPropertyVariable(user, NSMutableDictionary*);
 	ECPropertyVariable(text, NSString*);
 	ECPropertyVariable(source, NSString*);
@@ -20,7 +21,7 @@
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(data, NSMutableDictionary*);
+ECPropertyRetained(data, NSDictionary*);
 ECPropertyRetained(user, NSMutableDictionary*);
 ECPropertyDefine(text, NSString*, assign, nonatomic, readonly);
 ECPropertyDefine(source, NSString*, assign, nonatomic, readonly);
@@ -29,7 +30,7 @@ ECPropertyDefine(source, NSString*, assign, nonatomic, readonly);
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithDictionary: (NSMutableDictionary*) dictionary;
+- (id) initWithDictionary: (NSDictionary*) dictionary;
 - (NSString*) description;
 - (BOOL) gotLocation;
 - (NSString*) locationText;

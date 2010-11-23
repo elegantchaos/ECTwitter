@@ -23,7 +23,7 @@ ECPropertySynthesize(user);
 //! Set up with data properties.
 // --------------------------------------------------------------------------
 
-- (id) initWithDictionary: (NSMutableDictionary*) dictionary
+- (id) initWithDictionary: (NSDictionary*) dictionary
 {
 	if ((self = [super init]) != nil)
 	{
