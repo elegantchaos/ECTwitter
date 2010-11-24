@@ -59,7 +59,7 @@ ECPropertySynthesize(twitterID);
 	ECPropertyDealloc(data);
 	ECPropertyDealloc(user);
 	ECPropertyDealloc(twitterID);
-
+	
 	[super dealloc];
 }
 
