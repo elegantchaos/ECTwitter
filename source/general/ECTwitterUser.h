@@ -10,20 +10,20 @@
 
 @interface ECTwitterUser : NSObject 
 {
-	ECPropertyVariable(data, NSMutableDictionary*);
+	ECPropertyVariable(data, NSDictionary*);
 }
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(data, NSMutableDictionary*);
+ECPropertyRetained(data, NSDictionary*);
 
 // --------------------------------------------------------------------------
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithUserInfo: (NSMutableDictionary*) dictionary;
+- (id) initWithUserInfo: (NSDictionary*) dictionary;
 - (NSString*) description;
 - (NSString*) name;
 - (NSString*) twitterName;

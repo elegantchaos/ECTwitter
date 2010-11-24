@@ -134,4 +134,9 @@ ECPropertySynthesize(user);
 	
 	return date;
 }
+
+- (NSString*) authorID
+{
+	return [self.user objectForKey: @"id_str"];
+}
 @end

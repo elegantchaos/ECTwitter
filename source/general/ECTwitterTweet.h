@@ -37,5 +37,5 @@ ECPropertyDefine(source, NSString*, assign, nonatomic, readonly);
 - (CLLocation*) location;
 - (NSDate*) created;
 - (NSString*) twitterID;
-
+- (NSString*) authorID;
 @end

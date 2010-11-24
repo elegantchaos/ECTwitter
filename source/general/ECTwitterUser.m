@@ -20,7 +20,7 @@ ECPropertySynthesize(data);
 //! Set up with data properties.
 // --------------------------------------------------------------------------
 
-- (id) initWithUserInfo: (NSMutableDictionary*) dictionary
+- (id) initWithUserInfo: (NSDictionary*) dictionary
 {
 	if ((self = [super init]) != nil)
 	{
@@ -74,7 +74,7 @@ ECPropertySynthesize(data);
 
 - (NSString*) twitterID
 {
-	return [[self.data objectForKey: @"id"] stringValue];
+	return [self.data objectForKey: @"id_str"];
 }
 
 @end
