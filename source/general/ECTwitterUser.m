@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------
 
 #import "ECTwitterUser.h"
-
+#import "ECTwitterID.h"
 
 @implementation ECTwitterUser
 
@@ -15,6 +15,7 @@
 // --------------------------------------------------------------------------
 
 ECPropertySynthesize(data);
+ECPropertySynthesize(twitterID);
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
@@ -25,6 +26,21 @@ ECPropertySynthesize(data);
 	if ((self = [super init]) != nil)
 	{
 		self.data = dictionary;
+		self.twitterID = [ECTwitterID idFromDictionary: dictionary];
+	}
+	
+	return self;
+}
+
+// --------------------------------------------------------------------------
+//! Set up with just an ID.
+// --------------------------------------------------------------------------
+
+- (id) initWithID: (ECTwitterID*) twitterID
+{
+	if ((self = [super init]) != nil)
+	{
+		self.twitterID = twitterID;
 	}
 	
 	return self;
@@ -37,8 +53,18 @@ ECPropertySynthesize(data);
 - (void) dealloc
 {
 	ECPropertyDealloc(data);
-	
+	ECPropertyDealloc(twitterID);
+
 	[super dealloc];
+}
+
+// --------------------------------------------------------------------------
+//! Update with new info
+// --------------------------------------------------------------------------
+
+- (void) refreshWithInfo: (NSDictionary*) info
+{
+	self.data = info;
 }
 
 // --------------------------------------------------------------------------
@@ -72,7 +98,7 @@ ECPropertySynthesize(data);
 //! Return the persistent twitter id of the user.
 // --------------------------------------------------------------------------
 
-- (NSString*) twitterID
+- (ECTwitterID*) twitterID
 {
 	return [self.data objectForKey: @"id_str"];
 }

@@ -6,7 +6,7 @@
 // --------------------------------------------------------------------------
 
 #import "ECTwitterTweet.h"
-
+#import "ECTwitterID.h"
 
 @implementation ECTwitterTweet
 
@@ -18,6 +18,7 @@ ECDefineDebugChannel(TweetChannel);
 
 ECPropertySynthesize(data);
 ECPropertySynthesize(user);
+ECPropertySynthesize(twitterID);
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
@@ -29,6 +30,21 @@ ECPropertySynthesize(user);
 	{
 		self.data = dictionary;
 		self.user = [dictionary objectForKey: @"user"];
+		self.twitterID = [ECTwitterID idFromDictionary: dictionary];
+	}
+	
+	return self;
+}
+
+// --------------------------------------------------------------------------
+//! Set up with just an ID
+// --------------------------------------------------------------------------
+
+- (id) initWithID: (ECTwitterID*) twitterID
+{
+	if ((self = [super init]) != nil)
+	{
+		self.twitterID = twitterID;
 	}
 	
 	return self;
@@ -41,7 +57,9 @@ ECPropertySynthesize(user);
 - (void) dealloc
 {
 	ECPropertyDealloc(data);
-	
+	ECPropertyDealloc(user);
+	ECPropertyDealloc(twitterID);
+
 	[super dealloc];
 }
 
@@ -72,11 +90,10 @@ ECPropertySynthesize(user);
 	return text;
 }
 
-- (NSString*) twitterID
+- (ECTwitterID*) twitterID
 {
-	NSString* text = [[self.user objectForKey: @"id"] stringValue];
-	
-	return text;
+	ECTwitterID* result = [ECTwitterID idFromDictionary: self.user];
+	return result;
 }
 
 - (CLLocation*) location
@@ -135,8 +152,8 @@ ECPropertySynthesize(user);
 	return date;
 }
 
-- (NSString*) authorID
+- (ECTwitterID*) authorID
 {
-	return [self.user objectForKey: @"id_str"];
+	return [ECTwitterID idFromDictionary: self.user];
 }
 @end

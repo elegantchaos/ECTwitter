@@ -1,35 +1,27 @@
 // --------------------------------------------------------------------------
 //! @author Sam Deane
-//! @date 05/08/2010
+//! @date 24/11/2010
 //
 //  Copyright 2010 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <Foundation/Foundation.h>
-
-@class ECTwitterID;
-
-@interface ECTwitterUser : NSObject 
+@interface ECTwitterID : NSObject
 {
-	ECPropertyVariable(data, NSDictionary*);
-	ECPropertyVariable(twitterID, ECTwitterID*);
+	ECPropertyVariable(string, NSString*);
 }
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(data, NSDictionary*);
-ECPropertyRetained(twitterID, ECTwitterID*);
+ECPropertyRetained(string, NSString*);
 
 // --------------------------------------------------------------------------
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithUserInfo: (NSDictionary*) info;
-- (void) refreshWithInfo: (NSDictionary*) info;
-- (NSString*) description;
-- (NSString*) name;
-- (NSString*) twitterName;
++ idFromDictionary: (NSDictionary*) dictionary;
+
+- (id) initWithString: (NSString*) string;
 
 @end

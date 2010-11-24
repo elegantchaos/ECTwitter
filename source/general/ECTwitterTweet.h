@@ -8,9 +8,11 @@
 #import <Foundation/Foundation.h>
 
 @class CLLocation;
+@class ECTwitterID;
 
 @interface ECTwitterTweet : NSObject 
 {
+	ECPropertyVariable(twitterID, ECTwitterID*);
 	ECPropertyVariable(data, NSDictionary*);
 	ECPropertyVariable(user, NSMutableDictionary*);
 	ECPropertyVariable(text, NSString*);
@@ -21,21 +23,22 @@
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(data, NSDictionary*);
-ECPropertyRetained(user, NSMutableDictionary*);
-ECPropertyDefine(text, NSString*, assign, nonatomic, readonly);
 ECPropertyDefine(source, NSString*, assign, nonatomic, readonly);
+ECPropertyDefine(text, NSString*, assign, nonatomic, readonly);
+ECPropertyRetained(data, NSDictionary*);
+ECPropertyRetained(twitterID, ECTwitterID*);
+ECPropertyRetained(user, NSMutableDictionary*);
 
 // --------------------------------------------------------------------------
 // Public Methods
 // --------------------------------------------------------------------------
 
 - (id) initWithDictionary: (NSDictionary*) dictionary;
+- (id) initWithID: (ECTwitterID*) tweetID;
 - (NSString*) description;
 - (BOOL) gotLocation;
 - (NSString*) locationText;
 - (CLLocation*) location;
 - (NSDate*) created;
-- (NSString*) twitterID;
-- (NSString*) authorID;
+- (ECTwitterID*) authorID;
 @end
