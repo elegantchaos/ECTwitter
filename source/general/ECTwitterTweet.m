@@ -24,13 +24,13 @@ ECPropertySynthesize(twitterID);
 //! Set up with data properties.
 // --------------------------------------------------------------------------
 
-- (id) initWithDictionary: (NSDictionary*) dictionary
+- (id) initWithInfo: (NSDictionary*) info
 {
 	if ((self = [super init]) != nil)
 	{
-		self.data = dictionary;
-		self.user = [dictionary objectForKey: @"user"];
-		self.twitterID = [ECTwitterID idFromDictionary: dictionary];
+		self.data = info;
+		self.user = [info objectForKey: @"user"];
+		self.twitterID = [ECTwitterID idFromDictionary: info];
 	}
 	
 	return self;
@@ -48,6 +48,24 @@ ECPropertySynthesize(twitterID);
 	}
 	
 	return self;
+}
+
+// --------------------------------------------------------------------------
+//! Update the tweet data.
+// --------------------------------------------------------------------------
+
+- (void) refreshWithInfo:(NSDictionary *)info
+{
+	self.data = info;
+}
+
+// --------------------------------------------------------------------------
+//! Have we had our data filled in?
+// --------------------------------------------------------------------------
+
+- (BOOL) gotData
+{
+	return (self.data != nil);
 }
 
 // --------------------------------------------------------------------------

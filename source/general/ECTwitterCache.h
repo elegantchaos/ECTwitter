@@ -29,10 +29,12 @@ ECPropertyRetained(users, NSMutableDictionary*);
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithEngine: (ECTwitterEngine*) engine;
+- (id)				initWithEngine: (ECTwitterEngine*) engine;
 
-- (ECTwitterTweet*) tweetWithID: (ECTwitterID*) tweetID;
-- (ECTwitterUser*) userWithID: (ECTwitterID*) userID;
+- (ECTwitterTweet*)	tweetWithID: (ECTwitterID*) tweetID;
+- (ECTwitterUser*)	userWithID: (ECTwitterID*) userID;
+
+- (void)			requestTimelineForUser: (ECTwitterUser*) user;
 
 // --------------------------------------------------------------------------
 // Notifications

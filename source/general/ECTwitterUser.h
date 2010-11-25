@@ -8,11 +8,13 @@
 #import <Foundation/Foundation.h>
 
 @class ECTwitterID;
+@class ECTwitterTweet;
 
 @interface ECTwitterUser : NSObject 
 {
 	ECPropertyVariable(data, NSDictionary*);
 	ECPropertyVariable(twitterID, ECTwitterID*);
+	ECPropertyVariable(tweets, NSMutableArray*);
 }
 
 // --------------------------------------------------------------------------
@@ -21,6 +23,7 @@
 
 ECPropertyRetained(data, NSDictionary*);
 ECPropertyRetained(twitterID, ECTwitterID*);
+ECPropertyRetained(tweets, NSMutableArray*);
 
 // --------------------------------------------------------------------------
 // Public Methods
@@ -28,8 +31,13 @@ ECPropertyRetained(twitterID, ECTwitterID*);
 
 - (id) initWithUserInfo: (NSDictionary*) info;
 - (void) refreshWithInfo: (NSDictionary*) info;
+
+- (BOOL) gotData;
+
 - (NSString*) description;
 - (NSString*) name;
 - (NSString*) twitterName;
+
+- (void) addTweet: (ECTwitterTweet*) tweet;
 
 @end

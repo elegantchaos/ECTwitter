@@ -68,6 +68,15 @@ ECPropertySynthesize(twitterID);
 }
 
 // --------------------------------------------------------------------------
+//! Have we had our data filled in?
+// --------------------------------------------------------------------------
+
+- (BOOL) gotData
+{
+	return (self.data != nil);
+}
+
+// --------------------------------------------------------------------------
 //! Return debug description of the item.
 // --------------------------------------------------------------------------
 
@@ -101,6 +110,23 @@ ECPropertySynthesize(twitterID);
 - (ECTwitterID*) twitterID
 {
 	return [self.data objectForKey: @"id_str"];
+}
+
+// --------------------------------------------------------------------------
+//! Add a tweet to our list.
+// --------------------------------------------------------------------------
+
+- (void) addTweet:(id)tweet
+{
+	NSMutableArray* tweets = self.tweets;
+	if (!tweets)
+	{
+		tweets = [[NSMutableArray alloc] initWithCapacity: 1];
+		self.tweets = tweets;
+		[tweets release];
+	}
+	
+	[tweets addObject: tweet];
 }
 
 @end

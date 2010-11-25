@@ -92,4 +92,13 @@ ECPropertySynthesize(engine);
 	[self invokeWithStatus: StatusResults];
 }
 
+// --------------------------------------------------------------------------
+//! Return the results cast to an array.
+// --------------------------------------------------------------------------
+
+- (NSArray*) resultsAsArray
+{
+	return (NSArray*) self.results;
+}
+
 @end

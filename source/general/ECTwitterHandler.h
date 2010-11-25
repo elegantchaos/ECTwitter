@@ -45,4 +45,6 @@ ECPropertyAssigned(status, ECTwitterStatus);
 - (void) invokeWithStatus: (ECTwitterStatus) status;
 - (void) invokeWithResults: (NSObject*) results;
 
+- (NSArray*) resultsAsArray;
+
 @end

@@ -18,8 +18,9 @@
 
 @interface ECTwitterCache()
 
-- (void) userInfoHandler: (ECTwitterHandler*) handler;
 - (void) requestUserByID: (ECTwitterID*) userID;
+- (void) timelineHandler: (ECTwitterHandler*) handler;
+- (void) userInfoHandler: (ECTwitterHandler*) handler;
 
 @end
 
@@ -107,6 +108,20 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	[self.engine callMethod: @"users/show" parameters: parameters target: self selector: @selector(userInfoHandler:)];
 }
 
+// --------------------------------------------------------------------------
+//! Request user timeline
+// --------------------------------------------------------------------------
+
+- (void) requestTimelineForUser:(ECTwitterUser *)user
+{
+	ECDebug(TwitterCacheChannel, @"requesting timeline");
+	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+								user.twitterID.string, @"user_id",
+								@"1", @"trim_user",
+								nil];
+	
+	[self.engine callMethod: @"statuses/user_timeline" parameters: parameters target: self selector: @selector(timelineHandler:)];
+}
 
 // --------------------------------------------------------------------------
 //! Handle confirmation that we've authenticated ok as a given user.
@@ -117,13 +132,67 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 {
 	if (handler.status == StatusResults)
 	{
-		ECDebug(TwitterCacheChannel, @"user info received: %@", handler.results);
-		NSDictionary* userData = [((NSArray*) handler.results) objectAtIndex: 0];
-		ECTwitterID* userID = [ECTwitterID idFromDictionary: userData];
+		for (NSDictionary* userData in ((NSArray*) handler.results))
+		{
+			ECTwitterID* userID = [ECTwitterID idFromDictionary: userData];
+			
+			ECTwitterUser* user = [self.users objectForKey: userID.string];
+			[user refreshWithInfo: userData];
+			
+			NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+			[nc postNotificationName: ECTwitterUserUpdated object: user];
+
+			ECDebug(TwitterCacheChannel, @"user info received: %@", user.name);
+		}
+	}
+}
+
+// --------------------------------------------------------------------------
+//! Handle confirmation that we've authenticated ok as a given user.
+//! We fire off a request for the list of friends for the user.
+// --------------------------------------------------------------------------
+
+- (void) timelineHandler: (ECTwitterHandler*) handler
+{
+	if (handler.status == StatusResults)
+	{
+		ECTwitterID* userID = nil;
+		ECTwitterUser* user = nil;
 		
-		ECTwitterUser* user = [self.users objectForKey: userID.string];
-		[user refreshWithInfo: userData];
-		[[NSNotificationCenter defaultCenter] postNotificationName: ECTwitterUserUpdated object: user];
+		for (NSDictionary* tweetData in (NSArray*) handler.results)
+		{
+			ECTwitterID* tweetID = [ECTwitterID idFromDictionary: tweetData];
+			ECTwitterTweet* tweet = [self.tweets objectForKey: tweetID.string];
+			if (!tweet)
+			{
+				tweet = [[ECTwitterTweet alloc] initWithInfo: tweetData];
+				[self.tweets setObject: tweet forKey: tweetID.string];
+				[tweet release];
+			}
+			else
+			{
+				[tweet refreshWithInfo: tweetData];
+			}
+
+			if (!userID)
+			{
+				userID = tweet.authorID;
+				user = [self.users objectForKey: userID.string];
+			}
+			
+			[user addTweet: tweet];
+			
+			NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+			[nc postNotificationName: ECTwitterTweetUpdated object: tweet];
+
+			ECDebug(TwitterCacheChannel, @"tweet info received: %@", tweet.text);
+		}
+		
+		if (userID)
+		{
+			NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+			[nc postNotificationName: ECTwitterUserUpdated object: user];
+		}	
 	}
 }
 

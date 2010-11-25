@@ -33,8 +33,13 @@ ECPropertyRetained(user, NSMutableDictionary*);
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithDictionary: (NSDictionary*) dictionary;
+- (id) initWithInfo: (NSDictionary*) info;
 - (id) initWithID: (ECTwitterID*) tweetID;
+
+- (BOOL) gotData;
+
+- (void) refreshWithInfo: (NSDictionary*) info;
+
 - (NSString*) description;
 - (BOOL) gotLocation;
 - (NSString*) locationText;
