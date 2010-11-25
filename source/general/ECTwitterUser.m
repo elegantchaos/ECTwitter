@@ -16,6 +16,7 @@
 
 ECPropertySynthesize(data);
 ECPropertySynthesize(twitterID);
+ECPropertySynthesize(tweets);
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
@@ -54,7 +55,7 @@ ECPropertySynthesize(twitterID);
 {
 	ECPropertyDealloc(data);
 	ECPropertyDealloc(twitterID);
-
+	ECPropertyDealloc(tweets);
 	[super dealloc];
 }
 

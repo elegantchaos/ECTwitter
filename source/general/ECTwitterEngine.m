@@ -348,6 +348,24 @@ ECPropertySynthesize(token);
 	[self setHandler: handler forRequest:request];
 }
 
+// --------------------------------------------------------------------------
+//! Call a twitter method. 
+//! When it's done, the engine will call back to the specified target/selector.
+// --------------------------------------------------------------------------
+
+- (void) callMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
+{
+	if (parameters == nil)
+	{
+		parameters = [NSDictionary dictionary];
+	}
+	
+    NSString* request = [self.engine genericRequestWithMethod: nil path: method queryParameters: parameters body: nil];
+	ECTwitterHandler* handler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
+	handler.extra = extra;
+	[self setHandler: handler forRequest:request];
+}
+
 #if 0
 // --------------------------------------------------------------------------
 //! Perform a geo lookup using a given location.

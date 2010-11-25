@@ -25,6 +25,7 @@ typedef enum
 	ECPropertyVariable(status, ECTwitterStatus);
 	ECPropertyVariable(engine, ECTwitterEngine*);
 	ECPropertyVariable(results, NSObject*);
+	ECPropertyVariable(extra, NSObject*);
 
 }
 
@@ -36,6 +37,7 @@ ECPropertyRetained(operation, NSOperation*);
 ECPropertyRetained(engine, ECTwitterEngine*);
 ECPropertyRetained(results, NSObject*);
 ECPropertyAssigned(status, ECTwitterStatus);
+ECPropertyRetained(extra, NSObject*);
 
 // --------------------------------------------------------------------------
 // Public Methods

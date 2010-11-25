@@ -27,6 +27,7 @@ ECPropertySynthesize(operation);
 ECPropertySynthesize(status);
 ECPropertySynthesize(results);
 ECPropertySynthesize(engine);
+ECPropertySynthesize(extra);
 
 // ==============================================
 // Lifecycle
@@ -61,7 +62,8 @@ ECPropertySynthesize(engine);
 	ECPropertyDealloc(operation);
 	ECPropertyDealloc(engine);
 	ECPropertyDealloc(results);
-	
+	ECPropertyDealloc(extra);
+
 	[super dealloc];
 }
 

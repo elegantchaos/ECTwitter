@@ -112,7 +112,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 //! Request user timeline
 // --------------------------------------------------------------------------
 
-- (void) requestTimelineForUser:(ECTwitterUser *)user
+- (void) requestTimelineForUser:(ECTwitterUser*) user
 {
 	ECDebug(TwitterCacheChannel, @"requesting timeline");
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -120,7 +120,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 								@"1", @"trim_user",
 								nil];
 	
-	[self.engine callMethod: @"statuses/user_timeline" parameters: parameters target: self selector: @selector(timelineHandler:)];
+	[self.engine callMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
 }
 
 // --------------------------------------------------------------------------
@@ -156,8 +156,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 {
 	if (handler.status == StatusResults)
 	{
-		ECTwitterID* userID = nil;
-		ECTwitterUser* user = nil;
+		ECTwitterUser* user = (ECTwitterUser*) handler.extra;
 		
 		for (NSDictionary* tweetData in (NSArray*) handler.results)
 		{
@@ -173,26 +172,17 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 			{
 				[tweet refreshWithInfo: tweetData];
 			}
-
-			if (!userID)
-			{
-				userID = tweet.authorID;
-				user = [self.users objectForKey: userID.string];
-			}
 			
 			[user addTweet: tweet];
 			
 			NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
 			[nc postNotificationName: ECTwitterTweetUpdated object: tweet];
-
+			
 			ECDebug(TwitterCacheChannel, @"tweet info received: %@", tweet.text);
 		}
 		
-		if (userID)
-		{
-			NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-			[nc postNotificationName: ECTwitterUserUpdated object: user];
-		}	
+		NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+		[nc postNotificationName: ECTwitterUserUpdated object: user];
 	}
 }
 

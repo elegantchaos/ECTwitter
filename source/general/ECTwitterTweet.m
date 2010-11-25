@@ -174,4 +174,5 @@ ECPropertySynthesize(twitterID);
 {
 	return [ECTwitterID idFromDictionary: self.user];
 }
+
 @end

@@ -40,6 +40,7 @@ ECPropertyRetained(requests, NSMutableDictionary*);
 - (id) initWithKey: (NSString*) key secret: (NSString*) secret;
 - (void) authenticateForUser: (NSString*) user password: (NSString*) password target: (id) target selector: (SEL) selector;
 - (void) callMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
+- (void) callMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
 
 - (BOOL) isAuthenticated;
 
