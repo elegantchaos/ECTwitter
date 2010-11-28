@@ -19,6 +19,7 @@ ECDefineDebugChannel(TweetChannel);
 ECPropertySynthesize(data);
 ECPropertySynthesize(user);
 ECPropertySynthesize(twitterID);
+ECPropertySynthesize(viewed);
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.

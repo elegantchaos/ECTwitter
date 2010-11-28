@@ -17,6 +17,7 @@
 	ECPropertyVariable(user, NSMutableDictionary*);
 	ECPropertyVariable(text, NSString*);
 	ECPropertyVariable(source, NSString*);
+	ECPropertyVariable(viewed, BOOL);
 }
 
 // --------------------------------------------------------------------------
@@ -28,6 +29,8 @@ ECPropertyDefine(text, NSString*, assign, nonatomic, readonly);
 ECPropertyRetained(data, NSDictionary*);
 ECPropertyRetained(twitterID, ECTwitterID*);
 ECPropertyRetained(user, NSMutableDictionary*);
+
+ECPropertyAssigned(viewed, BOOL);
 
 // --------------------------------------------------------------------------
 // Public Methods
