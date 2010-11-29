@@ -75,6 +75,33 @@ ECPropertySynthesize(token);
 	
 	return self;
 }
+// --------------------------------------------------------------------------
+//! Authenticate.
+//! Look to see if we've got an existing token stored
+//! for the user. If we have, we use it and return YES, 
+//! if not we return NO.
+// --------------------------------------------------------------------------
+
+- (BOOL) authenticateForUser: (NSString*) user
+{
+	ECDebug(TwitterChannel, @"checking saved authentication for %@", user);
+	
+	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+	NSString* savedUser = [defaults stringForKey: kSavedUserKey];
+	OAToken* savedToken = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName: kProvider prefix: kPrefix];
+	
+	BOOL result = (user && savedToken && [savedToken isValid] && ([savedUser isEqualToString: user]));
+	if (result)
+	{
+		[self.engine setUsername: user];
+		[self.engine setAccessToken: savedToken];
+		self.token = savedToken;
+	}
+
+	[savedToken release];
+	
+	return result;
+}
 
 // --------------------------------------------------------------------------
 //! Authenticate.
