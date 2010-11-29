@@ -118,7 +118,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								user.twitterID.string, @"user_id",
 								@"1", @"trim_user",
-								@"50", @"count",
+								@"5", @"count",
 								nil];
 	
 	[self.engine callMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
@@ -131,11 +131,15 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 - (void) refreshTimelineForUser:(ECTwitterUser*) user
 {
 	ECDebug(TwitterCacheChannel, @"refreshing timeline for %@", user);
+
+	NSString* userID = user.twitterID.string;
+	NSString* newestID = user.newestTweet.string;
+	
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								user.twitterID.string, @"user_id",
+								userID, @"user_id",
 								@"1", @"trim_user",
 								@"50", @"count",
-								user.newestTweet.string, @"since_id",
+								newestID, @"since_id",
 								nil];
 	
 	[self.engine callMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
