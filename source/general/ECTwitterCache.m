@@ -114,10 +114,28 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 
 - (void) requestTimelineForUser:(ECTwitterUser*) user
 {
-	ECDebug(TwitterCacheChannel, @"requesting timeline");
+	ECDebug(TwitterCacheChannel, @"requesting timeline for %@", user);
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								user.twitterID.string, @"user_id",
 								@"1", @"trim_user",
+								@"50", @"count",
+								nil];
+	
+	[self.engine callMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
+}
+
+// --------------------------------------------------------------------------
+//! Request user timeline
+// --------------------------------------------------------------------------
+
+- (void) refreshTimelineForUser:(ECTwitterUser*) user
+{
+	ECDebug(TwitterCacheChannel, @"refreshing timeline for %@", user);
+	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+								user.twitterID.string, @"user_id",
+								@"1", @"trim_user",
+								@"50", @"count",
+								user.newestTweet.string, @"since_id",
 								nil];
 	
 	[self.engine callMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
@@ -178,7 +196,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 			NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
 			[nc postNotificationName: ECTwitterTweetUpdated object: tweet];
 			
-			ECDebug(TwitterCacheChannel, @"tweet info received: %@", tweet.text);
+			ECDebug(TwitterCacheChannel, @"tweet info received: %@", tweet);
 		}
 		
 		NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];

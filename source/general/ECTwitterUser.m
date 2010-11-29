@@ -7,6 +7,7 @@
 
 #import "ECTwitterUser.h"
 #import "ECTwitterID.h"
+#import "ECTwitterTweet.h"
 
 @implementation ECTwitterUser
 
@@ -17,6 +18,7 @@
 ECPropertySynthesize(data);
 ECPropertySynthesize(twitterID);
 ECPropertySynthesize(tweets);
+ECPropertySynthesize(newestTweet);
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
@@ -117,7 +119,7 @@ ECPropertySynthesize(tweets);
 //! Add a tweet to our list.
 // --------------------------------------------------------------------------
 
-- (void) addTweet:(id)tweet
+- (void) addTweet: (ECTwitterTweet*) tweet;
 {
 	NSMutableArray* tweets = self.tweets;
 	if (!tweets)
@@ -126,8 +128,13 @@ ECPropertySynthesize(tweets);
 		self.tweets = tweets;
 		[tweets release];
 	}
+
+	if (!self.newestTweet || ([tweet.twitterID.string compare: self.newestTweet.string] == NSOrderedDescending))
+	{
+		self.newestTweet = tweet.twitterID;
+	}
 	
-	[tweets addObject: tweet];
+	[tweets insertObject: tweet atIndex: 0];
 }
 
 @end

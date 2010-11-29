@@ -35,6 +35,7 @@ ECPropertyRetained(users, NSMutableDictionary*);
 - (ECTwitterUser*)	userWithID: (ECTwitterID*) userID;
 
 - (void)			requestTimelineForUser: (ECTwitterUser*) user;
+- (void)			refreshTimelineForUser: (ECTwitterUser*) user;
 
 // --------------------------------------------------------------------------
 // Notifications

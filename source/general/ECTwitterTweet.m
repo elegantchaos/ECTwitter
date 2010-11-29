@@ -84,7 +84,7 @@ ECPropertySynthesize(viewed);
 
 - (NSString*) description
 {
-	return [self.data description];
+	return [NSString stringWithFormat: @"%@ %@", self.twitterID, self.text];
 }
 
 - (NSString*) text
@@ -107,12 +107,6 @@ ECPropertySynthesize(viewed);
 	NSString* text = [self.user objectForKey: @"location"];
 	
 	return text;
-}
-
-- (ECTwitterID*) twitterID
-{
-	ECTwitterID* result = [ECTwitterID idFromDictionary: self.user];
-	return result;
 }
 
 - (CLLocation*) location

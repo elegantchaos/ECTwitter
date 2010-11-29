@@ -15,6 +15,7 @@
 	ECPropertyVariable(data, NSDictionary*);
 	ECPropertyVariable(twitterID, ECTwitterID*);
 	ECPropertyVariable(tweets, NSMutableArray*);
+	ECPropertyVariable(newestTweet, ECTwitterID*);
 }
 
 // --------------------------------------------------------------------------
@@ -24,6 +25,7 @@
 ECPropertyRetained(data, NSDictionary*);
 ECPropertyRetained(twitterID, ECTwitterID*);
 ECPropertyRetained(tweets, NSMutableArray*);
+ECPropertyRetained(newestTweet, ECTwitterID*);
 
 // --------------------------------------------------------------------------
 // Public Methods

@@ -56,4 +56,14 @@ ECPropertySynthesize(string);
 	
 	[super dealloc];
 }
+
+// --------------------------------------------------------------------------
+//! Return debug description of the item.
+// --------------------------------------------------------------------------
+
+- (NSString*) description
+{
+	return self.string;
+}
+
 @end
