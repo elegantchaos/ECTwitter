@@ -24,7 +24,7 @@ ECPropertySynthesize(newestTweet);
 //! Set up with data properties.
 // --------------------------------------------------------------------------
 
-- (id) initWithUserInfo: (NSDictionary*) dictionary
+- (id) initWithInfo: (NSDictionary*) dictionary
 {
 	if ((self = [super init]) != nil)
 	{

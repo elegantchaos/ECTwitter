@@ -31,7 +31,7 @@ ECPropertyRetained(newestTweet, ECTwitterID*);
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithUserInfo: (NSDictionary*) info;
+- (id) initWithInfo: (NSDictionary*) info;
 - (void) refreshWithInfo: (NSDictionary*) info;
 
 - (BOOL) gotData;

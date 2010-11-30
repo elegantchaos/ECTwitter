@@ -94,6 +94,48 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	return user;
 }
 
+- (ECTwitterTweet*) addOrRefreshTweetWithInfo: (NSDictionary*) info
+{
+	ECTwitterID* tweetID = [ECTwitterID idFromDictionary: info];
+	ECTwitterTweet* tweet = [self.tweets objectForKey: tweetID.string];
+	if (!tweet)
+	{
+		tweet = [[ECTwitterTweet alloc] initWithInfo: info];
+		[self.tweets setObject: tweet forKey: tweetID.string];
+		[tweet release];
+	}
+	else
+	{
+		[tweet refreshWithInfo: info];
+	}
+	
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	[nc postNotificationName: ECTwitterTweetUpdated object: tweet];
+
+	return tweet;
+}
+
+- (ECTwitterUser*) addOrRefreshUserWithInfo: (NSDictionary*) info
+{
+	ECTwitterID* userID = [ECTwitterID idFromDictionary: info];
+	ECTwitterUser* user = [self.users objectForKey: userID.string];
+	if (!user)
+	{
+		user = [[ECTwitterUser alloc] initWithInfo: info];
+		[self.users setObject: user forKey: userID.string];
+		[user release];
+	}
+	else
+	{
+		[user refreshWithInfo: info];
+	}
+	
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	[nc postNotificationName: ECTwitterUserUpdated object: user];
+
+	return user;
+}
+
 // --------------------------------------------------------------------------
 //! Request info about a given user id
 // --------------------------------------------------------------------------
@@ -117,8 +159,8 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	ECDebug(TwitterCacheChannel, @"requesting timeline for %@", user);
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								user.twitterID.string, @"user_id",
-								@"1", @"trim_user",
-								@"5", @"count",
+								//@"1", @"trim_user",
+								@"50", @"count",
 								nil];
 	
 	[self.engine callMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
@@ -137,7 +179,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								userID, @"user_id",
-								@"1", @"trim_user",
+								//@"1", @"trim_user",
 								@"50", @"count",
 								newestID, @"since_id",
 								nil];
@@ -182,23 +224,15 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 		
 		for (NSDictionary* tweetData in (NSArray*) handler.results)
 		{
-			ECTwitterID* tweetID = [ECTwitterID idFromDictionary: tweetData];
-			ECTwitterTweet* tweet = [self.tweets objectForKey: tweetID.string];
-			if (!tweet)
-			{
-				tweet = [[ECTwitterTweet alloc] initWithInfo: tweetData];
-				[self.tweets setObject: tweet forKey: tweetID.string];
-				[tweet release];
-			}
-			else
-			{
-				[tweet refreshWithInfo: tweetData];
-			}
-			
+			ECTwitterTweet* tweet = [self addOrRefreshTweetWithInfo: tweetData];
 			[user addTweet: tweet];
 			
-			NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-			[nc postNotificationName: ECTwitterTweetUpdated object: tweet];
+			NSDictionary* authorData = [tweetData objectForKey: @"user"];
+			if ([authorData count] > 2)
+			{
+				[self addOrRefreshUserWithInfo: authorData];
+			}
+
 			
 			ECDebug(TwitterCacheChannel, @"tweet info received: %@", tweet);
 		}
