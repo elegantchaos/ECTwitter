@@ -271,7 +271,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 		{
 
 			ECTwitterTweet* tweet = [self addOrRefreshTweetWithInfo: tweetData];
-			ECDebug(TwitterCacheChannel, @"made tweet favourite: %@", tweet);
+			ECDebug(TwitterCacheChannel, @"made tweet favourite: %@", tweet); ECUnusedInRelease(tweet);
 		}
 	}
 }
