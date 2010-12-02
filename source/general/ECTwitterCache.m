@@ -21,6 +21,9 @@
 - (void) requestUserByID: (ECTwitterID*) userID;
 - (void) timelineHandler: (ECTwitterHandler*) handler;
 - (void) userInfoHandler: (ECTwitterHandler*) handler;
+- (void) makeFavouriteHandler: (ECTwitterHandler*) handler;
+- (ECTwitterUser*) addOrRefreshUserWithInfo: (NSDictionary*) info;
+- (ECTwitterTweet*) addOrRefreshTweetWithInfo: (NSDictionary*) info;
 
 @end
 
@@ -109,6 +112,12 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 		[tweet refreshWithInfo: info];
 	}
 	
+	NSDictionary* authorData = [info objectForKey: @"user"];
+	if ([authorData count] > 2)
+	{
+		[self addOrRefreshUserWithInfo: authorData];
+	}
+
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
 	[nc postNotificationName: ECTwitterTweetUpdated object: tweet];
 
@@ -147,7 +156,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								userID.string, @"user_id",
 								nil];
-	[self.engine callMethod: @"users/show" parameters: parameters target: self selector: @selector(userInfoHandler:)];
+	[self.engine callGetMethod: @"users/show" parameters: parameters target: self selector: @selector(userInfoHandler:)];
 }
 
 // --------------------------------------------------------------------------
@@ -163,7 +172,22 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 								@"50", @"count",
 								nil];
 	
-	[self.engine callMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
+	[self.engine callGetMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
+}
+
+// --------------------------------------------------------------------------
+//! Modify the favourited state of a tweet.
+// --------------------------------------------------------------------------
+
+- (void) setFavouritedStateForTweet: (ECTwitterTweet*) tweet to: (BOOL) state
+{
+	ECDebug(TwitterCacheChannel, @"making favourite: %@", tweet);
+	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+								nil];
+	
+	NSString* format = state ? @"favorites/create/%@" : @"favorites/destroy/%@";
+	[self.engine callPostMethod: [NSString stringWithFormat: format, tweet.twitterID.string] parameters: parameters target: self selector: @selector(makeFavouriteHandler:) extra: tweet];
+	
 }
 
 // --------------------------------------------------------------------------
@@ -184,7 +208,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 								newestID, @"since_id",
 								nil];
 	
-	[self.engine callMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
+	[self.engine callGetMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
 }
 
 // --------------------------------------------------------------------------
@@ -227,18 +251,28 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 			ECTwitterTweet* tweet = [self addOrRefreshTweetWithInfo: tweetData];
 			[user addTweet: tweet];
 			
-			NSDictionary* authorData = [tweetData objectForKey: @"user"];
-			if ([authorData count] > 2)
-			{
-				[self addOrRefreshUserWithInfo: authorData];
-			}
-
-			
 			ECDebug(TwitterCacheChannel, @"tweet info received: %@", tweet);
 		}
 		
 		NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
 		[nc postNotificationName: ECTwitterUserUpdated object: user];
+	}
+}
+
+// --------------------------------------------------------------------------
+//! Handle confirmation that we've made a favourite
+// --------------------------------------------------------------------------
+
+- (void) makeFavouriteHandler: (ECTwitterHandler*) handler
+{
+	if (handler.status == StatusResults)
+	{
+		for (NSDictionary* tweetData in (NSArray*) handler.results)
+		{
+
+			ECTwitterTweet* tweet = [self addOrRefreshTweetWithInfo: tweetData];
+			ECDebug(TwitterCacheChannel, @"made tweet favourite: %@", tweet);
+		}
 	}
 }
 

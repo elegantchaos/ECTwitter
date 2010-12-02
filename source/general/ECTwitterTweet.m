@@ -102,6 +102,12 @@ ECPropertySynthesize(viewed);
 	return [self.data objectForKey: @"geo"] || [self.data objectForKey: @"coordinate"];
 }
 
+- (BOOL) isFavourited
+{
+	NSNumber* value = [self.data objectForKey: @"favorited"];
+	return [value boolValue];
+}
+
 - (NSString*) locationText
 {
 	NSString* text = [self.user objectForKey: @"location"];

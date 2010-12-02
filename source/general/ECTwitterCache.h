@@ -37,6 +37,8 @@ ECPropertyRetained(users, NSMutableDictionary*);
 - (void)			requestTimelineForUser: (ECTwitterUser*) user;
 - (void)			refreshTimelineForUser: (ECTwitterUser*) user;
 
+- (void)			setFavouritedStateForTweet: (ECTwitterTweet*) tweet to: (BOOL) state;
+
 // --------------------------------------------------------------------------
 // Notifications
 // --------------------------------------------------------------------------

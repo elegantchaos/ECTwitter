@@ -42,8 +42,11 @@ ECPropertyRetained(requests, NSMutableDictionary*);
 - (BOOL) authenticateForUser: (NSString*) user;
 - (void) authenticateForUser: (NSString*) user password: (NSString*) password target: (id) target selector: (SEL) selector;
 
-- (void) callMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
-- (void) callMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
+- (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
+- (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
+
+- (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
+- (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
 
 - (BOOL) isAuthenticated;
 

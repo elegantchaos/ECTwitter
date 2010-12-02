@@ -49,4 +49,5 @@ ECPropertyAssigned(viewed, BOOL);
 - (CLLocation*) location;
 - (NSDate*) created;
 - (ECTwitterID*) authorID;
+- (BOOL) isFavourited;
 @end
