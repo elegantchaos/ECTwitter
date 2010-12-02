@@ -162,6 +162,10 @@ ECPropertySynthesize(viewed);
 		[formatter release];
 		ECDebug(TweetChannel, @"converted date %@ from string %@", date, value);
 	}
+	else if ([value isKindOfClass: [NSNumber class]])
+	{
+		date = [NSDate dateWithTimeIntervalSince1970: [value unsignedIntegerValue]];
+	}
 	else
 	{
 		date = value;
