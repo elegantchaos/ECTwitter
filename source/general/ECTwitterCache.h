@@ -31,11 +31,11 @@ ECPropertyRetained(users, NSMutableDictionary*);
 
 - (id)				initWithEngine: (ECTwitterEngine*) engine;
 
+- (ECTwitterUser*)	addOrRefreshUserWithInfo: (NSDictionary*) info;
+- (ECTwitterTweet*) addOrRefreshTweetWithInfo: (NSDictionary*) info;
+
 - (ECTwitterTweet*)	tweetWithID: (ECTwitterID*) tweetID;
 - (ECTwitterUser*)	userWithID: (ECTwitterID*) userID;
-
-- (void)			requestTimelineForUser: (ECTwitterUser*) user;
-- (void)			refreshTimelineForUser: (ECTwitterUser*) user;
 
 - (void)			setFavouritedStateForTweet: (ECTwitterTweet*) tweet to: (BOOL) state;
 

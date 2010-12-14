@@ -5,12 +5,12 @@
 //  Copyright 2010 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <Foundation/Foundation.h>
+#import "ECTwitterCachedObject.h"
 
 @class ECTwitterID;
 @class ECTwitterTweet;
 
-@interface ECTwitterUser : NSObject 
+@interface ECTwitterUser : ECTwitterCachedObject  
 {
 	ECPropertyVariable(data, NSDictionary*);
 	ECPropertyVariable(twitterID, ECTwitterID*);
@@ -31,15 +31,18 @@ ECPropertyRetained(newestTweet, ECTwitterID*);
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithInfo: (NSDictionary*) info;
-- (void) refreshWithInfo: (NSDictionary*) info;
+- (id)				initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
+- (void)			refreshWithInfo: (NSDictionary*) info;
 
-- (BOOL) gotData;
+- (BOOL)			gotData;
 
-- (NSString*) description;
-- (NSString*) name;
-- (NSString*) twitterName;
+- (NSString*)		description;
+- (NSString*)		name;
+- (NSString*)		twitterName;
 
-- (void) addTweet: (ECTwitterTweet*) tweet;
+- (void)			addTweet: (ECTwitterTweet*) tweet;
+
+- (void)			requestTimeline;
+- (void)			refreshTimeline;
 
 @end

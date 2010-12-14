@@ -5,18 +5,19 @@
 //  Copyright 2010 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <Foundation/Foundation.h>
+#import "ECTwitterCachedObject.h"
 
 @class CLLocation;
 @class ECTwitterID;
+@class ECTwitterUser;
 
-@interface ECTwitterTweet : NSObject 
+@interface ECTwitterTweet : ECTwitterCachedObject 
 {
 	ECPropertyVariable(twitterID, ECTwitterID*);
+	ECPropertyVariable(authorID, ECTwitterID*);
+	ECPropertyVariable(cachedAuthor, ECTwitterUser*);
 	ECPropertyVariable(data, NSDictionary*);
-	ECPropertyVariable(user, NSMutableDictionary*);
 	ECPropertyVariable(text, NSString*);
-	ECPropertyVariable(source, NSString*);
 	ECPropertyVariable(viewed, BOOL);
 }
 
@@ -24,11 +25,11 @@
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyDefine(source, NSString*, assign, nonatomic, readonly);
 ECPropertyDefine(text, NSString*, assign, nonatomic, readonly);
 ECPropertyRetained(data, NSDictionary*);
 ECPropertyRetained(twitterID, ECTwitterID*);
-ECPropertyRetained(user, NSMutableDictionary*);
+ECPropertyRetained(authorID, ECTwitterID*);
+ECPropertyRetained(cachedAuthor, ECTwitterUser*);
 
 ECPropertyAssigned(viewed, BOOL);
 
@@ -36,8 +37,8 @@ ECPropertyAssigned(viewed, BOOL);
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithInfo: (NSDictionary*) info;
-- (id) initWithID: (ECTwitterID*) tweetID;
+- (id) initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
+- (id) initWithID: (ECTwitterID*) tweetID inCache: (ECTwitterCache*) cache;
 
 - (BOOL) gotData;
 
@@ -45,9 +46,10 @@ ECPropertyAssigned(viewed, BOOL);
 
 - (NSString*) description;
 - (BOOL) gotLocation;
-- (NSString*) locationText;
+//- (NSString*) locationText;
 - (CLLocation*) location;
 - (NSDate*) created;
+- (ECTwitterUser*) author;
 - (ECTwitterID*) authorID;
 - (BOOL) isFavourited;
 @end

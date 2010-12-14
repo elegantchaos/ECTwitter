@@ -7,6 +7,7 @@
 
 #import "ECTwitterTweet.h"
 #import "ECTwitterID.h"
+#import "ECTwitterCache.h"
 
 @implementation ECTwitterTweet
 
@@ -17,21 +18,24 @@ ECDefineDebugChannel(TweetChannel);
 // --------------------------------------------------------------------------
 
 ECPropertySynthesize(data);
-ECPropertySynthesize(user);
+ECPropertySynthesize(cachedAuthor);
 ECPropertySynthesize(twitterID);
+ECPropertySynthesize(authorID);
 ECPropertySynthesize(viewed);
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
 // --------------------------------------------------------------------------
 
-- (id) initWithInfo: (NSDictionary*) info
+- (id) initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache
 {
-	if ((self = [super init]) != nil)
+	if ((self = [super initWithCache: cache]) != nil)
 	{
 		self.data = info;
-		self.user = [info objectForKey: @"user"];
+		NSDictionary* authorInfo = [info objectForKey: @"user"];
+		
 		self.twitterID = [ECTwitterID idFromDictionary: info];
+		self.authorID = [ECTwitterID idFromDictionary: authorInfo];
 	}
 	
 	return self;
@@ -41,9 +45,9 @@ ECPropertySynthesize(viewed);
 //! Set up with just an ID
 // --------------------------------------------------------------------------
 
-- (id) initWithID: (ECTwitterID*) twitterID
+- (id) initWithID: (ECTwitterID*) twitterID inCache: (ECTwitterCache*) cache
 {
-	if ((self = [super init]) != nil)
+	if ((self = [super initWithCache: cache]) != nil)
 	{
 		self.twitterID = twitterID;
 	}
@@ -76,8 +80,9 @@ ECPropertySynthesize(viewed);
 - (void) dealloc
 {
 	ECPropertyDealloc(data);
-	ECPropertyDealloc(user);
+	ECPropertyDealloc(authorID);
 	ECPropertyDealloc(twitterID);
+	ECPropertyDealloc(cachedAuthor);
 	
 	[super dealloc];
 }
@@ -92,10 +97,10 @@ ECPropertySynthesize(viewed);
 	return [self.data objectForKey: @"text"];
 }
 
-- (NSString*) source
-{
-	return [self.user objectForKey: @"source"];
-}
+//- (NSString*) source
+//{
+//	return [self.user objectForKey: @"source"];
+//}
 
 - (BOOL) gotLocation
 {
@@ -108,12 +113,12 @@ ECPropertySynthesize(viewed);
 	return [value boolValue];
 }
 
-- (NSString*) locationText
-{
-	NSString* text = [self.user objectForKey: @"location"];
-	
-	return text;
-}
+//- (NSString*) locationText
+//{
+//	NSString* text = [self.user objectForKey: @"location"];
+//	
+//	return text;
+//}
 
 - (CLLocation*) location
 {
@@ -175,9 +180,16 @@ ECPropertySynthesize(viewed);
 	return date;
 }
 
-- (ECTwitterID*) authorID
+- (ECTwitterUser*) author
 {
-	return [ECTwitterID idFromDictionary: self.user];
+	ECTwitterUser* author = self.cachedAuthor;
+	
+	if (author == nil)
+	{
+		author = [mCache userWithID: self.authorID];
+		self.cachedAuthor = author;
+	}
+	
+	return author;
 }
-
 @end

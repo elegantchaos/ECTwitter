@@ -19,11 +19,8 @@
 @interface ECTwitterCache()
 
 - (void) requestUserByID: (ECTwitterID*) userID;
-- (void) timelineHandler: (ECTwitterHandler*) handler;
 - (void) userInfoHandler: (ECTwitterHandler*) handler;
 - (void) makeFavouriteHandler: (ECTwitterHandler*) handler;
-- (ECTwitterUser*) addOrRefreshUserWithInfo: (NSDictionary*) info;
-- (ECTwitterTweet*) addOrRefreshTweetWithInfo: (NSDictionary*) info;
 
 @end
 
@@ -77,7 +74,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	ECTwitterTweet* tweet = [self.tweets objectForKey: tweetID.string];
 	if (!tweet)
 	{
-		tweet = [[[ECTwitterTweet alloc] initWithID: tweetID] autorelease];
+		tweet = [[[ECTwitterTweet alloc] initWithID: tweetID inCache: self] autorelease];
 		[self.tweets setObject: tweet forKey: tweetID.string];
 	}
 	
@@ -89,7 +86,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	ECTwitterUser* user = [self.users objectForKey: userID.string];
 	if (!user)
 	{
-		user = [[[ECTwitterUser alloc] initWithID: userID] autorelease];
+		user = [[[ECTwitterUser alloc] initWithID: userID inCache: self] autorelease];
 		[self.users setObject: user forKey: userID.string];
 		[self requestUserByID: userID];
 	}
@@ -103,7 +100,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	ECTwitterTweet* tweet = [self.tweets objectForKey: tweetID.string];
 	if (!tweet)
 	{
-		tweet = [[ECTwitterTweet alloc] initWithInfo: info];
+		tweet = [[ECTwitterTweet alloc] initWithInfo: info inCache: self];
 		[self.tweets setObject: tweet forKey: tweetID.string];
 		[tweet release];
 	}
@@ -130,7 +127,7 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	ECTwitterUser* user = [self.users objectForKey: userID.string];
 	if (!user)
 	{
-		user = [[ECTwitterUser alloc] initWithInfo: info];
+		user = [[ECTwitterUser alloc] initWithInfo: info inCache: self];
 		[self.users setObject: user forKey: userID.string];
 		[user release];
 	}
@@ -159,21 +156,6 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	[self.engine callGetMethod: @"users/show" parameters: parameters target: self selector: @selector(userInfoHandler:)];
 }
 
-// --------------------------------------------------------------------------
-//! Request user timeline
-// --------------------------------------------------------------------------
-
-- (void) requestTimelineForUser:(ECTwitterUser*) user
-{
-	ECDebug(TwitterCacheChannel, @"requesting timeline for %@", user);
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								user.twitterID.string, @"user_id",
-								//@"1", @"trim_user",
-								@"50", @"count",
-								nil];
-	
-	[self.engine callGetMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
-}
 
 // --------------------------------------------------------------------------
 //! Modify the favourited state of a tweet.
@@ -188,27 +170,6 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 	NSString* format = state ? @"favorites/create/%@" : @"favorites/destroy/%@";
 	[self.engine callPostMethod: [NSString stringWithFormat: format, tweet.twitterID.string] parameters: parameters target: self selector: @selector(makeFavouriteHandler:) extra: tweet];
 	
-}
-
-// --------------------------------------------------------------------------
-//! Request user timeline
-// --------------------------------------------------------------------------
-
-- (void) refreshTimelineForUser:(ECTwitterUser*) user
-{
-	ECDebug(TwitterCacheChannel, @"refreshing timeline for %@", user);
-
-	NSString* userID = user.twitterID.string;
-	NSString* newestID = user.newestTweet.string;
-	
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								userID, @"user_id",
-								//@"1", @"trim_user",
-								@"50", @"count",
-								newestID, @"since_id",
-								nil];
-	
-	[self.engine callGetMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:) extra: user];
 }
 
 // --------------------------------------------------------------------------
@@ -232,30 +193,6 @@ NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 
 			ECDebug(TwitterCacheChannel, @"user info received: %@", user.name);
 		}
-	}
-}
-
-// --------------------------------------------------------------------------
-//! Handle confirmation that we've authenticated ok as a given user.
-//! We fire off a request for the list of friends for the user.
-// --------------------------------------------------------------------------
-
-- (void) timelineHandler: (ECTwitterHandler*) handler
-{
-	if (handler.status == StatusResults)
-	{
-		ECTwitterUser* user = (ECTwitterUser*) handler.extra;
-		
-		for (NSDictionary* tweetData in (NSArray*) handler.results)
-		{
-			ECTwitterTweet* tweet = [self addOrRefreshTweetWithInfo: tweetData];
-			[user addTweet: tweet];
-			
-			ECDebug(TwitterCacheChannel, @"tweet info received: %@", tweet);
-		}
-		
-		NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-		[nc postNotificationName: ECTwitterUserUpdated object: user];
 	}
 }
 
