@@ -192,4 +192,14 @@ ECPropertySynthesize(viewed);
 	
 	return author;
 }
+
+- (NSComparisonResult) compareByDateAscending: (ECTwitterTweet*) other
+{
+	return [self.created compare: other.created];
+}
+
+- (NSComparisonResult) compareByDateDescending: (ECTwitterTweet*) other
+{
+	return [other.created compare: self.created];
+}
 @end

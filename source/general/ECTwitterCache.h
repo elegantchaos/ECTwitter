@@ -45,5 +45,6 @@ ECPropertyRetained(users, NSMutableDictionary*);
 
 extern NSString *const ECTwitterUserUpdated;
 extern NSString *const ECTwitterTweetUpdated;
+extern NSString *const ECTwitterTimelineUpdated;
 
 @end

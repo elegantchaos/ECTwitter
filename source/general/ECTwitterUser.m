@@ -135,7 +135,7 @@ ECPropertySynthesize(newestTweet);
 		self.newestTweet = tweet.twitterID;
 	}
 	
-	[tweets insertObject: tweet atIndex: 0];
+	[tweets addObject: tweet];
 }
 
 // --------------------------------------------------------------------------
@@ -195,8 +195,10 @@ ECPropertySynthesize(newestTweet);
 			ECDebug(TwitterUserChannel, @"tweet info received: %@", tweet);
 		}
 		
+		[self.tweets sortUsingSelector: @selector(compareByDateDescending:)];
+		
 		NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-		[nc postNotificationName: ECTwitterUserUpdated object: self];
+		[nc postNotificationName: ECTwitterTimelineUpdated object: self];
 	}
 }
 

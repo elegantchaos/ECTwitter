@@ -48,6 +48,7 @@ ECPropertySynthesize(engine);
 
 NSString *const ECTwitterUserUpdated = @"UserUpdated";
 NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
+NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
 
 // ==============================================
 // Constants
