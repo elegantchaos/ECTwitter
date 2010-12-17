@@ -16,6 +16,7 @@
 	ECPropertyVariable(twitterID, ECTwitterID*);
 	ECPropertyVariable(tweets, NSMutableArray*);
 	ECPropertyVariable(newestTweet, ECTwitterID*);
+	ECPropertyVariable(cachedImage, NSImage*);
 }
 
 // --------------------------------------------------------------------------
@@ -26,6 +27,7 @@ ECPropertyRetained(data, NSDictionary*);
 ECPropertyRetained(twitterID, ECTwitterID*);
 ECPropertyRetained(tweets, NSMutableArray*);
 ECPropertyRetained(newestTweet, ECTwitterID*);
+ECPropertyRetained(cachedImage, NSImage*);
 
 // --------------------------------------------------------------------------
 // Public Methods
@@ -40,6 +42,10 @@ ECPropertyRetained(newestTweet, ECTwitterID*);
 - (NSString*)		name;
 - (NSString*)		twitterName;
 - (NSString*)		longDisplayName;
+
+- (NSString*)		bio;
+
+- (NSImage*)		image;
 
 - (void)			addTweet: (ECTwitterTweet*) tweet;
 

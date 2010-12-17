@@ -29,6 +29,7 @@ ECPropertySynthesize(data);
 ECPropertySynthesize(twitterID);
 ECPropertySynthesize(tweets);
 ECPropertySynthesize(newestTweet);
+ECPropertySynthesize(cachedImage);
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
@@ -68,6 +69,8 @@ ECPropertySynthesize(newestTweet);
 	ECPropertyDealloc(data);
 	ECPropertyDealloc(twitterID);
 	ECPropertyDealloc(tweets);
+	ECPropertyDealloc(cachedImage);
+	
 	[super dealloc];
 }
 
@@ -210,5 +213,34 @@ ECPropertySynthesize(newestTweet);
 {
 	return [NSString stringWithFormat: @"%@ (@%@)", [self name], [self twitterName]];
 }
+
+// --------------------------------------------------------------------------
+//! Return the user's "description" field
+//! (called "bio" to avoid clash with the standard NSObject description method).
+// --------------------------------------------------------------------------
+
+- (NSString*) bio
+{
+	return [self.data objectForKey: @"description"];
+}
+
+// --------------------------------------------------------------------------
+//! Return an image for the user.
+// --------------------------------------------------------------------------
+
+- (NSImage*) image
+{
+	NSImage* image = self.cachedImage;
+	if (!image)
+	{
+		NSURL* url = [NSURL URLWithString:[self.data objectForKey: @"profile_image_url"]];
+		image = [[NSImage alloc] initWithContentsOfURL: url];
+		self.cachedImage = image;
+		[image release];
+	}
+	
+	return image;
+}
+
 
 @end
