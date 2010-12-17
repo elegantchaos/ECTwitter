@@ -39,6 +39,7 @@ ECPropertyRetained(newestTweet, ECTwitterID*);
 - (NSString*)		description;
 - (NSString*)		name;
 - (NSString*)		twitterName;
+- (NSString*)		longDisplayName;
 
 - (void)			addTweet: (ECTwitterTweet*) tweet;
 

@@ -202,4 +202,13 @@ ECPropertySynthesize(newestTweet);
 	}
 }
 
+// --------------------------------------------------------------------------
+//! Return the user name in the form "Full Name (@twitterName)"
+// --------------------------------------------------------------------------
+
+- (NSString*) longDisplayName
+{
+	return [NSString stringWithFormat: @"%@ (@%@)", [self name], [self twitterName]];
+}
+
 @end
