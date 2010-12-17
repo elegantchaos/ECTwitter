@@ -53,6 +53,13 @@ ECPropertyAssigned(viewed, BOOL);
 - (ECTwitterID*) authorID;
 - (BOOL) isFavourited;
 
+- (NSString*)		inReplyToTwitterName;
+- (ECTwitterID*)	inReplyToMessageID;
+- (ECTwitterID*)	inReplyToAuthorID;
+
+- (NSString*) sourceName;
+- (NSURL*) sourceURL;
+
 - (NSComparisonResult) compareByDateAscending: (ECTwitterTweet*) other;
 - (NSComparisonResult) compareByDateDescending: (ECTwitterTweet*) other;
 

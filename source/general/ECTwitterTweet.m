@@ -9,6 +9,8 @@
 #import "ECTwitterID.h"
 #import "ECTwitterCache.h"
 
+#import "RegexKitLite.h"
+
 @implementation ECTwitterTweet
 
 ECDefineDebugChannel(TweetChannel);
@@ -202,4 +204,68 @@ ECPropertySynthesize(viewed);
 {
 	return [other.created compare: self.created];
 }
+
+- (NSString*) inReplyToTwitterName
+{
+	return [self.data objectForKey: @"in_reply_to_screen_name"];
+}
+
+- (ECTwitterID*) inReplyToMessageID
+{
+	ECTwitterID* result = nil;
+	NSString* string = [self.data objectForKey: @"in_reply_to_status_id_str"];
+	if (string)
+	{
+		result = [[[ECTwitterID alloc] initWithString: string] autorelease];
+	}
+	
+	return result;
+}
+
+- (ECTwitterID*) inReplyToAuthorID
+{
+	ECTwitterID* result = nil;
+	NSString* string = [self.data objectForKey: @"in_reply_to_user_id_str"];
+	if (string)
+	{
+		result = [[[ECTwitterID alloc] initWithString: string] autorelease];
+	}
+	
+	return result;
+}
+
+static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
+
+- (NSString*) sourceName
+{
+	NSString* source = [self.data objectForKey: @"source"];
+	NSArray* captures = [source captureComponentsMatchedByRegex: kSourceExpression];
+	NSString* result = nil;
+	if ([captures count] == 3)
+	{
+		result = [captures objectAtIndex: 2];
+	}
+
+	return result;
+}
+
+- (NSURL*) sourceURL
+{
+	NSString* source = [self.data objectForKey: @"source"];
+	NSArray* captures = [source captureComponentsMatchedByRegex: kSourceExpression];
+	NSURL* result = nil;
+	if ([captures count] == 3)
+	{
+		result = [NSURL URLWithString: [captures objectAtIndex: 1]];
+	}
+	
+	return result;
+}
+
+//"in_reply_to_screen_name" = "<null>";
+//"in_reply_to_status_id" = "<null>";
+//"in_reply_to_status_id_str" = "<null>";
+//"in_reply_to_user_id" = "<null>";
+//"in_reply_to_user_id_str" = "<null>";
+
 @end
