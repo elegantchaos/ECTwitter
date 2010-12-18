@@ -138,7 +138,10 @@ ECPropertySynthesize(cachedImage);
 		self.newestTweet = tweet.twitterID;
 	}
 	
-	[tweets addObject: tweet];
+	if ([tweets indexOfObject: tweet] == NSNotFound)
+	{
+		[tweets addObject: tweet];
+	}
 }
 
 // --------------------------------------------------------------------------
