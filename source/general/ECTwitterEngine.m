@@ -52,6 +52,13 @@ ECPropertySynthesize(engine);
 ECPropertySynthesize(requests);
 ECPropertySynthesize(token);
 
+// ==============================================
+// Lifecycle
+// ==============================================
+
+#pragma mark -
+#pragma mark Lifecycle
+
 // --------------------------------------------------------------------------
 //! Initialise the engine.
 // --------------------------------------------------------------------------
@@ -76,6 +83,28 @@ ECPropertySynthesize(token);
 	
 	return self;
 }
+
+
+// --------------------------------------------------------------------------
+//! Clean up and release references.
+// --------------------------------------------------------------------------
+
+- (void) dealloc 
+{
+	ECPropertyDealloc(engine);
+	ECPropertyDealloc(requests);
+	ECPropertyDealloc(token);
+	
+    [super dealloc];
+}
+
+// ==============================================
+// Authentication
+// ==============================================
+
+#pragma mark -
+#pragma mark Authentication
+
 // --------------------------------------------------------------------------
 //! Authenticate.
 //! Look to see if we've got an existing token stored
@@ -156,18 +185,12 @@ ECPropertySynthesize(token);
 	return (self.token != nil) && [self.token isValid];
 }
 
-// --------------------------------------------------------------------------
-//! Clean up and release references.
-// --------------------------------------------------------------------------
+// ==============================================
+// Request Handling
+// ==============================================
 
-- (void) dealloc 
-{
-	ECPropertyDealloc(engine);
-	ECPropertyDealloc(requests);
-	ECPropertyDealloc(token);
-	
-    [super dealloc];
-}
+#pragma mark -
+#pragma mark Request Handling
 
 // --------------------------------------------------------------------------
 //! Remember a request id and associate it with a handler.
@@ -231,76 +254,6 @@ ECPropertySynthesize(token);
 	[self doneRequest: request];
 }
 
-// --------------------------------------------------------------------------
-//! Handle receiving a list of status updates.
-//! We convert the dictionaries into a list of ECTwitterTweet
-//! objects, then call on to the registered handler for the request.
-// --------------------------------------------------------------------------
-
-- (void) statusesReceived:(NSArray *)statuses forRequest: (NSString*) request
-{
-	ECDebug(TwitterChannel, @"received %d tweets for request %@", [statuses count], request);
-#if 0
-	ECTwitterHandler* handler = [self handlerForRequest: request];	
-	if ([handler respondsToSelector: @selector(twitterEngine:didReceiveTweets:)])
-	{
-		NSMutableArray* tweets = [[NSMutableArray alloc] init];
-		for (NSMutableDictionary* status in statuses)
-		{
-			ECTwitterTweet* tweet = [(ECTwitterTweet*) [ECTwitterTweet alloc] initWithDictionary: status];
-			ECDebug(TwitterChannel, @"tweet %@", tweet);
-			[tweets addObject: tweet];
-			[tweet release];
-		}
-		
-		[handler twitterEngine: self didReceiveTweets: tweets];
-		[tweets release];
-	}
-#endif
-
-	[self doneRequest: request];
-}
-
-// --------------------------------------------------------------------------
-// --------------------------------------------------------------------------
-
-- (void) directMessagesReceived:(NSArray *)messages forRequest:(NSString *)identifier
-{
-	ECDebug(TwitterChannel, @"directMessagesReceived %@ %@", messages, identifier);
-	
-}
-
-// --------------------------------------------------------------------------
-//! Handle receiving a list of user information.
-//! We convert the dictionaries into a list of ECTwitterUser
-//! objects, then call on to the registered handler for the request.
-// --------------------------------------------------------------------------
-
-- (void) userInfoReceived: (NSArray*) userInfos forRequest: (NSString*) request
-{
-	ECDebug(TwitterChannel, @"received %d users for request %@\n%@", [userInfos count], request, userInfos);
-
-#if 0
-	ECTwitterHandler* handler = [self handlerForRequest: request];
-	if ([handler respondsToSelector: @selector(twitterEngine:didReceiveUsers:)])
-	{
-		NSMutableArray* users = [[NSMutableArray alloc] init];
-		for (NSMutableDictionary* info in userInfos)
-		{
-			ECTwitterUser* user = [[ECTwitterUser alloc] initWithUserInfo: info];
-			ECDebug(TwitterChannel, @"user %@", user);
-			[users addObject: user];
-			[user release];
-		}
-		
-		[handler twitterEngine: self didReceiveUsers: users];
-		[users release];
-	}
-#endif
-	
-	[self doneRequest: request];
-	
-}
 
 // --------------------------------------------------------------------------
 //! Handle receiving an authorisation token.
@@ -320,30 +273,6 @@ ECPropertySynthesize(token);
 	[self doneRequest: request];
 }
 
-// --------------------------------------------------------------------------
-//! Handle receiving a list of user ids.
-// --------------------------------------------------------------------------
-
-- (void) socialGraphInfoReceived: (NSArray*) socialGraphInfo forRequest: (NSString*) request
-{
-#if 0
-	NSDictionary* info = [socialGraphInfo objectAtIndex: 0];
-	
-	NSArray* ids = [info objectForKey: @"ids"];
-	MGTwitterEngineCursorID next = [[info objectForKey: @"next"] intValue];
-	MGTwitterEngineCursorID previous = [[info objectForKey: @"previous"] intValue];
-	
-	ECDebug(TwitterChannel, @"received %d user ids for request %@", [ids count], request);
-	
-	ECTwitterHandler* handler = [self handlerForRequest: request];
-	if ([handler respondsToSelector: @selector(twitterEngine:didReceiveUserIds:nextCursor:previousCursor:)])
-	{
-		[handler twitterEngine: self didReceiveUserIds: ids nextCursor: next previousCursor: previous];
-	}
-#endif
-	
-	[self doneRequest: request];
-}
 
 // --------------------------------------------------------------------------
 //! Handle receiving geo results.
@@ -358,6 +287,13 @@ ECPropertySynthesize(token);
 	
 	[self doneRequest: request];
 }
+
+// --------------------------------------------------------------------------
+// Twitter Method Calling
+// --------------------------------------------------------------------------
+
+#pragma mark -
+#pragma mark Twitter Method Calling
 
 // --------------------------------------------------------------------------
 //! Call a twitter method. 
@@ -416,26 +352,5 @@ ECPropertySynthesize(token);
 	handler.extra = extra;
 	[self setHandler: handler forRequest:request];
 }
-
-#if 0
-// --------------------------------------------------------------------------
-//! Perform a geo lookup using a given location.
-// --------------------------------------------------------------------------
-
-- (void) getGeoSearchAt: (CLLocation*) location handler: (ECTwitterHandler*) handler
-{
-	NSMutableDictionary *params = [NSMutableDictionary dictionaryWithCapacity:0];
-	
-	CLLocationCoordinate2D coords = location.coordinate;
-	[params setObject:[NSString stringWithFormat: @"%lf", coords.latitude] forKey:@"lat"];
-	[params setObject:[NSString stringWithFormat: @"%lf", coords.longitude] forKey:@"long"];
-	[params setObject: @"poi" forKey: @"granularity"];
-	[params setObject: @"max_results" forKey: [NSNumber numberWithInt: 20]];
-	 
-    NSString* request = [self.engine genericRequestWithMethod: nil path: @"geo/search" queryParameters: params body: nil];
-	[self setHandler: handler forRequest:request];
-}
-
-#endif
 
 @end
