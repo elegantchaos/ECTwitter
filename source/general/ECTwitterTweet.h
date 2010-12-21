@@ -64,3 +64,10 @@ ECPropertyAssigned(viewed, BOOL);
 - (NSComparisonResult) compareByDateDescending: (ECTwitterTweet*) other;
 
 @end
+
+
+// --------------------------------------------------------------------------
+// Public Constants
+// --------------------------------------------------------------------------
+
+static const NSUInteger kTweetCharacterLimit = 140;
