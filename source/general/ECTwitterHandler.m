@@ -28,6 +28,7 @@ ECPropertySynthesize(status);
 ECPropertySynthesize(results);
 ECPropertySynthesize(engine);
 ECPropertySynthesize(extra);
+ECPropertySynthesize(error);
 
 // ==============================================
 // Lifecycle
@@ -63,6 +64,7 @@ ECPropertySynthesize(extra);
 	ECPropertyDealloc(engine);
 	ECPropertyDealloc(results);
 	ECPropertyDealloc(extra);
+	ECPropertyDealloc(error);
 
 	[super dealloc];
 }
@@ -101,6 +103,15 @@ ECPropertySynthesize(extra);
 - (NSArray*) resultsAsArray
 {
 	return (NSArray*) self.results;
+}
+
+// --------------------------------------------------------------------------
+//! Return an error string.
+// --------------------------------------------------------------------------
+
+- (NSString*) errorString
+{
+	return [self.error localizedDescription];
 }
 
 @end

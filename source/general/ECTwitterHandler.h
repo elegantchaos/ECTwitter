@@ -26,7 +26,7 @@ typedef enum
 	ECPropertyVariable(engine, ECTwitterEngine*);
 	ECPropertyVariable(results, NSObject*);
 	ECPropertyVariable(extra, NSObject*);
-
+	ECPropertyVariable(error, NSError*);
 }
 
 // --------------------------------------------------------------------------
@@ -38,6 +38,7 @@ ECPropertyRetained(engine, ECTwitterEngine*);
 ECPropertyRetained(results, NSObject*);
 ECPropertyAssigned(status, ECTwitterStatus);
 ECPropertyRetained(extra, NSObject*);
+ECPropertyRetained(error, NSError*);
 
 // --------------------------------------------------------------------------
 // Public Methods
@@ -48,5 +49,6 @@ ECPropertyRetained(extra, NSObject*);
 - (void) invokeWithResults: (NSObject*) results;
 
 - (NSArray*) resultsAsArray;
+- (NSString*) errorString;
 
 @end

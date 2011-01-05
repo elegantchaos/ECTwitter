@@ -250,6 +250,7 @@ ECPropertySynthesize(token);
 	ECAssertNonNil(handler);
 	
 	ECDebug(TwitterChannel, @"request %@ for handler %@ failed with error %@ %@", request, handler, error, error.userInfo);
+	handler.error = error;
 	[handler invokeWithStatus: StatusFailed];
 	[self doneRequest: request];
 }
