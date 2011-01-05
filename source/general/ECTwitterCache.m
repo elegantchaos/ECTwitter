@@ -214,4 +214,17 @@ NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
 	}
 }
 
+// --------------------------------------------------------------------------
+//! Return image for object with a given ID, at a given URL.
+//! The image may be cached locally, or may be fetched. 
+//! The cached version may be refreshed if it is old.
+// --------------------------------------------------------------------------
+
+- (NSImage*) imageWithID: (ECTwitterID*) imageID URL: (NSURL*) url
+{
+	NSImage* image = [[NSImage alloc] initWithContentsOfURL: url];
+	
+	return [image autorelease];
+}
+
 @end

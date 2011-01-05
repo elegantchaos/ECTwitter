@@ -237,7 +237,7 @@ ECPropertySynthesize(cachedImage);
 	if (!image)
 	{
 		NSURL* url = [NSURL URLWithString:[self.data objectForKey: @"profile_image_url"]];
-		image = [[NSImage alloc] initWithContentsOfURL: url];
+		image = [mCache imageWithID: self.twitterID URL: url];
 		self.cachedImage = image;
 		[image release];
 	}
