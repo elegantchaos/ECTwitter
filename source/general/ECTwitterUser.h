@@ -34,6 +34,7 @@ ECPropertyRetained(cachedImage, NSImage*);
 // --------------------------------------------------------------------------
 
 - (id)				initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
+- (id)				initWithContentsOfURL: (NSURL*) url inCache: (ECTwitterCache*) cache;
 - (void)			refreshWithInfo: (NSDictionary*) info;
 
 - (BOOL)			gotData;
@@ -51,5 +52,7 @@ ECPropertyRetained(cachedImage, NSImage*);
 
 - (void)			requestTimeline;
 - (void)			refreshTimeline;
+
+- (void)			saveTo: (NSURL*) url;
 
 @end

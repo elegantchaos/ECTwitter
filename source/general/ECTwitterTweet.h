@@ -37,31 +37,34 @@ ECPropertyAssigned(viewed, BOOL);
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
-- (id) initWithID: (ECTwitterID*) tweetID inCache: (ECTwitterCache*) cache;
+- (id)				initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
+- (id)				initWithContentsOfURL: (NSURL*) url inCache: (ECTwitterCache*) cache;
+- (id)				initWithID: (ECTwitterID*) tweetID inCache: (ECTwitterCache*) cache;
 
-- (BOOL) gotData;
+- (BOOL)			gotData;
 
-- (void) refreshWithInfo: (NSDictionary*) info;
+- (void)			refreshWithInfo: (NSDictionary*) info;
 
-- (NSString*) description;
-- (BOOL) gotLocation;
+- (NSString*)		description;
+- (BOOL)			gotLocation;
 //- (NSString*) locationText;
-- (CLLocation*) location;
-- (NSDate*) created;
-- (ECTwitterUser*) author;
-- (ECTwitterID*) authorID;
-- (BOOL) isFavourited;
+- (CLLocation*)		location;
+- (NSDate*)			created;
+- (ECTwitterUser*)	author;
+- (ECTwitterID*)	authorID;
+- (BOOL)			isFavourited;
 
 - (NSString*)		inReplyToTwitterName;
 - (ECTwitterID*)	inReplyToMessageID;
 - (ECTwitterID*)	inReplyToAuthorID;
 
-- (NSString*) sourceName;
-- (NSURL*) sourceURL;
+- (NSString*)		sourceName;
+- (NSURL*)			sourceURL;
 
 - (NSComparisonResult) compareByDateAscending: (ECTwitterTweet*) other;
 - (NSComparisonResult) compareByDateDescending: (ECTwitterTweet*) other;
+
+- (void)			saveTo: (NSURL*) url;
 
 @end
 

@@ -44,6 +44,21 @@ ECPropertySynthesize(viewed);
 }
 
 // --------------------------------------------------------------------------
+//! Set up from a file.
+// --------------------------------------------------------------------------
+
+- (id) initWithContentsOfURL: (NSURL*) url inCache: (ECTwitterCache*) cache
+{
+	NSDictionary* info = [[NSDictionary alloc] initWithContentsOfURL: url];
+	if ((self = [self initWithInfo: info inCache:cache]) != nil)
+	{
+		
+	}
+	
+	return self;
+}
+
+// --------------------------------------------------------------------------
 //! Set up with just an ID
 // --------------------------------------------------------------------------
 
@@ -260,6 +275,22 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 	}
 	
 	return result;
+}
+
+
+// --------------------------------------------------------------------------
+//! Save the tweet to a file.
+// --------------------------------------------------------------------------
+
+- (void) saveTo: (NSURL*) url
+{
+	NSDictionary* info = self.data;
+	if (!info)
+	{
+		info = [NSDictionary dictionaryWithObject: self.twitterID.string forKey: @"id_str"];
+	}
+	
+	[info writeToURL: url atomically: YES];
 }
 
 //"in_reply_to_screen_name" = "<null>";

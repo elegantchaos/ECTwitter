@@ -40,6 +40,9 @@ ECPropertyRetained(users, NSMutableDictionary*);
 
 - (void)			setFavouritedStateForTweet: (ECTwitterTweet*) tweet to: (BOOL) state;
 
+- (void)			save;
+- (void)			load;
+
 // --------------------------------------------------------------------------
 // Notifications
 // --------------------------------------------------------------------------

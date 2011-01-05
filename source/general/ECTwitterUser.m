@@ -47,6 +47,21 @@ ECPropertySynthesize(cachedImage);
 }
 
 // --------------------------------------------------------------------------
+//! Set up from a file.
+// --------------------------------------------------------------------------
+
+- (id) initWithContentsOfURL: (NSURL*) url inCache: (ECTwitterCache*) cache
+{
+	NSDictionary* info = [[NSDictionary alloc] initWithContentsOfURL: url];
+	if ((self = [self initWithInfo: info inCache:cache]) != nil)
+	{
+		
+	}
+	
+	return self;
+}
+
+// --------------------------------------------------------------------------
 //! Set up with just an ID.
 // --------------------------------------------------------------------------
 
@@ -245,5 +260,19 @@ ECPropertySynthesize(cachedImage);
 	return image;
 }
 
+// --------------------------------------------------------------------------
+//! Save the user to a file.
+// --------------------------------------------------------------------------
+
+- (void) saveTo: (NSURL*) url
+{
+	NSDictionary* info = self.data;
+	if (!info)
+	{
+		info = [NSDictionary dictionaryWithObject: self.twitterID.string forKey: @"id_str"];
+	}
+	
+	[info writeToURL: url atomically: YES];
+}
 
 @end

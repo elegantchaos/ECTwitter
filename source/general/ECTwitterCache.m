@@ -18,9 +18,12 @@
 
 @interface ECTwitterCache()
 
-- (void) requestUserByID: (ECTwitterID*) userID;
-- (void) userInfoHandler: (ECTwitterHandler*) handler;
-- (void) makeFavouriteHandler: (ECTwitterHandler*) handler;
+- (void)	requestUserByID: (ECTwitterID*) userID;
+- (void)	userInfoHandler: (ECTwitterHandler*) handler;
+- (void)	makeFavouriteHandler: (ECTwitterHandler*) handler;
+- (NSURL*)	userCacheFolder;
+- (NSURL*)	tweetCacheFolder;
+- (NSURL*)	imageCacheFolder;
 
 @end
 
@@ -225,6 +228,75 @@ NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
 	NSImage* image = [[NSImage alloc] initWithContentsOfURL: url];
 	
 	return [image autorelease];
+}
+
+// --------------------------------------------------------------------------
+//! Save current users and tweets to a local cache.
+// --------------------------------------------------------------------------
+
+- (void) save
+{
+	NSURL* cacheFolder = [self userCacheFolder];
+	for (ECTwitterUser* user in self.users)
+	{
+		[user saveTo: cacheFolder];
+	}
+	
+	cacheFolder = [self tweetCacheFolder];
+	for (ECTwitterTweet* tweet in self.tweets)
+	{
+		[tweet saveTo: cacheFolder];
+	}
+}
+
+// --------------------------------------------------------------------------
+//! Load users and tweets from a local cache.
+// --------------------------------------------------------------------------
+
+- (void) load
+{
+	NSFileManager* fm = [NSFileManager defaultManager];
+	NSError* error = nil;
+
+	NSURL* cacheFolder = [self userCacheFolder];
+	NSArray* items = [fm contentsOfDirectoryAtURL: cacheFolder includingPropertiesForKeys: nil options: 0 error: &error];
+	if (items && !error)
+	{
+		for (NSURL* url in items)
+		{
+			ECTwitterUser* user = [[ECTwitterUser alloc] initWithContentsOfURL: url];
+			[self.users setObject: user forKey: user.twitterID.string];
+			[user release];
+		}
+	}
+
+	cacheFolder = [self tweetCacheFolder];
+	items = [fm contentsOfDirectoryAtURL: cacheFolder includingPropertiesForKeys: nil options: 0 error: &error];
+	if (items && !error)
+	{
+		for (NSURL* url in items)
+		{
+			ECTwitterTweet* tweet = [[ECTwitterTweet alloc] initWithContentsOfURL: url];
+			[self.tweets setObject: tweet forKey: tweet.twitterID.string];
+			[tweet release];
+		}
+	}
+	
+}
+
+- (NSURL*) userCacheFolder
+{
+	return nil;
+}
+
+- (NSURL*) tweetCacheFolder
+{
+	return nil;
+}
+
+- (NSURL*) imageCacheFolder
+{
+	return nil;
 }
 
 @end
