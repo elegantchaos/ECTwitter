@@ -113,7 +113,7 @@ ECPropertySynthesize(cachedImage);
 
 - (NSString*) description
 {
-	return [self.data description];
+	return [NSString stringWithFormat: @"%@ %@", self.twitterID, self.name];
 }
 
 // --------------------------------------------------------------------------
@@ -254,7 +254,6 @@ ECPropertySynthesize(cachedImage);
 		NSURL* url = [NSURL URLWithString:[self.data objectForKey: @"profile_image_url"]];
 		image = [mCache imageWithID: self.twitterID URL: url];
 		self.cachedImage = image;
-		[image release];
 	}
 	
 	return image;
