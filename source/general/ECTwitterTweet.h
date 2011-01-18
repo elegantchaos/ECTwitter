@@ -18,7 +18,7 @@
 	ECPropertyVariable(cachedAuthor, ECTwitterUser*);
 	ECPropertyVariable(data, NSDictionary*);
 	ECPropertyVariable(text, NSString*);
-	ECPropertyVariable(viewed, BOOL);
+	ECPropertyVariable(viewed, NSUInteger);
 }
 
 // --------------------------------------------------------------------------
@@ -31,7 +31,7 @@ ECPropertyRetained(twitterID, ECTwitterID*);
 ECPropertyRetained(authorID, ECTwitterID*);
 ECPropertyRetained(cachedAuthor, ECTwitterUser*);
 
-ECPropertyAssigned(viewed, BOOL);
+ECPropertyAssigned(viewed, NSUInteger);
 
 // --------------------------------------------------------------------------
 // Public Methods
@@ -63,6 +63,7 @@ ECPropertyAssigned(viewed, BOOL);
 
 - (NSComparisonResult) compareByDateAscending: (ECTwitterTweet*) other;
 - (NSComparisonResult) compareByDateDescending: (ECTwitterTweet*) other;
+- (NSComparisonResult) compareByViewsDateDescending: (ECTwitterTweet*) other;
 
 - (void)			saveTo: (NSURL*) url;
 

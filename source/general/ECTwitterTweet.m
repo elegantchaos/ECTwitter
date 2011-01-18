@@ -220,6 +220,24 @@ ECPropertySynthesize(viewed);
 	return [other.created compare: self.created];
 }
 
+- (NSComparisonResult) compareByViewsDateDescending: (ECTwitterTweet*) other;
+{
+	if (self.viewed < other.viewed)
+	{
+		return NSOrderedAscending;
+	}
+	else if (self.viewed > other.viewed)
+	{
+		return NSOrderedDescending;
+	}
+	else
+	{
+		// compare by date
+		return [other.created compare: self.created];
+	}
+
+}
+
 - (NSString*) inReplyToTwitterName
 {
 	return [self.data objectForKey: @"in_reply_to_screen_name"];

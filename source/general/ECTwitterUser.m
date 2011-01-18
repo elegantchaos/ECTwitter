@@ -208,6 +208,7 @@ ECPropertySynthesize(cachedImage);
 {
 	if (handler.status == StatusResults)
 	{
+		ECDebug(TwitterUserChannel, @"received timeline for: %@", self);
 		for (NSDictionary* tweetData in (NSArray*) handler.results)
 		{
 			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
@@ -216,11 +217,16 @@ ECPropertySynthesize(cachedImage);
 			ECDebug(TwitterUserChannel, @"tweet info received: %@", tweet);
 		}
 		
-		[self.tweets sortUsingSelector: @selector(compareByDateDescending:)];
+		[self.tweets sortUsingSelector: @selector(compareByViewsDateDescending:)];
 		
-		NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-		[nc postNotificationName: ECTwitterTimelineUpdated object: self];
 	}
+	else
+	{
+		ECDebug(TwitterUserChannel, @"error receiving timeline for: %@", self);
+	}
+
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	[nc postNotificationName: ECTwitterTimelineUpdated object: self];
 }
 
 // --------------------------------------------------------------------------
