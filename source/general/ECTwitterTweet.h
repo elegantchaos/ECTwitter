@@ -74,4 +74,4 @@ ECPropertyAssigned(viewed, NSUInteger);
 // Public Constants
 // --------------------------------------------------------------------------
 
-static const NSUInteger kTweetCharacterLimit = 140;
+static const NSInteger kTweetCharacterLimit = 140;
