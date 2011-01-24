@@ -177,8 +177,8 @@ ECPropertySynthesize(twitterID);
 	
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								self.twitterID.string, @"user_id",
-								//@"1", @"trim_user",
-								@"50", @"count",
+								@"1", @"trim_user",
+								@"200", @"count",
 								nil];
 	
 	[mCache.engine callGetMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:)];
@@ -198,8 +198,8 @@ ECPropertySynthesize(twitterID);
 	
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								userID, @"user_id",
-								//@"1", @"trim_user",
-								@"50", @"count",
+								@"1", @"trim_user",
+								@"200", @"count",
 								newestID, @"since_id",
 								nil];
 	

@@ -8,6 +8,7 @@
 #import "ECTwitterTweet.h"
 #import "ECTwitterID.h"
 #import "ECTwitterCache.h"
+#import "ECTwitterUser.h"
 
 #import "RegexKitLite.h"
 
@@ -301,7 +302,9 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 
 - (BOOL) mentionsUser:(ECTwitterUser *)user
 {
-	return NO;
+	NSString* text = [self text];
+	NSString* name = user.twitterName;
+	return [text rangeOfString: name].length > 0;
 }
 
 // --------------------------------------------------------------------------
