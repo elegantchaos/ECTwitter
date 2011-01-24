@@ -8,14 +8,15 @@
 #import "ECTwitterCachedObject.h"
 
 @class ECTwitterID;
+@class ECTwitterTimeline;
 @class ECTwitterTweet;
 
 @interface ECTwitterUser : ECTwitterCachedObject  
 {
 	ECPropertyVariable(data, NSDictionary*);
 	ECPropertyVariable(twitterID, ECTwitterID*);
-	ECPropertyVariable(tweets, NSMutableArray*);
-	ECPropertyVariable(newestTweet, ECTwitterID*);
+	ECPropertyVariable(timeline, ECTwitterTimeline*);
+	ECPropertyVariable(mentions, ECTwitterTimeline*);
 	ECPropertyVariable(cachedImage, NSImage*);
 }
 
@@ -25,8 +26,8 @@
 
 ECPropertyRetained(data, NSDictionary*);
 ECPropertyRetained(twitterID, ECTwitterID*);
-ECPropertyRetained(tweets, NSMutableArray*);
-ECPropertyRetained(newestTweet, ECTwitterID*);
+ECPropertyRetained(timeline, ECTwitterTimeline*);
+ECPropertyRetained(mentions, ECTwitterTimeline*);
 ECPropertyRetained(cachedImage, NSImage*);
 
 // --------------------------------------------------------------------------

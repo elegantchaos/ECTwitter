@@ -282,6 +282,8 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 	return result;
 }
 
+// --------------------------------------------------------------------------
+
 - (NSURL*) sourceURL
 {
 	NSString* source = [self.data objectForKey: @"source"];
@@ -295,6 +297,12 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 	return result;
 }
 
+// --------------------------------------------------------------------------
+
+- (BOOL) mentionsUser:(ECTwitterUser *)user
+{
+	return NO;
+}
 
 // --------------------------------------------------------------------------
 //! Save the tweet to a file.

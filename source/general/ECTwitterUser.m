@@ -11,6 +11,7 @@
 #import "ECTwitterCache.h"
 #import "ECTwitterHandler.h"
 #import "ECTwitterEngine.h"
+#import "ECTwitterTimeline.h"
 
 @interface ECTwitterUser()
 - (void) timelineHandler: (ECTwitterHandler*) handler;
@@ -25,11 +26,11 @@ ECDefineDebugChannel(TwitterUserChannel);
 // Properties
 // --------------------------------------------------------------------------
 
-ECPropertySynthesize(data);
-ECPropertySynthesize(twitterID);
-ECPropertySynthesize(tweets);
-ECPropertySynthesize(newestTweet);
 ECPropertySynthesize(cachedImage);
+ECPropertySynthesize(data);
+ECPropertySynthesize(mentions);
+ECPropertySynthesize(timeline);
+ECPropertySynthesize(twitterID);
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
@@ -83,7 +84,8 @@ ECPropertySynthesize(cachedImage);
 {
 	ECPropertyDealloc(data);
 	ECPropertyDealloc(twitterID);
-	ECPropertyDealloc(tweets);
+	ECPropertyDealloc(timeline);
+	ECPropertyDealloc(mentions);
 	ECPropertyDealloc(cachedImage);
 	
 	[super dealloc];
@@ -135,28 +137,34 @@ ECPropertySynthesize(cachedImage);
 }
 
 // --------------------------------------------------------------------------
-//! Add a tweet to our list.
+//! Add a tweet to our timeline.
 // --------------------------------------------------------------------------
 
 - (void) addTweet: (ECTwitterTweet*) tweet;
 {
-	NSMutableArray* tweets = self.tweets;
-	if (!tweets)
+	ECTwitterTimeline* timeline = self.timeline;
+	if (!timeline)
 	{
-		tweets = [[NSMutableArray alloc] initWithCapacity: 1];
-		self.tweets = tweets;
-		[tweets release];
-	}
-
-	if (!self.newestTweet || ([tweet.twitterID.string compare: self.newestTweet.string] == NSOrderedDescending))
-	{
-		self.newestTweet = tweet.twitterID;
+		timeline = [[ECTwitterTimeline alloc] init];
+		self.timeline = timeline;
+		[timeline release];
 	}
 	
-	if ([tweets indexOfObject: tweet] == NSNotFound)
+	[timeline addTweet: tweet];
+
+	if ([tweet mentionsUser: self])
 	{
-		[tweets addObject: tweet];
+		ECTwitterTimeline* mentions = self.mentions;
+		if (!mentions)
+		{
+			mentions = [[ECTwitterTimeline alloc] init];
+			self.mentions = mentions;
+			[mentions release];
+		}
+		
+		[mentions addTweet: tweet];
 	}
+	
 }
 
 // --------------------------------------------------------------------------
@@ -186,7 +194,7 @@ ECPropertySynthesize(cachedImage);
 	ECDebug(TwitterUserChannel, @"refreshing timeline for %@", self);
 	
 	NSString* userID = self.twitterID.string;
-	NSString* newestID = self.newestTweet.string;
+	NSString* newestID = self.timeline.newestTweet.twitterID.string;
 	
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								userID, @"user_id",
@@ -216,9 +224,6 @@ ECPropertySynthesize(cachedImage);
 			
 			ECDebug(TwitterUserChannel, @"tweet info received: %@", tweet);
 		}
-		
-		[self.tweets sortUsingSelector: @selector(compareByViewsDateDescending:)];
-		
 	}
 	else
 	{

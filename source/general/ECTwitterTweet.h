@@ -53,6 +53,7 @@ ECPropertyAssigned(viewed, NSUInteger);
 - (ECTwitterUser*)	author;
 - (ECTwitterID*)	authorID;
 - (BOOL)			isFavourited;
+- (BOOL)			mentionsUser: (ECTwitterUser*) user;
 
 - (NSString*)		inReplyToTwitterName;
 - (ECTwitterID*)	inReplyToMessageID;
