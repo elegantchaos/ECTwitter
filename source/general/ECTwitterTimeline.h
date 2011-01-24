@@ -27,7 +27,6 @@ ECPropertyRetained(newestTweet, ECTwitterTweet*);
 // --------------------------------------------------------------------------
 
 - (void)				addTweet: (ECTwitterTweet*) tweet;
-- (ECTwitterTimeline*)	sortedByDateAscending;
-- (ECTwitterTimeline*)	sortedByDateDescending;
-- (ECTwitterTimeline*)	sortedByViewsDateDescending;
+- (ECTwitterTimeline*)	sortedWithSelector: (SEL) selector;
+
 @end

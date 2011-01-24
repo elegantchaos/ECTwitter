@@ -17,8 +17,6 @@
 
 @interface ECTwitterTimeline()
 
-- (ECTwitterTimeline*)	sortedWithSelector: (SEL) selector;
-
 @end
 
 
@@ -122,33 +120,5 @@ ECPropertySynthesize(oldestTweet);
 	
 	return [timeline autorelease];
 }
-
-// --------------------------------------------------------------------------
-//! Return a copy of this timeline, sorted by date ascending.
-// --------------------------------------------------------------------------
-
-- (ECTwitterTimeline*)	sortedByDateAscending
-{
-	return [self sortedWithSelector: @selector(compareByDateAscending:)];
-}
-
-// --------------------------------------------------------------------------
-//! Return a copy of this timeline, sorted by date descending.
-// --------------------------------------------------------------------------
-
-- (ECTwitterTimeline*)	sortedByDateDescending
-{
-	return [self sortedWithSelector: @selector(compareByDateDescending:)];
-}
-
-// --------------------------------------------------------------------------
-//! Return a copy of this timeline, sorted by views and date descending.
-// --------------------------------------------------------------------------
-
-- (ECTwitterTimeline*)	sortedByViewsDateDescending
-{
-	return [self sortedWithSelector: @selector(compareByViewsDateDescending:)];
-}
-
 
 @end
