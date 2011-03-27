@@ -28,6 +28,7 @@ ECPropertyRetained(data, NSDictionary*);
 ECPropertyRetained(twitterID, ECTwitterID*);
 ECPropertyRetained(timeline, ECTwitterTimeline*);
 ECPropertyRetained(mentions, ECTwitterTimeline*);
+ECPropertyRetained(posts, ECTwitterTimeline*);
 ECPropertyRetained(cachedImage, NSImage*);
 
 // --------------------------------------------------------------------------
@@ -50,9 +51,13 @@ ECPropertyRetained(cachedImage, NSImage*);
 - (NSImage*)		image;
 
 - (void)			addTweet: (ECTwitterTweet*) tweet;
+- (void)			addPost: (ECTwitterTweet*) tweet;
 
 - (void)			requestTimeline;
 - (void)			refreshTimeline;
+
+- (void)			requestPosts;
+- (void)			refreshPosts;
 
 - (void)			saveTo: (NSURL*) url;
 
