@@ -2,7 +2,7 @@
 //! @author Sam Deane
 //! @date 13/09/2010
 //
-//  Copyright 2010 Sam Deane, Elegant Chaos. All rights reserved.
+//  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
 #import "MGTwitterEngine.h"

@@ -2,7 +2,7 @@
 //! @author Sam Deane
 //! @date 05/10/2010
 //
-//  Copyright 2010 Sam Deane, Elegant Chaos. All rights reserved.
+//  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
 @interface ECTwitterPlace : NSObject 

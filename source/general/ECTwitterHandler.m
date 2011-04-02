@@ -2,7 +2,7 @@
 //! @author Sam Deane
 //! @date 18/11/2010
 //
-//  Copyright 2010 Sam Deane, Elegant Chaos. All rights reserved.
+//  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
 #import "ECTwitterHandler.h"
