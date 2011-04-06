@@ -10,26 +10,32 @@
 @class ECTwitterID;
 @class ECTwitterTimeline;
 @class ECTwitterTweet;
+@class ECTwitterUserList;
 
 @interface ECTwitterUser : ECTwitterCachedObject  
 {
-	ECPropertyVariable(data, NSDictionary*);
-	ECPropertyVariable(twitterID, ECTwitterID*);
-	ECPropertyVariable(timeline, ECTwitterTimeline*);
-	ECPropertyVariable(mentions, ECTwitterTimeline*);
 	ECPropertyVariable(cachedImage, NSImage*);
+	ECPropertyVariable(data, NSDictionary*);
+	ECPropertyVariable(followers, ECTwitterUserList*);
+	ECPropertyVariable(friends, ECTwitterUserList*);
+	ECPropertyVariable(mentions, ECTwitterTimeline*);
+    ECPropertyVariable(posts, ECTwitterTimeline*);
+	ECPropertyVariable(timeline, ECTwitterTimeline*);
+	ECPropertyVariable(twitterID, ECTwitterID*);
 }
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
+ECPropertyRetained(cachedImage, NSImage*);
 ECPropertyRetained(data, NSDictionary*);
-ECPropertyRetained(twitterID, ECTwitterID*);
-ECPropertyRetained(timeline, ECTwitterTimeline*);
+ECPropertyRetained(followers, ECTwitterUserList*);
+ECPropertyRetained(friends, ECTwitterUserList*);
 ECPropertyRetained(mentions, ECTwitterTimeline*);
 ECPropertyRetained(posts, ECTwitterTimeline*);
-ECPropertyRetained(cachedImage, NSImage*);
+ECPropertyRetained(timeline, ECTwitterTimeline*);
+ECPropertyRetained(twitterID, ECTwitterID*);
 
 // --------------------------------------------------------------------------
 // Public Methods
@@ -52,12 +58,17 @@ ECPropertyRetained(cachedImage, NSImage*);
 
 - (void)			addTweet: (ECTwitterTweet*) tweet;
 - (void)			addPost: (ECTwitterTweet*) tweet;
+- (void)			addFriend: (ECTwitterUser*) user;
+- (void)			addFollower: (ECTwitterUser*) user;
 
 - (void)			requestTimeline;
 - (void)			refreshTimeline;
 
 - (void)			requestPosts;
 - (void)			refreshPosts;
+
+- (void)            requestFollowers;
+- (void)            requestFriends;
 
 - (void)			saveTo: (NSURL*) url;
 

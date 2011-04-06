@@ -12,9 +12,13 @@
 #import "ECTwitterHandler.h"
 #import "ECTwitterEngine.h"
 #import "ECTwitterTimeline.h"
+#import "ECTwitterUserList.h"
 
 @interface ECTwitterUser()
 - (void) timelineHandler: (ECTwitterHandler*) handler;
+- (void) friendsHandler: (ECTwitterHandler*) handler;
+- (void) followersHandler: (ECTwitterHandler*) handler;
+- (void) followerIDsHandler: (ECTwitterHandler*) handler;
 @end
 
 
@@ -28,6 +32,8 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 ECPropertySynthesize(cachedImage);
 ECPropertySynthesize(data);
+ECPropertySynthesize(followers);
+ECPropertySynthesize(friends);
 ECPropertySynthesize(mentions);
 ECPropertySynthesize(posts);
 ECPropertySynthesize(timeline);
@@ -85,6 +91,8 @@ ECPropertySynthesize(twitterID);
 {
 	ECPropertyDealloc(cachedImage);
 	ECPropertyDealloc(data);
+	ECPropertyDealloc(followers);
+	ECPropertyDealloc(friends);
 	ECPropertyDealloc(mentions);
 	ECPropertyDealloc(posts);
 	ECPropertyDealloc(timeline);
@@ -187,6 +195,41 @@ ECPropertySynthesize(twitterID);
 }
 
 // --------------------------------------------------------------------------
+//! Add a tweet to our posts list.
+// --------------------------------------------------------------------------
+
+- (void) addFriend: (ECTwitterUser*) user
+{
+	ECTwitterUserList* list = self.friends;
+	if (!list)
+	{
+		list = [[ECTwitterUserList alloc] init];
+		self.friends = list;
+		[list release];
+	}
+	
+	[list addUser:user];
+}
+
+// --------------------------------------------------------------------------
+//! Add a tweet to our posts list.
+// --------------------------------------------------------------------------
+
+- (void) addFollower: (ECTwitterUser*) user
+{
+	ECTwitterUserList* list = self.followers;
+	if (!list)
+	{
+		list = [[ECTwitterUserList alloc] init];
+		self.followers = list;
+		[list release];
+	}
+	
+	[list addUser:user];
+}
+
+
+// --------------------------------------------------------------------------
 //! Request user timeline - everything they've received
 // --------------------------------------------------------------------------
 
@@ -266,6 +309,55 @@ ECPropertySynthesize(twitterID);
 	[mCache.engine callGetMethod: @"statuses/user_timeline" parameters: parameters target: self selector: @selector(postsHandler:)];
 }
 
+
+// --------------------------------------------------------------------------
+//! Request user posts - everything they've posted
+// --------------------------------------------------------------------------
+
+- (void) requestFollowerIDs
+{
+	ECDebug(TwitterUserChannel, @"requesting followers for %@", self);
+	
+	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+								self.twitterID.string, @"user_id",
+								@"-1", @"cursor",
+								nil];
+	
+	[mCache.engine callGetMethod: @"friends/ids" parameters: parameters target: self selector: @selector(followerIDsHandler:)];
+}
+
+// --------------------------------------------------------------------------
+//! Request user posts - everything they've posted
+// --------------------------------------------------------------------------
+
+- (void) requestFollowers
+{
+	ECDebug(TwitterUserChannel, @"requesting followers for %@", self);
+	
+	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+								self.twitterID.string, @"user_id",
+								@"-1", @"cursor",
+								nil];
+	
+	[mCache.engine callGetMethod: @"statuses/followers" parameters: parameters target: self selector: @selector(followersHandler:)];
+}
+
+// --------------------------------------------------------------------------
+//! Request user posts - everything they've posted
+// --------------------------------------------------------------------------
+
+- (void) requestFriends
+{
+	ECDebug(TwitterUserChannel, @"requesting friends for %@", self);
+	
+	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+								self.twitterID.string, @"user_id",
+								@"-1", @"cursor",
+								nil];
+	
+	[mCache.engine callGetMethod: @"statuses/friends" parameters: parameters target: self selector: @selector(friendsHandler:)];
+}
+
 // --------------------------------------------------------------------------
 //! Handle confirmation that we've authenticated ok as a given user.
 //! We fire off a request for the list of friends for the user.
@@ -318,6 +410,101 @@ ECPropertySynthesize(twitterID);
     
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
 	[nc postNotificationName: ECTwitterTimelineUpdated object: self];
+}
+
+// --------------------------------------------------------------------------
+//! Handle confirmation that we've authenticated ok as a given user.
+//! We fire off a request for the list of friends for the user.
+// --------------------------------------------------------------------------
+
+- (void) friendsHandler: (ECTwitterHandler*) handler
+{
+	if (handler.status == StatusResults)
+	{
+		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
+		for (NSDictionary* userData in (NSArray*) handler.results)
+		{
+			ECTwitterUser* user = [mCache addOrRefreshUserWithInfo: userData];
+			[self addFriend: user];
+			
+			ECDebug(TwitterUserChannel, @"friend info received: %@", user);
+		}
+	}
+	else
+	{
+		ECDebug(TwitterUserChannel, @"error receiving friends for: %@", self);
+	}
+    
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	[nc postNotificationName: ECTwitterUserUpdated object: self];
+}
+
+
+// --------------------------------------------------------------------------
+//! Handle confirmation that we've authenticated ok as a given user.
+//! We fire off a request for the list of friends for the user.
+// --------------------------------------------------------------------------
+
+- (void) followersHandler: (ECTwitterHandler*) handler
+{
+	if (handler.status == StatusResults)
+	{
+		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
+        NSArray* results = (NSArray*) handler.results;
+        NSDictionary* dict = [results objectAtIndex:0];
+		ECDebug(TwitterUserChannel, @"result item is %@", [dict class]);
+        NSDictionary* items = [dict objectForKey:@"users"];
+		ECDebug(TwitterUserChannel, @"items is %@ keys %@", [items class], [items allKeys]);
+		for (NSDictionary* userData in items)
+		{
+			ECTwitterUser* user = [mCache addOrRefreshUserWithInfo: userData];
+			[self addFriend: user];
+			
+			ECDebug(TwitterUserChannel, @"friend info received: %@", user);
+		}
+	}
+	else
+	{
+		ECDebug(TwitterUserChannel, @"error receiving friends for: %@", self);
+	}
+    
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	[nc postNotificationName: ECTwitterUserUpdated object: self];
+}
+
+// --------------------------------------------------------------------------
+//! Handle confirmation that we've authenticated ok as a given user.
+//! We fire off a request for the list of friends for the user.
+// --------------------------------------------------------------------------
+
+- (void) followerIDsHandler: (ECTwitterHandler*) handler
+{
+	if (handler.status == StatusResults)
+	{
+		ECDebug(TwitterUserChannel, @"received followers for: %@", self);
+        NSDictionary* results = [(NSArray*) handler.results objectAtIndex: 0];
+        NSArray* userIDs = [results objectForKey:@"ids"];
+		for (NSNumber* value in userIDs )
+		{
+#if 0
+            NSString* userIDString = [value stringValue];
+            ECTwitterID* userID = [[ECTwitterID alloc] initWithString:userIDString];
+            
+            ECTwitterUser* user = [mCache userWithID:userID];
+			[self addFollower: user];
+            [userID release];
+			
+			ECDebug(TwitterUserChannel, @"follower info received: %@", user);
+#endif
+		}
+	}
+	else
+	{
+		ECDebug(TwitterUserChannel, @"error receiving followers for: %@", self);
+	}
+    
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	[nc postNotificationName: ECTwitterUserUpdated object: self];
 }
 
 // --------------------------------------------------------------------------
