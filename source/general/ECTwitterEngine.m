@@ -64,6 +64,7 @@ ECPropertySynthesize(requests);
 	{
 		MGTwitterEngine* engine = [[MGTwitterEngine alloc] initWithDelegate:self];
         self.authentication = authentication;
+        authentication.engine = self;
 		self.engine = engine;
         
 		[engine release];

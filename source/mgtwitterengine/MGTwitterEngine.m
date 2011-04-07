@@ -161,20 +161,6 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 #pragma mark Configuration and Accessors
 
 
-+ (NSString *)version
-{
-    // 1.0.0 = 22 Feb 2008
-    // 1.0.1 = 26 Feb 2008
-    // 1.0.2 = 04 Mar 2008
-    // 1.0.3 = 04 Mar 2008
-	// 1.0.4 = 11 Apr 2008
-	// 1.0.5 = 06 Jun 2008
-	// 1.0.6 = 05 Aug 2008
-	// 1.0.7 = 28 Sep 2008
-	// 1.0.8 = 01 Oct 2008
-    return @"1.0.8";
-}
-
 - (NSString *)clientName
 {
     return [[_clientName retain] autorelease];
@@ -371,8 +357,6 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
 #pragma mark Request sending methods
 
-#define SET_AUTHORIZATION_IN_HEADER 0
-
 - (NSString *)_sendRequestWithMethod:(NSString *)method 
                                 path:(NSString *)path 
                      queryParameters:(NSDictionary *)params 
@@ -512,7 +496,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
     // Construct an NSMutableURLRequest for the URL and set appropriate request method.
 	NSMutableURLRequest *theRequest = nil;
-    if(self.authentication.token)
+    if(self.authentication)
     {
         theRequest = [self.authentication requestForURL:finalURL];
 		[theRequest setCachePolicy:NSURLRequestReloadIgnoringCacheData ];
@@ -536,17 +520,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
     [theRequest setValue:_clientURL     forHTTPHeaderField:@"X-Twitter-Client-URL"];
 	
     [theRequest setValue:contentType    forHTTPHeaderField:@"Content-Type"];
-    
-#if SET_AUTHORIZATION_IN_HEADER
-	if ([self username] && [self password]) {
-		// Set header for HTTP Basic authentication explicitly, to avoid problems with proxies and other intermediaries
-		NSString *authStr = [NSString stringWithFormat:@"%@:%@", [self username], [self password]];
-		NSData *authData = [authStr dataUsingEncoding:NSUTF8StringEncoding];
-		NSString *authValue = [NSString stringWithFormat:@"Basic %@", [authData base64EncodingWithLineLength:80]];
-		[theRequest setValue:authValue forHTTPHeaderField:@"Authorization"];
-	}
-#endif
-	
+    	
     return theRequest;
 }
 

@@ -12,6 +12,7 @@
 #import "OAConsumer.h"
 #import "OAMutableURLRequest.h"
 #import "MGTwitterHTTPURLConnection.h"
+#import "MGTwitterEngine.h"
 
 // --------------------------------------------------------------------------
 // Private Methods
@@ -102,6 +103,7 @@ NSString *const kPrefix = @"";
 	{
 		self.username = user;
 		self.token = savedToken;
+        self.engine.engine.authentication = self;
 	}
     
 	[savedToken release];
@@ -185,12 +187,16 @@ NSString *const kPrefix = @"";
 {
     self.token = token;
     [token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
-    
-    [self.handler invokeWithResult: token];
-    self.handler.operation = nil;
-    self.handler = nil;
+    self.engine.engine.authentication = self;
+
+    if (self.handler)
+    {
+        [self.handler invokeWithResult: token];
+        self.handler.operation = nil;
+        self.handler = nil;
+    }
+
     self.connection = nil;
-    self.engine.authentication = self;
 }
 
 - (void)invokeHandlerForError
@@ -201,12 +207,17 @@ NSString *const kPrefix = @"";
     if (connection)
     {
         NSInteger statusCode = [[connection response] statusCode];
-        NSString* body = [[NSString alloc] initWithData:[connection data]];
-        NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys: [connection response], @"response", body, @"body", nil];
+        NSMutableDictionary* info = [NSMutableDictionary dictionaryWithObjectsAndKeys: [connection response], @"response", nil];
+        NSData* data = [connection data];
+        if (data)
+        {
+            NSString* body = [[NSString alloc] initWithData:[connection data] encoding:NSUTF8StringEncoding];
+            [info setObject:body forKey:@"body"];
+            [body release];
+        }
         error = [NSError errorWithDomain:@"HTTP" code:statusCode userInfo:info];
         [connection cancel];
         self.connection = nil;
-        [body release];
     }
 
     ECTwitterHandler* handler = self.handler;
@@ -218,7 +229,7 @@ NSString *const kPrefix = @"";
         self.handler = nil;
     }
     
-    self.engine.authentication = nil;
+    self.engine.engine.authentication = nil;
 }
 
 #pragma mark - Connection Delegate Methods
@@ -270,20 +281,19 @@ NSString *const kPrefix = @"";
 	ECDebug(AuthenticationChannel, @"finished loading");
     
     NSInteger statusCode = [[connection response] statusCode];
-    NSString* body = [[NSString alloc] initWithData:[connection data] encoding:NSUTF8StringEncoding];
-    
     if (statusCode >= 400) 
     {
         [self invokeHandlerForError];
     }
     else
     {
+        NSString* body = [[NSString alloc] initWithData:[connection data] encoding:NSUTF8StringEncoding];
         OAToken *token = [[OAToken alloc] initWithHTTPResponseBody:body];
         [self invokeHandlerForToken:token];
         [token release];
+        [body release];
     }
 
-    [body release];
     self.connection = nil;
 }
 
@@ -293,7 +303,7 @@ NSString *const kPrefix = @"";
 {
     OAConsumer* consumer = [[OAConsumer alloc] initWithKey:self.consumerKey secret:self.consumerSecret];
     NSMutableURLRequest* request = [[OAMutableURLRequest alloc] initWithURL:url consumer:consumer token:self.token realm:nil signatureProvider:nil];
-    [consumer release];
+    [consumer autorelease];
     
     return [request autorelease];
 }

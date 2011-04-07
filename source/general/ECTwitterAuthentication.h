@@ -10,6 +10,9 @@
 @class ECTwitterEngine;
 @class MGTwitterHTTPURLConnection;
 
+extern NSString *const TwitterAuthenticationSucceeded;
+extern NSString *const TwitterAuthenticationFailed;
+
 @interface ECTwitterAuthentication : NSObject
 {
     ECPropertyVariable(connection, MGTwitterHTTPURLConnection*);

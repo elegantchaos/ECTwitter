@@ -52,8 +52,6 @@ ECPropertyRetained(requests, NSMutableDictionary*);
 // Notifications
 // --------------------------------------------------------------------------
 
-extern NSString *const TwitterAuthenticationSucceeded;
-extern NSString *const TwitterAuthenticationFailed;
 extern NSString *const TwitterReceivedLocateTweets;
 
 @end
