@@ -368,8 +368,7 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received timeline for: %@", self);
-        NSArray* resultsArray = (NSArray*) handler.results;
-        NSArray* tweets = [resultsArray objectAtIndex:0];
+        NSArray* tweets = handler.result;
 		for (NSDictionary* tweetData in tweets)
 		{
 			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
@@ -397,7 +396,8 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received posts for: %@", self);
-		for (NSDictionary* tweetData in (NSArray*) handler.results)
+        NSArray* tweets = handler.result;
+		for (NSDictionary* tweetData in tweets)
 		{
 			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
 			[self addPost: tweet];
@@ -424,7 +424,8 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
-		for (NSDictionary* userData in (NSArray*) handler.results)
+        NSArray* users = handler.result;
+		for (NSDictionary* userData in users)
 		{
 			ECTwitterUser* user = [mCache addOrRefreshUserWithInfo: userData];
 			[self addFriend: user];
@@ -452,10 +453,9 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
-        NSArray* results = (NSArray*) handler.results;
-        NSDictionary* dict = [results objectAtIndex:0];
-        NSArray* items = [dict objectForKey:@"users"];
-		for (NSDictionary* userData in items)
+        NSDictionary* result = handler.result;
+        NSArray* users = [result objectForKey:@"users"];
+		for (NSDictionary* userData in users)
 		{
 			ECTwitterUser* user = [mCache addOrRefreshUserWithInfo: userData];
 			[self addFriend: user];
@@ -482,9 +482,9 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received followers for: %@", self);
-        NSDictionary* results = [(NSArray*) handler.results objectAtIndex: 0];
-        NSArray* userIDs = [results objectForKey:@"ids"];
-		for (NSNumber* value in userIDs )
+        NSDictionary* result = handler.result;
+        NSArray* userIDs = [result objectForKey:@"ids"];
+		for (NSNumber* value in userIDs)
 		{
 #if 0
             NSString* userIDString = [value stringValue];

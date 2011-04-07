@@ -25,7 +25,7 @@
 
 ECPropertySynthesize(operation);
 ECPropertySynthesize(status);
-ECPropertySynthesize(results);
+ECPropertySynthesize(result);
 ECPropertySynthesize(engine);
 ECPropertySynthesize(extra);
 ECPropertySynthesize(error);
@@ -62,7 +62,7 @@ ECPropertySynthesize(error);
 {
 	ECPropertyDealloc(operation);
 	ECPropertyDealloc(engine);
-	ECPropertyDealloc(results);
+	ECPropertyDealloc(result);
 	ECPropertyDealloc(extra);
 	ECPropertyDealloc(error);
 
@@ -90,19 +90,10 @@ ECPropertySynthesize(error);
 //! Invoke the handler with a given result object.
 // --------------------------------------------------------------------------
 
-- (void) invokeWithResults: (NSObject*) results
+- (void) invokeWithResult: (id) result
 {
-	self.results = results;
+	self.result = result;
 	[self invokeWithStatus: StatusResults];
-}
-
-// --------------------------------------------------------------------------
-//! Return the results cast to an array.
-// --------------------------------------------------------------------------
-
-- (NSArray*) resultsAsArray
-{
-	return (NSArray*) self.results;
 }
 
 // --------------------------------------------------------------------------

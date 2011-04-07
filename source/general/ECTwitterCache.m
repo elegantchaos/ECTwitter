@@ -185,18 +185,16 @@ NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
 {
 	if (handler.status == StatusResults)
 	{
-		for (NSDictionary* userData in ((NSArray*) handler.results))
-		{
-			ECTwitterID* userID = [ECTwitterID idFromDictionary: userData];
-			
-			ECTwitterUser* user = [self.users objectForKey: userID.string];
-			[user refreshWithInfo: userData];
-			
-			NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-			[nc postNotificationName: ECTwitterUserUpdated object: user];
+        NSDictionary* userData = handler.result;
+        ECTwitterID* userID = [ECTwitterID idFromDictionary: userData];
+        
+        ECTwitterUser* user = [self.users objectForKey: userID.string];
+        [user refreshWithInfo: userData];
+        
+        NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+        [nc postNotificationName: ECTwitterUserUpdated object: user];
 
-			ECDebug(TwitterCacheChannel, @"user info received: %@", user.name);
-		}
+        ECDebug(TwitterCacheChannel, @"user info received: %@", user.name);
 	}
 }
 
@@ -208,7 +206,8 @@ NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
 {
 	if (handler.status == StatusResults)
 	{
-		for (NSDictionary* tweetData in (NSArray*) handler.results)
+        NSArray* tweets = handler.result;
+		for (NSDictionary* tweetData in tweets)
 		{
 
 			ECTwitterTweet* tweet = [self addOrRefreshTweetWithInfo: tweetData];

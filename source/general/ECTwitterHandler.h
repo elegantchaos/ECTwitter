@@ -24,8 +24,8 @@ typedef enum
 	ECPropertyVariable(operation, NSOperation*);
 	ECPropertyVariable(status, ECTwitterStatus);
 	ECPropertyVariable(engine, ECTwitterEngine*);
-	ECPropertyVariable(results, NSObject*);
-	ECPropertyVariable(extra, NSObject*);
+	ECPropertyVariable(result, id);
+	ECPropertyVariable(extra, id);
 	ECPropertyVariable(error, NSError*);
 }
 
@@ -35,9 +35,9 @@ typedef enum
 
 ECPropertyRetained(operation, NSOperation*);
 ECPropertyRetained(engine, ECTwitterEngine*);
-ECPropertyRetained(results, NSObject*);
+ECPropertyRetained(result, id);
 ECPropertyAssigned(status, ECTwitterStatus);
-ECPropertyRetained(extra, NSObject*);
+ECPropertyRetained(extra, id);
 ECPropertyRetained(error, NSError*);
 
 // --------------------------------------------------------------------------
@@ -46,9 +46,8 @@ ECPropertyRetained(error, NSError*);
 
 - (id) initWithEngine: (ECTwitterEngine*) engine target: (id) target selector: (SEL) selector;
 - (void) invokeWithStatus: (ECTwitterStatus) status;
-- (void) invokeWithResults: (NSObject*) results;
+- (void) invokeWithResult: (id) result;
 
-- (NSArray*) resultsAsArray;
 - (NSString*) errorString;
 
 @end

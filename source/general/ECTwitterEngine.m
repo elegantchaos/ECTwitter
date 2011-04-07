@@ -155,7 +155,7 @@ ECPropertySynthesize(token);
 	{
 		[self.engine setAccessToken: savedToken];
 		self.token = savedToken;
-		[handler invokeWithResults: savedToken];
+		[handler invokeWithResult: savedToken];
 	}
 	else
 	{
@@ -270,7 +270,7 @@ ECPropertySynthesize(token);
 	[token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
 	
 	ECTwitterHandler* handler = [self handlerForRequest: request];
-	[handler invokeWithResults: token];
+	[handler invokeWithResult: token];
 	[self doneRequest: request];
 }
 
@@ -284,7 +284,10 @@ ECPropertySynthesize(token);
 	ECDebug(TwitterChannel, @"generic results %@ for request %@", results, request);
 
 	ECTwitterHandler* handler = [self handlerForRequest: request];
-	[handler invokeWithResults: results];
+    for (NSObject* result in results)
+    {
+        [handler invokeWithResult: result];
+    }
 	
 	[self doneRequest: request];
 }
