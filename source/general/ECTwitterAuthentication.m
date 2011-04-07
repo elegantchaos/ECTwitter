@@ -7,6 +7,7 @@
 
 #import "ECTwitterAuthentication.h"
 #import "ECTwitterHandler.h"
+#import "ECTwitterEngine.h"
 #import "OAToken.h"
 #import "OAConsumer.h"
 #import "OAMutableURLRequest.h"
@@ -19,7 +20,8 @@
 @interface ECTwitterAuthentication()
 
 - (void)requestXAuthAccessTokenForUsername:(NSString *)username password:(NSString *)password;
-
+- (void)invokeHandlerForToken:(OAToken*)token;
+- (void)invokeHandlerForError;
 @end
 
 
@@ -128,8 +130,7 @@ NSString *const kPrefix = @"";
     self.username = user;
 	if (user && savedToken && [savedToken isValid] && ([savedUser isEqualToString: user]))
 	{
-		self.token = savedToken;
-		[handler invokeWithResult: savedToken];
+        [self invokeHandlerForToken:savedToken];
 	}
 	else
 	{
@@ -139,9 +140,9 @@ NSString *const kPrefix = @"";
 		
 		if (user && password)
 		{
-			[self requestXAuthAccessTokenForUsername:user password: password];
             self.handler = handler;
 			[defaults setValue: user forKey: kSavedUserKey];
+			[self requestXAuthAccessTokenForUsername:user password: password];
 		}
 	}
 	
@@ -178,14 +179,61 @@ NSString *const kPrefix = @"";
     }
 }
 
+#pragma mark - Handler routines
+
+- (void)invokeHandlerForToken:(OAToken*)token
+{
+    self.token = token;
+    [token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
+    
+    [self.handler invokeWithResult: token];
+    self.handler.operation = nil;
+    self.handler = nil;
+    self.connection = nil;
+    self.engine.authentication = self;
+}
+
+- (void)invokeHandlerForError
+{
+    MGTwitterHTTPURLConnection* connection = self.connection;
+    NSError* error = nil;
+    
+    if (connection)
+    {
+        NSInteger statusCode = [[connection response] statusCode];
+        NSString* body = [[NSString alloc] initWithData:[connection data]];
+        NSDictionary* info = [NSDictionary dictionaryWithObjectsAndKeys: [connection response], @"response", body, @"body", nil];
+        error = [NSError errorWithDomain:@"HTTP" code:statusCode userInfo:info];
+        [connection cancel];
+        self.connection = nil;
+        [body release];
+    }
+
+    ECTwitterHandler* handler = self.handler;
+    if (handler)
+    {
+        handler.error = error;
+        [handler invokeWithStatus:StatusFailed];
+        handler.operation = nil;
+        self.handler = nil;
+    }
+    
+    self.engine.authentication = nil;
+}
+
+#pragma mark - Connection Delegate Methods
+
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
+	ECDebug(AuthenticationChannel, @"received authentication challenge");
     [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
 
 - (void)connection:(MGTwitterHTTPURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
+	ECDebug(AuthenticationChannel, @"received response");
+
     // This method is called when the server has determined that it has enough information to create the NSURLResponse.
     // it can be called multiple times, for example in the case of a redirect, so each time we reset the data.
     [connection resetDataLength];
@@ -197,54 +245,49 @@ NSString *const kPrefix = @"";
     
     if (statusCode == 304)
     {
-        [connection cancel];
+        [self invokeHandlerForError];
     }
 }
 
 
 - (void)connection:(MGTwitterHTTPURLConnection *)connection didReceiveData:(NSData *)data
 {
+	ECDebug(AuthenticationChannel, @"received data");
+
     [connection appendData:data];
 }
 
 
 - (void)connection:(MGTwitterHTTPURLConnection *)connection didFailWithError:(NSError *)error
 {
-	self.connection = nil;
+	ECDebug(AuthenticationChannel, @"failed with error");
+    [self invokeHandlerForError];
 }
 
 
 - (void)connectionDidFinishLoading:(MGTwitterHTTPURLConnection *)connection
 {
+	ECDebug(AuthenticationChannel, @"finished loading");
     
     NSInteger statusCode = [[connection response] statusCode];
     NSString* body = [[NSString alloc] initWithData:[connection data] encoding:NSUTF8StringEncoding];
     
     if (statusCode >= 400) 
     {
-        // TODO handle failure
-        
-        // Destroy the connection.
-        [connection cancel];
-        self.connection = nil;
-        return;
+        [self invokeHandlerForError];
     }
     else
     {
         OAToken *token = [[OAToken alloc] initWithHTTPResponseBody:body];
-        self.token = token;
-        [token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
-        
-        [self.handler invokeWithResult: token];
-        self.handler.operation = nil;
-        self.handler = nil;
-
+        [self invokeHandlerForToken:token];
         [token release];
     }
 
     [body release];
     self.connection = nil;
 }
+
+#pragma mark - URL request
 
 - (NSMutableURLRequest*) requestForURL:(NSURL*)url
 {
