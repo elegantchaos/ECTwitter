@@ -187,26 +187,14 @@ static yajl_callbacks callbacks = {
 #pragma mark Creation and Destruction
 
 
-+ (id)parserWithJSON:(NSData *)theJSON delegate:(NSObject *)theDelegate 
-	connectionIdentifier:(NSString *)identifier URL:(NSURL *)URL deliveryOptions:(MGTwitterEngineDeliveryOptions)deliveryOptions
-{
-	id parser = [[self alloc] initWithJSON:theJSON 
-			delegate:theDelegate 
-			connectionIdentifier:identifier 
-			URL:URL
-			deliveryOptions:deliveryOptions];
-
-	return [parser autorelease];
-}
-
-
-- (id)initWithJSON:(NSData *)theJSON delegate:(NSObject *)theDelegate 
-	connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
-	deliveryOptions:(MGTwitterEngineDeliveryOptions)theDeliveryOptions
+- (id)initWithData:(NSData*)jsonData
+          delegate:(NSObject *)theDelegate 
+connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
+   deliveryOptions:(MGTwitterEngineDeliveryOptions)theDeliveryOptions
 {
 	if ((self = [super init]) != nil)
 	{
-		json = [theJSON retain];
+		json = [jsonData retain];
 		identifier = [theIdentifier retain];
 		URL = [theURL retain];
 		deliveryOptions = theDeliveryOptions;
@@ -227,24 +215,25 @@ static yajl_callbacks callbacks = {
 			//   friendships/exists: returns "true" or "false"
 			//   help/test: returns "ok"
 			// An empty response of "[]" is a special case.
-			NSString *result = [[[NSString alloc] initWithBytes:[json bytes] length:[json length] encoding:NSUTF8StringEncoding] autorelease];
-			if (! [result isEqualToString:@"[]"])
+            NSString* jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+			if (! [jsonString isEqualToString:@"[]"])
 			{
 				NSMutableDictionary *dictionary = [[[NSMutableDictionary alloc] initWithCapacity:1] autorelease];
 
-				if ([result isEqualToString:@"\"ok\""])
+				if ([jsonString isEqualToString:@"\"ok\""])
 				{
 					[dictionary setObject:[NSNumber numberWithBool:YES] forKey:@"ok"];
 				}
 				else
 				{
-					[dictionary setObject:[NSNumber numberWithBool:[result isEqualToString:@"true"]] forKey:@"friends"];
+					[dictionary setObject:[NSNumber numberWithBool:[jsonString isEqualToString:@"true"]] forKey:@"friends"];
 				}
 			
 				[self _parsedObject:dictionary];
 
 				[parsedObjects addObject:dictionary];
 			}
+            [jsonString release];
 		}
 		else
 		{

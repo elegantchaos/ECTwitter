@@ -16,21 +16,15 @@
 @interface MGTwitterYAJLGenericParser : NSObject {
 	__weak NSObject<MGTwitterEngineDelegate>* delegate; // weak ref
 	NSString *identifier;
+    NSData* json;
 	NSURL *URL;
-	NSData *json;
 	NSMutableArray *parsedObjects;
 	MGTwitterEngineDeliveryOptions deliveryOptions;
 	
 	yajl_handle _handle;
 }
 
-+ (id)parserWithJSON:(NSData *)theJSON
-	delegate:(NSObject<MGTwitterEngineDelegate>*)theDelegate
-	connectionIdentifier:(NSString *)identifier
-	URL:(NSURL *)URL
-	deliveryOptions:(MGTwitterEngineDeliveryOptions)deliveryOptions;
-
-- (id)initWithJSON:(NSData *)theJSON
+- (id)initWithData:(NSData*)data
 	delegate:(NSObject<MGTwitterEngineDelegate>*)theDelegate 
 	connectionIdentifier:(NSString *)identifier
 	URL:(NSURL *)URL

@@ -57,6 +57,7 @@
 
 @interface MGTwitterEngine (PrivateMethods)
 
+
 // Utility methods
 - (NSDateFormatter *)_HTTPDateFormatter;
 - (NSString *)_queryStringWithBase:(NSString *)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed;
@@ -88,10 +89,14 @@
 // Delegate methods
 - (BOOL) _isValidDelegateForSelector:(SEL)selector;
 
+- (void)parsingSucceededForRequest:(NSString *)identifier withParsedObjects:(NSArray *)parsedObjects;
+
 @end
 
 
 @implementation MGTwitterEngine
+
+ECPropertySynthesize(oauthRequest);
 
 #pragma mark - Debug Channels
 
@@ -563,33 +568,40 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
 - (void)_parseDataForConnection:(MGTwitterHTTPURLConnection *)connection
 {
-    NSData *data = [[[connection data] copy] autorelease];
-    NSString *identifier = [[[connection identifier] copy] autorelease];
+    NSData* jsonData = [[connection data] copy];
+    NSString* identifier = [[connection identifier] copy];
 
-	NSURL *URL = [connection URL];
+	MGTWITTER_LOG(@"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] autorelease], [connection URL]);
 
-	MGTWITTER_LOG(@"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease], URL);
+    // if this is the oauth request, the result isn't json, so handle it specially
+    if ([self.oauthRequest isEqualToString:identifier])
+    {
+        NSString* body = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+		OAToken *token = [[OAToken alloc] initWithHTTPResponseBody:body];
+        if ([self _isValidDelegateForSelector:@selector(accessTokenReceived:forRequest:)])
+        {
+            [_delegate accessTokenReceived:token forRequest:identifier];
+        }
 
-#if 0 // TODO SAM FIX THIS
-	if (responseType == MGTwitterOAuthToken)
-	{
-		OAToken *token = [[[OAToken alloc] initWithHTTPResponseBody:[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]] autorelease];
-		[self parsingSucceededForRequest:identifier ofResponseType:requestType
-						 withParsedObjects:[NSArray arrayWithObject:token]];
-		
-	}
+        self.oauthRequest = nil;
+        [token release];
+        [body release];
+    }
 	else
-#endif
-        
 	{
-        [MGTwitterYAJLGenericParser 
-         parserWithJSON:data 
+        NSURL *URL = [connection URL];
+        MGTwitterYAJLGenericParser* parser =
+        [[MGTwitterYAJLGenericParser alloc]
+         initWithData:jsonData 
          delegate:_delegate 
          connectionIdentifier:identifier
          URL:URL
          deliveryOptions:MGTwitterEngineDeliveryAllResultsOption];
+        [parser release];
 	}
 
+    [jsonData release];
+    [identifier release];
 }
 
 #pragma mark Delegate methods
@@ -601,8 +613,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
 #pragma mark MGTwitterParserDelegate methods
 
-- (void)parsingSucceededForRequest:(NSString *)identifier 
-                 withParsedObjects:(NSArray *)parsedObjects
+- (void)parsingSucceededForRequest:(NSString *)identifier withParsedObjects:(NSArray *)parsedObjects
 {
     // Forward appropriate message to _delegate
     if ([self _isValidDelegateForSelector:@selector(genericResultsReceived:forRequest:)] && [parsedObjects count] > 0)
@@ -854,6 +865,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 	if ([self _isValidDelegateForSelector:@selector(connectionStarted:)])
 		[_delegate connectionStarted:[connection identifier]];
     
+    self.oauthRequest = [connection identifier];
     return [connection identifier];
 }
 

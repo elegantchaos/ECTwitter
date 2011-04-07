@@ -7,13 +7,12 @@
 //
 
 #import "MGTwitterEngineGlobalHeader.h"
-
 #import "MGTwitterEngineDelegate.h"
-#import "MGTwitterParserDelegate.h"
-
 #import "OAToken.h"
 
-@interface MGTwitterEngine : NSObject <MGTwitterParserDelegate>
+#import <ECFoundation/ECProperties.h>
+
+@interface MGTwitterEngine : NSObject
 {
     __weak NSObject <MGTwitterEngineDelegate> *_delegate;
     NSMutableDictionary *_connections;   // MGTwitterHTTPURLConnection objects
@@ -35,7 +34,11 @@
 	// basic auth - deprecated
 	NSString *_username;
     NSString *_password;
+    
+    ECPropertyVariable(oauthRequest, NSString*);
 }
+
+ECPropertyRetained(oauthRequest, NSString*);
 
 #pragma mark Class management
 

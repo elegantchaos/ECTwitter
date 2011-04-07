@@ -8,6 +8,8 @@
 
 #import "MGTwitterEngineGlobalHeader.h"
 
+@class OAToken;
+
 typedef enum _MGTwitterEngineDeliveryOptions {
 	// all results will be delivered as an array via statusesReceived: and similar delegate methods
     MGTwitterEngineDeliveryAllResultsOption = 1 << 0,
@@ -31,6 +33,9 @@ typedef enum _MGTwitterEngineDeliveryOptions {
 // This delegate method is called each time a new result is parsed from the connection and
 // the deliveryOption is configured for MGTwitterEngineDeliveryIndividualResults.
 - (void)receivedObject:(NSDictionary *)dictionary forRequest:(NSString *)connectionIdentifier;
+
+- (void)accessTokenReceived:(OAToken *)token forRequest:(NSString *)connectionIdentifier;
+
 
 // These delegate methods are called after all results are parsed from the connection. If 
 // the deliveryOption is configured for MGTwitterEngineDeliveryAllResults (the default), a

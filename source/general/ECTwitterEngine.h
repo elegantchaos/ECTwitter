@@ -23,7 +23,6 @@
 	ECPropertyVariable(engine, MGTwitterEngine*);
 	ECPropertyVariable(token, OAToken*);
 	ECPropertyVariable(requests, NSMutableDictionary*);
-    ECPropertyVariable(authRequest, NSString*);
 }
 
 // --------------------------------------------------------------------------
@@ -33,7 +32,6 @@
 ECPropertyRetained(engine, MGTwitterEngine*);
 ECPropertyRetained(token, OAToken*);
 ECPropertyRetained(requests, NSMutableDictionary*);
-ECPropertyRetained(authRequest, NSString*);
 
 // --------------------------------------------------------------------------
 // Public Methods

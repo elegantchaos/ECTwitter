@@ -48,7 +48,6 @@ NSString *const kPrefix = @"";
 ECPropertySynthesize(engine);
 ECPropertySynthesize(requests);
 ECPropertySynthesize(token);
-ECPropertySynthesize(authRequest);
 
 // ==============================================
 // Lifecycle
@@ -90,7 +89,6 @@ ECPropertySynthesize(authRequest);
 	ECPropertyDealloc(engine);
 	ECPropertyDealloc(requests);
 	ECPropertyDealloc(token);
-	ECPropertyDealloc(authRequest);
     
     [super dealloc];
 }
@@ -166,7 +164,6 @@ ECPropertySynthesize(authRequest);
 			NSString* request = [self.engine getXAuthAccessTokenForUsername:user password: password];
 			[self setHandler: handler forRequest: request];
 			[defaults setValue: user forKey: kSavedUserKey];
-            self.authRequest = request;
 		}
 	}
 	
@@ -266,22 +263,21 @@ ECPropertySynthesize(authRequest);
     self.token = token;
     [engine setAccessToken:token];
 	[token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
+
+	ECTwitterHandler* handler = [self handlerForRequest: request];
+    [handler invokeWithResult: token];
+	
+	[self doneRequest: request];
 }
 
 
 // --------------------------------------------------------------------------
-//! Handle receiving geo results.
+//! Handle receiving generic results.
 // --------------------------------------------------------------------------
 
 - (void) genericResultsReceived:(NSArray*) results forRequest:(NSString *) request;
 {
 	ECDebug(TwitterChannel, @"generic results %@ for request %@", results, request);
-
-    if ([self.authRequest isEqualToString:request])
-    {
-        [self accessTokenReceived:[results objectAtIndex:0] forRequest:request]; 
-        self.authRequest = nil;
-    }
     
 	ECTwitterHandler* handler = [self handlerForRequest: request];
     for (NSObject* result in results)
