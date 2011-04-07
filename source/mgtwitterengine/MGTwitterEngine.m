@@ -10,7 +10,7 @@
 #import "MGTwitterHTTPURLConnection.h"
 #import "OAuthConsumer.h"
 
-#import "MGTwitterYAJLGenericParser.h"
+#import "ECTwitterParser.h"
 
 #import "ECTwitterAuthentication.h"
 
@@ -531,14 +531,8 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 
 	ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] autorelease], [connection URL]);
 
-    NSURL *URL = [connection URL];
-    MGTwitterYAJLGenericParser* parser =
-    [[MGTwitterYAJLGenericParser alloc]
-     initWithData:jsonData 
-     delegate:_delegate 
-     connectionIdentifier:identifier
-     URL:URL
-     deliveryOptions:MGTwitterEngineDeliveryAllResultsOption];
+    ECTwitterParser* parser = [[ECTwitterParser alloc] initWithDelegate:_delegate options:MGTwitterEngineDeliveryAllResultsOption];
+    [parser parseData:jsonData identifier:identifier];
     [parser release];
 
     [jsonData release];
