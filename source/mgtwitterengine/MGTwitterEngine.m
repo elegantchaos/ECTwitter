@@ -8,7 +8,6 @@
 
 #import "MGTwitterEngine.h"
 #import "MGTwitterHTTPURLConnection.h"
-#import "MGTwitterLogging.h"
 #import "OAuthConsumer.h"
 
 #import "MGTwitterYAJLGenericParser.h"
@@ -102,7 +101,6 @@ ECPropertySynthesize(authentication);
 #pragma mark - Debug Channels
 
 ECDefineDebugChannel(MGTwitterEngineChannel);
-ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
 
 #pragma mark Constructors
@@ -378,7 +376,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
         if (finalBody) {
             [theRequest setHTTPBody:[finalBody dataUsingEncoding:NSUTF8StringEncoding]];
-			MGTWITTER_LOG(@"MGTwitterEngine: finalBody = %@", finalBody);
+			ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: finalBody = %@", finalBody);
         }
     }
 	
@@ -492,7 +490,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
         return nil;
     }
     
-	MGTWITTER_LOG(@"MGTwitterEngine: finalURL = %@", finalURL);
+	ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: finalURL = %@", finalURL);
 
     // Construct an NSMutableURLRequest for the URL and set appropriate request method.
 	NSMutableURLRequest *theRequest = nil;
@@ -531,7 +529,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
     NSData* jsonData = [[connection data] copy];
     NSString* identifier = [[connection identifier] copy];
 
-	MGTWITTER_LOG(@"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] autorelease], [connection URL]);
+	ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] autorelease], [connection URL]);
 
     NSURL *URL = [connection URL];
     MGTwitterYAJLGenericParser* parser =
@@ -615,7 +613,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 			[_delegate connectionFinished:connectionIdentifier];
     }
     
-        MGTWITTER_LOG(@"MGTwitterEngine: (%ld) [%@]:\r%@", 
+        ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: (%ld) [%@]:\r%@", 
               (long)[resp statusCode], 
               [NSHTTPURLResponse localizedStringForStatusCode:[((NSHTTPURLResponse *)response) statusCode]], 
               [((NSHTTPURLResponse *)response) allHeaderFields]);
@@ -683,7 +681,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
     NSData *receivedData = [connection data];
     if (receivedData) {
 		// Dump data as string for debugging.
-		MGTWITTER_LOG(@"MGTwitterEngine: Succeeded! Received %lu bytes of data:\r\r%@", (unsigned long)[receivedData length], [NSString stringWithUTF8String:[receivedData bytes]]);
+		ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: Succeeded! Received %lu bytes of data:\r\r%@", (unsigned long)[receivedData length], [NSString stringWithUTF8String:[receivedData bytes]]);
 #if DEBUG        
         if (NO) {
             // Dump XML to file for debugging.

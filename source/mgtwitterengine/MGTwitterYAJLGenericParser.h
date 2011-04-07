@@ -6,8 +6,6 @@
 //  Copyright 2008 Instinctive Code.
 //
 
-#import "MGTwitterEngineGlobalHeader.h"
-
 #include <yajl/yajl_parse.h>
 //#import "yajl_parse.h"
 

@@ -6,9 +6,6 @@
 //  Copyright 2008 Instinctive Code.
 //
 
-#import "MGTwitterEngineGlobalHeader.h"
-
-
 @interface MGTwitterHTTPURLConnection : NSURLConnection
 {
     NSMutableData *_data;                   // accumulated data received on this connection

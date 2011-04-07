@@ -6,7 +6,6 @@
 //  Copyright 2008 Instinctive Code.
 //
 
-#import "MGTwitterEngineGlobalHeader.h"
 #import "MGTwitterEngineDelegate.h"
 #import "OAToken.h"
 

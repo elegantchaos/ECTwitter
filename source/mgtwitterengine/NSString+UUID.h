@@ -6,8 +6,6 @@
 //  Copyright 2008 Instinctive Code.
 //
 
-#import "MGTwitterEngineGlobalHeader.h"
-
 @interface NSString (UUID)
 
 + (NSString*)stringWithNewUUID;

@@ -6,7 +6,6 @@
 //  Copyright 2008 Instinctive Code.
 
 #import "MGTwitterYAJLGenericParser.h"
-#import "MGTwitterLogging.h"
 
 @interface MGTwitterYAJLGenericParser()
 
@@ -30,6 +29,11 @@
 @end
 
 @implementation MGTwitterYAJLGenericParser
+
+#pragma mark - Debug Channels
+
+ECDefineDebugChannel(MGTwitterEngineParsingChannel);
+
 
 @synthesize stack;
 @synthesize currentDictionary;
@@ -254,7 +258,7 @@ connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
 			if (status != yajl_status_insufficient_data && status != yajl_status_ok)
 			{
 				unsigned char *errorMessage = yajl_get_error(_handle, 0, [json bytes], (unsigned int) [json length]);
-				MGTWITTER_LOG_PARSING(@"MGTwitterYAJLParser: error = %s", errorMessage);
+				ECDebug(MGTwitterEngineParsingChannel, @"MGTwitterYAJLParser: error = %s", errorMessage);
 				[self _parsingErrorOccurred:[NSError errorWithDomain:@"YAJL" code:status userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithUTF8String:(char *)errorMessage] forKey:@"errorMessage"]]];
 				yajl_free_error(_handle, errorMessage);
 			}
@@ -322,15 +326,15 @@ connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
         [self.stack removeLastObject];
         
         // still stuff on the stack, so restore the popped object as the current context
-        MGTWITTER_LOG_PARSING(@"popped %@", [popped class]);
+        ECDebug(MGTwitterEngineParsingChannel, @"popped %@", [popped class]);
         if ([popped isKindOfClass:[NSMutableArray class]])
         {
-            MGTWITTER_LOG_PARSING(@"popped array with key %@", self.currentKey);
+            ECDebug(MGTwitterEngineParsingChannel, @"popped array with key %@", self.currentKey);
             self.currentArray = popped;
         }
         else
         {
-            MGTWITTER_LOG_PARSING(@"popped dictionary with key %@", self.currentKey);
+            ECDebug(MGTwitterEngineParsingChannel, @"popped dictionary with key %@", self.currentKey);
             self.currentDictionary = popped;
         }
     }
@@ -343,27 +347,27 @@ connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
     
     if (self.currentArray)
     {
-        MGTWITTER_LOG_PARSING(@"added item: %@ (%@) to array", value, [value class]);
+        ECDebug(MGTwitterEngineParsingChannel, @"added item: %@ (%@) to array", value, [value class]);
         [self.currentArray addObject:value];
     }
     else if (self.currentDictionary)
     {
         if (self.currentKey == nil)
         {
-            MGTWITTER_LOG_PARSING(@"added item: %@ (%@) with nil key", value, [value class]);
+            ECDebug(MGTwitterEngineParsingChannel, @"added item: %@ (%@) with nil key", value, [value class]);
         }
 
         else if (value == nil)
         {
-            MGTWITTER_LOG_PARSING(@"added nil item with key %@", self.currentKey);
+            ECDebug(MGTwitterEngineParsingChannel, @"added nil item with key %@", self.currentKey);
         }
         
-        MGTWITTER_LOG_PARSING(@"added item: %@ (%@) to dictionary as key %@", value, [value class], self.currentKey);
+        ECDebug(MGTwitterEngineParsingChannel, @"added item: %@ (%@) to dictionary as key %@", value, [value class], self.currentKey);
         [self.currentDictionary setObject:value forKey:self.currentKey];
     }
 	else
     {
-        MGTWITTER_LOG_PARSING(@"root item: %@ (%@)", value, [value class]);
+        ECDebug(MGTwitterEngineParsingChannel, @"root item: %@ (%@)", value, [value class]);
         [self _parsedObject:value];			
         [parsedObjects addObject:value];
     }
@@ -372,7 +376,7 @@ connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
 
 - (void)startDictionary
 {
-	MGTWITTER_LOG_PARSING(@"dictionary start");
+	ECDebug(MGTwitterEngineParsingChannel, @"dictionary start");
 	
 	NSMutableDictionary* newDictionary = [[NSMutableDictionary alloc] initWithCapacity:0];
          
@@ -383,7 +387,7 @@ connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
 
 - (void)endDictionary
 {
-	MGTWITTER_LOG_PARSING(@"dictionary end %@", self.currentDictionary);
+	ECDebug(MGTwitterEngineParsingChannel, @"dictionary end %@", self.currentDictionary);
     NSMutableDictionary* dictionary = self.currentDictionary;
     [self popStack];
     [self addValue:dictionary];
@@ -391,7 +395,7 @@ connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
 
 - (void)startArray
 {
-	MGTWITTER_LOG_PARSING(@"array start");
+	ECDebug(MGTwitterEngineParsingChannel, @"array start");
 	
 	NSMutableArray* newArray = [NSMutableArray array];
     [self pushStack];
@@ -402,7 +406,7 @@ connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
 
 - (void)endArray
 {
-	MGTWITTER_LOG_PARSING(@"array end %@", self.currentArray);
+	ECDebug(MGTwitterEngineParsingChannel, @"array end %@", self.currentArray);
     NSMutableArray* array = self.currentArray;
     [self popStack];
     [self addValue:array];

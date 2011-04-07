@@ -6,8 +6,6 @@
 //  Copyright 2008 Instinctive Code.
 //
 
-#import "MGTwitterEngineGlobalHeader.h"
-
 @class OAToken;
 
 typedef enum _MGTwitterEngineDeliveryOptions {
