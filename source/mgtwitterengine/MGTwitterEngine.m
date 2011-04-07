@@ -14,6 +14,8 @@
 #import "NSData+Base64.h"
 #import "MGTwitterParserFactory.h"
 
+#include <ECFoundation/ECLogging.h>
+
 #define TWITTER_DOMAIN          @"api.twitter.com/1"
 #define TWITTER_SEARCH_DOMAIN	@"search.twitter.com"
 #define HTTP_POST_METHOD        @"POST"
@@ -63,25 +65,20 @@
 - (NSString *)_encodeString:(NSString *)string;
 
 // Connection/Request methods
-- (NSString*)_sendRequest:(NSURLRequest *)theRequest withRequestType:(MGTwitterRequestType)requestType responseType:(MGTwitterResponseType)responseType;
+- (NSString*)_sendRequest:(NSURLRequest *)theRequest;
 - (NSString *)_sendRequestWithMethod:(NSString *)method 
                                 path:(NSString *)path 
                      queryParameters:(NSDictionary *)params
-                                body:(NSString *)body 
-                         requestType:(MGTwitterRequestType)requestType 
-                        responseType:(MGTwitterResponseType)responseType;
+                                body:(NSString *)body;
 
 - (NSString *)_sendDataRequestWithMethod:(NSString *)method 
                                     path:(NSString *)path 
                          queryParameters:(NSDictionary *)params 
                                 filePath:(NSString *)filePath
-                                    body:(NSString *)body 
-                             requestType:(MGTwitterRequestType)requestType 
-                            responseType:(MGTwitterResponseType)responseType;
+                                    body:(NSString *)body;
 
 - (NSMutableURLRequest *)_baseRequestWithMethod:(NSString *)method 
-                                           path:(NSString *)path 
-                                    requestType:(MGTwitterRequestType)requestType 
+                                           path:(NSString *)path
                                 queryParameters:(NSDictionary *)params;
 
 
@@ -95,6 +92,11 @@
 
 
 @implementation MGTwitterEngine
+
+#pragma mark - Debug Channels
+
+ECDefineDebugChannel(MGTwitterEngineChannel);
+ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
 
 #pragma mark Constructors
@@ -413,14 +415,11 @@
 - (NSString *)_sendRequestWithMethod:(NSString *)method 
                                 path:(NSString *)path 
                      queryParameters:(NSDictionary *)params 
-                                body:(NSString *)body 
-                         requestType:(MGTwitterRequestType)requestType 
-                        responseType:(MGTwitterResponseType)responseType
+                                body:(NSString *)body
 {
 
     NSMutableURLRequest *theRequest = [self _baseRequestWithMethod:method 
                                                               path:path
-													requestType:requestType 
                                                    queryParameters:params];
     
     // Set the request body if this is a POST request.
@@ -445,19 +444,16 @@
         }
     }
 	
-	return [self _sendRequest:theRequest withRequestType:requestType responseType:responseType];
+	return [self _sendRequest:theRequest];
 }
 
--(NSString*)_sendRequest:(NSURLRequest *)theRequest withRequestType:(MGTwitterRequestType)requestType responseType:(MGTwitterResponseType)responseType;
+-(NSString*)_sendRequest:(NSURLRequest *)theRequest;
 {
     
     // Create a connection using this request, with the default timeout and caching policy, 
     // and appropriate Twitter request and response types for parsing and error reporting.
     MGTwitterHTTPURLConnection *connection;
-    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:theRequest 
-                                                            delegate:self 
-                                                         requestType:requestType 
-                                                        responseType:responseType];
+    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:theRequest delegate:self ];
     
     if (!connection) {
         return nil;
@@ -477,15 +473,10 @@
                                     path:(NSString *)path 
                          queryParameters:(NSDictionary *)params 
                                 filePath:(NSString *)filePath
-                                    body:(NSString *)body 
-                             requestType:(MGTwitterRequestType)requestType 
-                            responseType:(MGTwitterResponseType)responseType
+                                    body:(NSString *)body
 {
     
-    NSMutableURLRequest *theRequest = [self _baseRequestWithMethod:method 
-                                                              path:path
-                                                       requestType:requestType
-                                                   queryParameters:params];
+    NSMutableURLRequest *theRequest = [self _baseRequestWithMethod:method path:path queryParameters:params];
 
     BOOL isPOST = (method && [method isEqualToString:HTTP_POST_METHOD]);
     if (isPOST) {
@@ -516,10 +507,7 @@
     
     MGTwitterHTTPURLConnection *connection;
     
-    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:theRequest 
-                                                            delegate:self 
-                                                         requestType:requestType 
-                                                        responseType:responseType];
+    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:theRequest delegate:self ];
     
     if (!connection) {
         return nil;
@@ -537,8 +525,7 @@
 
 #pragma mark Base Request 
 - (NSMutableURLRequest *)_baseRequestWithMethod:(NSString *)method 
-                                           path:(NSString *)path 
-                                    requestType:(MGTwitterRequestType)requestType 
+                                           path:(NSString *)path
                                 queryParameters:(NSDictionary *)params 
 {
 	NSString *contentType = [params objectForKey:@"Content-Type"];
@@ -623,13 +610,12 @@
 {
     NSData *data = [[[connection data] copy] autorelease];
     NSString *identifier = [[[connection identifier] copy] autorelease];
-    MGTwitterRequestType requestType = [connection requestType];
-    MGTwitterResponseType responseType = [connection responseType];
 
 	NSURL *URL = [connection URL];
 
 	MGTWITTER_LOG(@"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease], URL);
 
+#if 0 // TODO SAM FIX THIS
 	if (responseType == MGTwitterOAuthToken)
 	{
 		OAToken *token = [[[OAToken alloc] initWithHTTPResponseBody:[[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]] autorelease];
@@ -638,8 +624,10 @@
 		
 	}
 	else
+#endif
+        
 	{
-		[_parser parseData: data URL:URL identifier:identifier requestType:requestType responseType:responseType engine:self];
+		[_parser parseData: data URL:URL identifier:identifier engine:self];
 	}
 
 }
@@ -654,27 +642,14 @@
 #pragma mark MGTwitterParserDelegate methods
 
 - (void)parsingSucceededForRequest:(NSString *)identifier 
-                    ofResponseType:(MGTwitterResponseType)responseType 
                  withParsedObjects:(NSArray *)parsedObjects
 {
-    // Forward appropriate message to _delegate, depending on responseType.
-	MGTWITTER_LOG(@"parsingSucceededForRequest responseType: %d", responseType);
-    switch (responseType) {
-		case MGTwitterOAuthTokenRequest:
-			if ([self _isValidDelegateForSelector:@selector(accessTokenReceived:forRequest:)] && [parsedObjects count] > 0)
-				[_delegate accessTokenReceived:[parsedObjects objectAtIndex:0]
-									forRequest:identifier];
-			break;
-
-        default:
-			if ([self _isValidDelegateForSelector:@selector(genericResultsReceived:forRequest:)] && [parsedObjects count] > 0)
-				[_delegate genericResultsReceived:parsedObjects forRequest:identifier];
-            break;
-    }
+    // Forward appropriate message to _delegate
+    if ([self _isValidDelegateForSelector:@selector(genericResultsReceived:forRequest:)] && [parsedObjects count] > 0)
+        [_delegate genericResultsReceived:parsedObjects forRequest:identifier];
 }
 
 - (void)parsingFailedForRequest:(NSString *)requestIdentifier 
-                 ofResponseType:(MGTwitterResponseType)responseType 
                       withError:(NSError *)error
 {
 	if ([self _isValidDelegateForSelector:@selector(requestFailed:withError:)])
@@ -682,7 +657,6 @@
 }
 
 - (void)parsedObject:(NSDictionary *)dictionary forRequest:(NSString *)requestIdentifier 
-                 ofResponseType:(MGTwitterResponseType)responseType
 {
 	if ([self _isValidDelegateForSelector:@selector(receivedObject:forRequest:)])
 		[_delegate receivedObject:dictionary forRequest:requestIdentifier];
@@ -715,13 +689,13 @@
     [connection setResponse:resp];
     NSInteger statusCode = [resp statusCode];
     
-    if (statusCode == 304 || [connection responseType] == MGTwitterGenericUnparsed) {
+    if (statusCode == 304)
+    {
         // Not modified, or generic success.
 		if ([self _isValidDelegateForSelector:@selector(requestSucceeded:)])
 			[_delegate requestSucceeded:[connection identifier]];
         if (statusCode == 304) {
             [self parsingSucceededForRequest:[connection identifier] 
-                              ofResponseType:[connection responseType] 
                            withParsedObjects:[NSArray array]];
         }
         
@@ -792,9 +766,7 @@
     }
 
 	NSString *connID = nil;
-	MGTwitterResponseType responseType = 0;
 	connID = [connection identifier];
-	responseType = [connection responseType];
 	
     // Inform delegate.
 	if ([self _isValidDelegateForSelector:@selector(requestSucceeded:)])
@@ -814,21 +786,8 @@
         }
 #endif
         
-        if (responseType == MGTwitterImage) {
-			// Create image from data.
-#if TARGET_OS_IPHONE
-            UIImage *image = [[[UIImage alloc] initWithData:[connection data]] autorelease];
-#else
-            NSImage *image = [[[NSImage alloc] initWithData:[connection data]] autorelease];
-#endif
-            
-            // Inform delegate.
-			if ([self _isValidDelegateForSelector:@selector(imageReceived:forRequest:)])
-				[_delegate imageReceived:image forRequest:[connection identifier]];
-        } else {
-            // Parse data from the connection (either XML or JSON.)
-            [self _parseDataForConnection:connection];
-        }
+        // Parse data from the connection (either XML or JSON.)
+        [self _parseDataForConnection:connection];
     }
     
     // Release the connection.
@@ -856,9 +815,7 @@
 	}
 	
 	
-	return [self _sendRequestWithMethod:method path:fullPath queryParameters:params body:body 
-                            requestType:MGTwitterGenericRequest 
-                           responseType:MGTwitterGenericParsed];	
+	return [self _sendRequestWithMethod:method path:fullPath queryParameters:params body:body];	
 }
 
 
@@ -924,10 +881,7 @@
     // Create a connection using this request, with the default timeout and caching policy, 
     // and appropriate Twitter request and response types for parsing and error reporting.
     MGTwitterHTTPURLConnection *connection;
-    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:request
-                                                            delegate:self 
-                                                         requestType:MGTwitterOAuthTokenRequest
-                                                        responseType:MGTwitterOAuthToken];
+    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:request delegate:self];
     [request release];
 
     if (!connection) {

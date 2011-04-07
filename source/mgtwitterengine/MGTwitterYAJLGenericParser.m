@@ -182,15 +182,11 @@ static yajl_callbacks callbacks = {
 
 
 + (id)parserWithJSON:(NSData *)theJSON delegate:(NSObject *)theDelegate 
-	connectionIdentifier:(NSString *)identifier requestType:(MGTwitterRequestType)reqType
-	responseType:(MGTwitterResponseType)respType URL:(NSURL *)URL
-	deliveryOptions:(MGTwitterEngineDeliveryOptions)deliveryOptions
+	connectionIdentifier:(NSString *)identifier URL:(NSURL *)URL deliveryOptions:(MGTwitterEngineDeliveryOptions)deliveryOptions
 {
 	id parser = [[self alloc] initWithJSON:theJSON 
 			delegate:theDelegate 
 			connectionIdentifier:identifier 
-			requestType:reqType
-			responseType:respType
 			URL:URL
 			deliveryOptions:deliveryOptions];
 
@@ -199,16 +195,13 @@ static yajl_callbacks callbacks = {
 
 
 - (id)initWithJSON:(NSData *)theJSON delegate:(NSObject *)theDelegate 
-	connectionIdentifier:(NSString *)theIdentifier requestType:(MGTwitterRequestType)reqType 
-	responseType:(MGTwitterResponseType)respType URL:(NSURL *)theURL
+	connectionIdentifier:(NSString *)theIdentifier URL:(NSURL *)theURL
 	deliveryOptions:(MGTwitterEngineDeliveryOptions)theDeliveryOptions
 {
 	if ((self = [super init]) != nil)
 	{
 		json = [theJSON retain];
 		identifier = [theIdentifier retain];
-		requestType = reqType;
-		responseType = respType;
 		URL = [theURL retain];
 		deliveryOptions = theDeliveryOptions;
 		delegate = theDelegate;
@@ -241,7 +234,6 @@ static yajl_callbacks callbacks = {
 				{
 					[dictionary setObject:[NSNumber numberWithBool:[result isEqualToString:@"true"]] forKey:@"friends"];
 				}
-				[dictionary setObject:[NSNumber numberWithInt:requestType] forKey:TWITTER_SOURCE_REQUEST_TYPE];
 			
 				[self _parsedObject:dictionary];
 
@@ -388,12 +380,6 @@ static yajl_callbacks callbacks = {
 	MGTWITTER_LOG_PARSING(@"dictionary start");
 	
 	NSMutableDictionary* newDictionary = [[NSMutableDictionary alloc] initWithCapacity:0];
-
-    //add the request type to a root dictionary
-    if ([self.stack count] == 0)
-    {
-        [newDictionary setObject:[NSNumber numberWithInt:requestType] forKey:TWITTER_SOURCE_REQUEST_TYPE];
-    }
          
     [self pushStack];
     self.currentDictionary = newDictionary;
@@ -436,21 +422,21 @@ static yajl_callbacks callbacks = {
 
 - (void)_parsingDidEnd
 {
-	if ([self _isValidDelegateForSelector:@selector(parsingSucceededForRequest:ofResponseType:withParsedObjects:)])
-		[delegate parsingSucceededForRequest:identifier ofResponseType:responseType withParsedObjects:parsedObjects];
+	if ([self _isValidDelegateForSelector:@selector(parsingSucceededForRequest:withParsedObjects:)])
+		[delegate parsingSucceededForRequest:identifier withParsedObjects:parsedObjects];
 }
 
 - (void)_parsingErrorOccurred:(NSError *)parseError
 {
-	if ([self _isValidDelegateForSelector:@selector(parsingFailedForRequest:ofResponseType:withError:)])
-		[delegate parsingFailedForRequest:identifier ofResponseType:responseType withError:parseError];
+	if ([self _isValidDelegateForSelector:@selector(parsingFailedForRequest:withError:)])
+		[delegate parsingFailedForRequest:identifier withError:parseError];
 }
 
 - (void)_parsedObject:(NSDictionary *)dictionary
 {
 	if (deliveryOptions & MGTwitterEngineDeliveryIndividualResultsOption)
-		if ([self _isValidDelegateForSelector:@selector(parsedObject:forRequest:ofResponseType:)])
-			[delegate parsedObject:(NSDictionary *)dictionary forRequest:identifier ofResponseType:responseType];
+		if ([self _isValidDelegateForSelector:@selector(parsedObject:forRequest:)])
+			[delegate parsedObject:(NSDictionary *)dictionary forRequest:identifier];
 }
 
 

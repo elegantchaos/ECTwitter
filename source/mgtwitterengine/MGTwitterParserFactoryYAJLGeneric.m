@@ -12,7 +12,7 @@
 
 @implementation MGTwitterParserFactoryYAJLGeneric
 
-- (void) parseData: (NSData*) data URL: (NSURL*) URL identifier: (NSString*) identifier requestType: (MGTwitterRequestType) requestType responseType: (MGTwitterResponseType) responseType engine: (MGTwitterEngine*) engine
+- (void) parseData: (NSData*) data URL: (NSURL*) URL identifier: (NSString*) identifier engine: (MGTwitterEngine*) engine
 {
     // responseType is ignored - we always use the same parser
     
@@ -20,8 +20,6 @@
      parserWithJSON:data 
      delegate:engine 
      connectionIdentifier:identifier
-     requestType:requestType 
-     responseType:responseType
      URL:URL
      deliveryOptions:_deliveryOptions];
 

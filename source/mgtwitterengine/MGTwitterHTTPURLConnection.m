@@ -33,8 +33,7 @@
 #pragma mark Initializer
 
 
-- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate 
-          requestType:(MGTwitterRequestType)requestType responseType:(MGTwitterResponseType)responseType
+- (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate
 {
 	// OAuth requests need to have -prepare called on them first. handle that case before the NSURLConnection sends it
 	[request prepare];
@@ -42,8 +41,6 @@
     if ((self = [super initWithRequest:request delegate:delegate])) {
         _data = [[NSMutableData alloc] initWithCapacity:0];
         _identifier = [[NSString stringWithNewUUID] retain];
-        _requestType = requestType;
-        _responseType = responseType;
 		_URL = [[request URL] retain];
     }
     
@@ -96,24 +93,11 @@
     return [[_URL retain] autorelease];
 }
 
-
-- (MGTwitterRequestType)requestType
-{
-    return _requestType;
-}
-
-
-- (MGTwitterResponseType)responseType
-{
-    return _responseType;
-}
-
-
 - (NSString *)description
 {
     NSString *description = [super description];
     
-    return [description stringByAppendingFormat:@" (requestType = %d, identifier = %@)", _requestType, _identifier];
+    return [description stringByAppendingFormat:@" (identifier = %@)", _identifier];
 }
 
 @end

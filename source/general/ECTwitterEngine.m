@@ -34,7 +34,6 @@
 // --------------------------------------------------------------------------
 
 ECDefineDebugChannel(TwitterChannel);
-ECDefineDebugChannel(MGTwitterEngineChannel);
 
 // --------------------------------------------------------------------------
 // Constants
@@ -51,6 +50,7 @@ NSString *const kPrefix = @"";
 ECPropertySynthesize(engine);
 ECPropertySynthesize(requests);
 ECPropertySynthesize(token);
+ECPropertySynthesize(authRequest);
 
 // ==============================================
 // Lifecycle
@@ -94,7 +94,8 @@ ECPropertySynthesize(token);
 	ECPropertyDealloc(engine);
 	ECPropertyDealloc(requests);
 	ECPropertyDealloc(token);
-	
+	ECPropertyDealloc(authRequest);
+    
     [super dealloc];
 }
 
@@ -169,6 +170,7 @@ ECPropertySynthesize(token);
 			NSString* request = [self.engine getXAuthAccessTokenForUsername:user password: password];
 			[self setHandler: handler forRequest: request];
 			[defaults setValue: user forKey: kSavedUserKey];
+            self.authRequest = request;
 		}
 	}
 	
@@ -268,10 +270,6 @@ ECPropertySynthesize(token);
     self.token = token;
     [engine setAccessToken:token];
 	[token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
-	
-	ECTwitterHandler* handler = [self handlerForRequest: request];
-	[handler invokeWithResult: token];
-	[self doneRequest: request];
 }
 
 
@@ -283,6 +281,12 @@ ECPropertySynthesize(token);
 {
 	ECDebug(TwitterChannel, @"generic results %@ for request %@", results, request);
 
+    if ([self.authRequest isEqualToString:request])
+    {
+        [self accessTokenReceived:[results objectAtIndex:0] forRequest:request]; 
+        self.authRequest = nil;
+    }
+    
 	ECTwitterHandler* handler = [self handlerForRequest: request];
     for (NSObject* result in results)
     {
