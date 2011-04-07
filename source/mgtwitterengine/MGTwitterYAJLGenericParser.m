@@ -21,6 +21,12 @@
 - (void)startArray;
 - (void)endArray;
 
+// delegate callbacks
+- (void)_parsingDidEnd;
+- (void)_parsingErrorOccurred:(NSError *)parseError;
+- (void)_parsedObject:(NSDictionary *)dictionary;
+
+
 @end
 
 @implementation MGTwitterYAJLGenericParser
@@ -422,22 +428,22 @@ static yajl_callbacks callbacks = {
 
 - (void)_parsingDidEnd
 {
-	if ([self _isValidDelegateForSelector:@selector(parsingSucceededForRequest:withParsedObjects:)])
-		[delegate parsingSucceededForRequest:identifier withParsedObjects:parsedObjects];
+    // Forward appropriate message to _delegate
+    if ([self _isValidDelegateForSelector:@selector(genericResultsReceived:forRequest:)] && [parsedObjects count] > 0)
+        [delegate genericResultsReceived:parsedObjects forRequest:identifier];
 }
 
 - (void)_parsingErrorOccurred:(NSError *)parseError
 {
-	if ([self _isValidDelegateForSelector:@selector(parsingFailedForRequest:withError:)])
-		[delegate parsingFailedForRequest:identifier withError:parseError];
+    if ([self _isValidDelegateForSelector:@selector(requestFailed:withError:)])
+		[delegate requestFailed:identifier withError:parseError];
 }
 
 - (void)_parsedObject:(NSDictionary *)dictionary
 {
 	if (deliveryOptions & MGTwitterEngineDeliveryIndividualResultsOption)
-		if ([self _isValidDelegateForSelector:@selector(parsedObject:forRequest:)])
-			[delegate parsedObject:(NSDictionary *)dictionary forRequest:identifier];
+        if ([self _isValidDelegateForSelector:@selector(receivedObject:forRequest:)])
+            [delegate receivedObject:dictionary forRequest:identifier];
 }
-
 
 @end

@@ -12,7 +12,7 @@
 #import "OAuthConsumer.h"
 
 #import "NSData+Base64.h"
-#import "MGTwitterParserFactory.h"
+#import "MGTwitterYAJLGenericParser.h"
 
 #include <ECFoundation/ECLogging.h>
 
@@ -110,51 +110,20 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
 - (MGTwitterEngine *)initWithDelegate:(NSObject *)newDelegate
 {
-	// TODO - should probably deprecate this form of initaliser when
-	//		  and force people to provide a parser; then we can remove
-	//		  all use of YAJL_AVAILABLE etc
-	
-	MGTwitterParserFactory* parser = nil;
-	
-	#if YAJL_AVAILABLE
-		parser = [[MGTwitterParserFactoryYAJL alloc] init];
-	#elif TOUCHJSON_AVAILABLE
-		parser = [[MGTwitterParserFactoryTouchJSON alloc] init];
-	#elif USE_LIBXML
-		parser = [[MGTwitterParserFactoryLibXML alloc] init];
-	#elif USE_NSXML
-		parser = [[MGTwitterParserFactoryXML alloc] init];
-	#endif
-	
-	return [self initWithDelegate: newDelegate parser: [parser autorelease]];
-}
-
-- (MGTwitterEngine *)initWithDelegate:(NSObject *)newDelegate parser:(MGTwitterParserFactory*) parser;
-{
     if ((self = [super init])) {
-		if (parser)
-		{
-			_delegate = newDelegate; // deliberately weak reference
-			_connections = [[NSMutableDictionary alloc] initWithCapacity:0];
-			_clientName = [DEFAULT_CLIENT_NAME retain];
-			_clientVersion = [DEFAULT_CLIENT_VERSION retain];
-			_clientURL = [DEFAULT_CLIENT_URL retain];
-			_clientSourceToken = [DEFAULT_CLIENT_TOKEN retain];
-			_APIDomain = [TWITTER_DOMAIN retain];
-			_searchDomain = [TWITTER_SEARCH_DOMAIN retain];
-			
-			_secureConnection = YES;
-			_clearsCookies = NO;
-			
-			_parser = [parser retain];
-			_APIFormat = [_parser APIFormat];
-		}
-		else
-		{
-			[self release];
-			self = nil;
-			NSAssert(NO, @"You must provide a parser, or define one of YAJL_AVAILABLE, TOUCHJSON_AVAILABLE, USE_LIBXML or USE_NSXML to 1 in your prefix header");
-		}
+        _delegate = newDelegate; // deliberately weak reference
+        _connections = [[NSMutableDictionary alloc] initWithCapacity:0];
+        _clientName = [DEFAULT_CLIENT_NAME retain];
+        _clientVersion = [DEFAULT_CLIENT_VERSION retain];
+        _clientURL = [DEFAULT_CLIENT_URL retain];
+        _clientSourceToken = [DEFAULT_CLIENT_TOKEN retain];
+        _APIDomain = [TWITTER_DOMAIN retain];
+        _searchDomain = [TWITTER_SEARCH_DOMAIN retain];
+        
+        _secureConnection = YES;
+        _clearsCookies = NO;
+        
+        _APIFormat = @"json";
 
     }
     
@@ -178,7 +147,6 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 	[_APIDomain release];
 	[_APIFormat release];
 	[_searchDomain release];
-    [_parser release];
 	
     [super dealloc];
 }
@@ -270,19 +238,6 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 		_searchDomain = [domain retain];
 	}
 }
-
-- (MGTwitterParserFactory *) parser
-{
-	return [[_parser retain] autorelease];
-}
-
-
-- (void)setParser:(MGTwitterParserFactory *)parser
-{
-	[_parser release];
-	_parser = [parser retain];
-}
-
 
 - (BOOL)usesSecureConnection
 {
@@ -627,7 +582,12 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 #endif
         
 	{
-		[_parser parseData: data URL:URL identifier:identifier engine:self];
+        [MGTwitterYAJLGenericParser 
+         parserWithJSON:data 
+         delegate:_delegate 
+         connectionIdentifier:identifier
+         URL:URL
+         deliveryOptions:MGTwitterEngineDeliveryAllResultsOption];
 	}
 
 }

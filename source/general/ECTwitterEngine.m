@@ -11,8 +11,6 @@
 #import "ECTwitterPlace.h"
 #import "ECTwitterHandler.h"
 
-#import "MGTwitterParserFactoryYAJLGeneric.h"
-
 // --------------------------------------------------------------------------
 // Private Methods
 // --------------------------------------------------------------------------
@@ -67,14 +65,12 @@ ECPropertySynthesize(authRequest);
 {
 	if ((self = [super init]) != nil)
 	{
-		MGTwitterParserFactory* parser = [[MGTwitterParserFactoryYAJLGeneric alloc] init];
-		MGTwitterEngine* engine = [[MGTwitterEngine alloc] initWithDelegate:self parser: parser];
+		MGTwitterEngine* engine = [[MGTwitterEngine alloc] initWithDelegate:self];
 		
 		[engine setConsumerKey: key secret: secret];
 		self.engine = engine;
 
 		[engine release];
-		[parser release];
 
 		self.requests = [NSMutableDictionary dictionary];
 

@@ -13,13 +13,10 @@
 
 #import "OAToken.h"
 
-@class MGTwitterParserFactory;
-
 @interface MGTwitterEngine : NSObject <MGTwitterParserDelegate>
 {
     __weak NSObject <MGTwitterEngineDelegate> *_delegate;
     NSMutableDictionary *_connections;   // MGTwitterHTTPURLConnection objects
-	MGTwitterParserFactory *_parser;
     NSString *_clientName;
     NSString *_clientVersion;
     NSString *_clientURL;
@@ -45,7 +42,6 @@
 // Constructors
 + (MGTwitterEngine *)twitterEngineWithDelegate:(NSObject *)delegate;
 - (MGTwitterEngine *)initWithDelegate:(NSObject *)delegate;
-- (MGTwitterEngine *)initWithDelegate:(NSObject *)delegate parser:(MGTwitterParserFactory*) parser;
 
 // Configuration and Accessors
 + (NSString *)version; // returns the version of MGTwitterEngine
@@ -62,8 +58,6 @@
 - (void)setUsesSecureConnection:(BOOL)flag;
 - (BOOL)clearsCookies; // YES = deletes twitter.com cookies when setting username/password, default is NO (see README.txt)
 - (void)setClearsCookies:(BOOL)flag;
-- (MGTwitterParserFactory*) parser;
-- (void) setParser: (MGTwitterParserFactory*) parser;
 
 // Connection methods
 - (NSUInteger)numberOfConnections;

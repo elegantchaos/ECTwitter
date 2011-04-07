@@ -11,11 +11,10 @@
 #include <yajl/yajl_parse.h>
 //#import "yajl_parse.h"
 
-#import "MGTwitterParserDelegate.h"
 #import "MGTwitterEngineDelegate.h"
 
 @interface MGTwitterYAJLGenericParser : NSObject {
-	__weak NSObject <MGTwitterParserDelegate> *delegate; // weak ref
+	__weak NSObject<MGTwitterEngineDelegate>* delegate; // weak ref
 	NSString *identifier;
 	NSURL *URL;
 	NSData *json;
@@ -26,21 +25,16 @@
 }
 
 + (id)parserWithJSON:(NSData *)theJSON
-	delegate:(NSObject *)theDelegate
+	delegate:(NSObject<MGTwitterEngineDelegate>*)theDelegate
 	connectionIdentifier:(NSString *)identifier
 	URL:(NSURL *)URL
 	deliveryOptions:(MGTwitterEngineDeliveryOptions)deliveryOptions;
+
 - (id)initWithJSON:(NSData *)theJSON
-	delegate:(NSObject *)theDelegate 
+	delegate:(NSObject<MGTwitterEngineDelegate>*)theDelegate 
 	connectionIdentifier:(NSString *)identifier
 	URL:(NSURL *)URL
 	deliveryOptions:(MGTwitterEngineDeliveryOptions)deliveryOptions;
-
-
-// delegate callbacks
-- (void)_parsingDidEnd;
-- (void)_parsingErrorOccurred:(NSError *)parseError;
-- (void)_parsedObject:(NSDictionary *)dictionary;
 
 
 @end
