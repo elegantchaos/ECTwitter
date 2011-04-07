@@ -71,27 +71,12 @@
 - (void)closeConnection:(NSString *)identifier;
 - (void)closeAllConnections;
 
-// Utility methods
-/// Note: the -getImageAtURL: method works for any image URL, not just Twitter images.
-// It does not require authentication, and is provided here for convenience.
-// As with the Twitter API methods below, it returns a unique connection identifier.
-// Retrieved images are sent to the delegate via the -imageReceived:forRequest: method.
-- (NSString *)getImageAtURL:(NSString *)urlString;
-
-
-@end
-
-@interface MGTwitterEngine (BasicAuth)
-
-- (NSString *)username;
-- (void)setUsername:(NSString *) newUsername;
-
-- (NSString *)password DEPRECATED_ATTRIBUTE;
-- (void)setUsername:(NSString *)username password:(NSString *)password DEPRECATED_ATTRIBUTE;
-
 @end
 
 @interface MGTwitterEngine (OAuth)
+
+- (NSString *)username;
+- (void)setUsername:(NSString *) newUsername;
 
 - (void)setConsumerKey:(NSString *)key secret:(NSString *)secret;
 - (NSString *)consumerKey;

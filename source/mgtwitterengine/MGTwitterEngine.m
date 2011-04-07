@@ -406,44 +406,6 @@
     return [result autorelease];
 }
 
-
-- (NSString *)getImageAtURL:(NSString *)urlString
-{
-    // This is a method implemented for the convenience of the client, 
-    // allowing asynchronous downloading of users' Twitter profile images.
-	NSString *encodedUrlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSURL *url = [NSURL URLWithString:encodedUrlString];
-    if (!url) {
-        return nil;
-    }
-    
-    // Construct an NSMutableURLRequest for the URL and set appropriate request method.
-    NSMutableURLRequest *theRequest = [NSMutableURLRequest requestWithURL:url 
-                                                              cachePolicy:NSURLRequestReloadIgnoringCacheData 
-                                                          timeoutInterval:URL_REQUEST_TIMEOUT];
-    
-    // Create a connection using this request, with the default timeout and caching policy, 
-    // and appropriate Twitter request and response types for parsing and error reporting.
-    MGTwitterHTTPURLConnection *connection;
-    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:theRequest 
-                                                            delegate:self 
-                                                         requestType:MGTwitterImageRequest 
-                                                        responseType:MGTwitterImage];
-    
-    if (!connection) {
-        return nil;
-    } else {
-        [_connections setObject:connection forKey:[connection identifier]];
-        [connection release];
-    }
-	
-	if ([self _isValidDelegateForSelector:@selector(connectionStarted:)])
-		[_delegate connectionStarted:[connection identifier]];
-    
-    return [connection identifier];
-}
-
-
 #pragma mark Request sending methods
 
 #define SET_AUTHORIZATION_IN_HEADER 0
@@ -592,7 +554,7 @@
         fullPath = [self _queryStringWithBase:fullPath parameters:params prefixed:YES];
     }
     
-	BOOL isSearch = (requestType == MGTwitterSearchRequest || requestType == MGTwitterSearchCurrentTrendsRequest);
+	BOOL isSearch = NO; // (requestType == MGTwitterSearchRequest || requestType == MGTwitterSearchCurrentTrendsRequest);
 	NSString* domain = isSearch ? _searchDomain : _APIDomain;
 	NSString* connectionType = (_secureConnection && !isSearch) ? @"https" : @"http";
 		
@@ -698,47 +660,15 @@
     // Forward appropriate message to _delegate, depending on responseType.
 	MGTWITTER_LOG(@"parsingSucceededForRequest responseType: %d", responseType);
     switch (responseType) {
-        case MGTwitterStatuses:
-        case MGTwitterStatus:
-			if ([self _isValidDelegateForSelector:@selector(statusesReceived:forRequest:)])
-				[_delegate statusesReceived:parsedObjects forRequest:identifier];
-            break;
-        case MGTwitterUsers:
-        case MGTwitterUser:
-			if ([self _isValidDelegateForSelector:@selector(userInfoReceived:forRequest:)])
-				[_delegate userInfoReceived:parsedObjects forRequest:identifier];
-            break;
-        case MGTwitterDirectMessages:
-        case MGTwitterDirectMessage:
-			if ([self _isValidDelegateForSelector:@selector(directMessagesReceived:forRequest:)])
-				[_delegate directMessagesReceived:parsedObjects forRequest:identifier];
-            break;
-		case MGTwitterMiscellaneous:
-			if ([self _isValidDelegateForSelector:@selector(miscInfoReceived:forRequest:)])
-				[_delegate miscInfoReceived:parsedObjects forRequest:identifier];
-			break;
-		case MGTwitterSearchResults:
-			if ([self _isValidDelegateForSelector:@selector(searchResultsReceived:forRequest:)])
-				[_delegate searchResultsReceived:parsedObjects forRequest:identifier];
-			break;
-		case MGTwitterSocialGraph:
-			if ([self _isValidDelegateForSelector:@selector(socialGraphInfoReceived:forRequest:)])
-				[_delegate socialGraphInfoReceived: parsedObjects forRequest:identifier];
-			break;
-		case MGTwitterUserLists:
-			if ([self _isValidDelegateForSelector:@selector(userListsReceived:forRequest:)])
-				[_delegate userListsReceived: parsedObjects forRequest:identifier];
-			break;			
 		case MGTwitterOAuthTokenRequest:
 			if ([self _isValidDelegateForSelector:@selector(accessTokenReceived:forRequest:)] && [parsedObjects count] > 0)
 				[_delegate accessTokenReceived:[parsedObjects objectAtIndex:0]
 									forRequest:identifier];
 			break;
-		case MGTwitterGenericParsed:
+
+        default:
 			if ([self _isValidDelegateForSelector:@selector(genericResultsReceived:forRequest:)] && [parsedObjects count] > 0)
 				[_delegate genericResultsReceived:parsedObjects forRequest:identifier];
-			break;
-        default:
             break;
     }
 }
@@ -934,7 +864,7 @@
 
 @end
 
-@implementation MGTwitterEngine (BasicAuth)
+@implementation MGTwitterEngine (OAuth)
 
 - (NSString *)username
 {
@@ -947,40 +877,6 @@
     [_username release];
     _username = [newUsername retain];
 }
-
-- (NSString *)password
-{
-    return [[_password retain] autorelease];
-}
-
-
-- (void)setUsername:(NSString *)newUsername password:(NSString *)newPassword
-{
-    // Set new credentials.
-    [_username release];
-    _username = [newUsername retain];
-    [_password release];
-    _password = [newPassword retain];
-    
-	if ([self clearsCookies]) {
-		// Remove all cookies for twitter, to ensure next connection uses new credentials.
-		NSString *urlString = [NSString stringWithFormat:@"%@://%@", 
-							   (_secureConnection) ? @"https" : @"http", 
-							   _APIDomain];
-		NSURL *url = [NSURL URLWithString:urlString];
-		
-		NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-		NSEnumerator *enumerator = [[cookieStorage cookiesForURL:url] objectEnumerator];
-		NSHTTPCookie *cookie = nil;
-		while ((cookie = [enumerator nextObject])) {
-			[cookieStorage deleteCookie:cookie];
-		}
-	}
-}
-
-@end
-
-@implementation MGTwitterEngine (OAuth)
 
 - (void)setConsumerKey:(NSString *)key secret:(NSString *)secret{
 	[_consumerKey autorelease];
