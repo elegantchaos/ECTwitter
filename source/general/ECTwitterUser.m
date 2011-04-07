@@ -368,7 +368,9 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received timeline for: %@", self);
-		for (NSDictionary* tweetData in (NSArray*) handler.results)
+        NSArray* resultsArray = (NSArray*) handler.results;
+        NSArray* tweets = [resultsArray objectAtIndex:0];
+		for (NSDictionary* tweetData in tweets)
 		{
 			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
 			[self addTweet: tweet];
@@ -452,9 +454,7 @@ ECPropertySynthesize(twitterID);
 		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
         NSArray* results = (NSArray*) handler.results;
         NSDictionary* dict = [results objectAtIndex:0];
-		ECDebug(TwitterUserChannel, @"result item is %@", [dict class]);
-        NSDictionary* items = [dict objectForKey:@"users"];
-		ECDebug(TwitterUserChannel, @"items is %@ keys %@", [items class], [items allKeys]);
+        NSArray* items = [dict objectForKey:@"users"];
 		for (NSDictionary* userData in items)
 		{
 			ECTwitterUser* user = [mCache addOrRefreshUserWithInfo: userData];
