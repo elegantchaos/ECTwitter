@@ -11,8 +11,9 @@
 #import "MGTwitterLogging.h"
 #import "OAuthConsumer.h"
 
-#import "NSData+Base64.h"
 #import "MGTwitterYAJLGenericParser.h"
+
+#import "ECTwitterAuthentication.h"
 
 #include <ECFoundation/ECLogging.h>
 
@@ -26,10 +27,10 @@
 #define MAX_LOCATION_LENGTH		30
 #define MAX_DESCRIPTION_LENGTH	160
 
-#define DEFAULT_CLIENT_NAME     @"MGTwitterEngine"
+#define DEFAULT_CLIENT_NAME     @"ECTwitter"
 #define DEFAULT_CLIENT_VERSION  @"1.0"
-#define DEFAULT_CLIENT_URL      @"http://mattgemmell.com/source"
-#define DEFAULT_CLIENT_TOKEN	@"mgtwitterengine"
+#define DEFAULT_CLIENT_URL      @"http://www.elegantchaos.com/libraries/ectwitter"
+#define DEFAULT_CLIENT_TOKEN	@"ectwitter"
 
 #define URL_REQUEST_TIMEOUT     25.0 // Twitter usually fails quickly if it's going to fail at all.
 
@@ -96,7 +97,7 @@
 
 @implementation MGTwitterEngine
 
-ECPropertySynthesize(oauthRequest);
+ECPropertySynthesize(authentication);
 
 #pragma mark - Debug Channels
 
@@ -139,12 +140,12 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 - (void)dealloc
 {
     _delegate = nil;
+ 
+    ECPropertyDealloc(authentication);
     
     [[_connections allValues] makeObjectsPerformSelector:@selector(cancel)];
     [_connections release];
     
-    [_username release];
-    [_password release];
     [_clientName release];
     [_clientVersion release];
     [_clientURL release];
@@ -391,13 +392,6 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 			finalBody = [finalBody stringByAppendingString:body];
 		}
 
-        // if using OAuth, Twitter already knows your application's name, so don't send it
-        if (_clientSourceToken && _accessToken == nil) {
-            finalBody = [finalBody stringByAppendingString:[NSString stringWithFormat:@"%@source=%@", 
-                                                            (body) ? @"&" : @"" , 
-                                                            _clientSourceToken]];
-        }
-        
         if (finalBody) {
             [theRequest setHTTPBody:[finalBody dataUsingEncoding:NSUTF8StringEncoding]];
 			MGTWITTER_LOG(@"MGTwitterEngine: finalBody = %@", finalBody);
@@ -505,16 +499,9 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 	NSString* domain = isSearch ? _searchDomain : _APIDomain;
 	NSString* connectionType = (_secureConnection && !isSearch) ? @"https" : @"http";
 		
-#if 1 // SET_AUTHORIZATION_IN_HEADER
     NSString *urlString = [NSString stringWithFormat:@"%@://%@/%@", 
                            connectionType,
                            domain, fullPath];
-#else    
-    NSString *urlString = [NSString stringWithFormat:@"%@://%@:%@@%@/%@", 
-                           connectionType, 
-                           [self _encodeString:_username], [self _encodeString:_password], 
-                           domain, fullPath];
-#endif
     
     NSURL *finalURL = [NSURL URLWithString:urlString];
     if (!finalURL) {
@@ -525,15 +512,14 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
     // Construct an NSMutableURLRequest for the URL and set appropriate request method.
 	NSMutableURLRequest *theRequest = nil;
-    if(_accessToken){
-		theRequest = [[[OAMutableURLRequest alloc] initWithURL:finalURL
-													  consumer:[[(OAConsumer*) [OAConsumer alloc] initWithKey:[self consumerKey] secret:[self consumerSecret]] autorelease]
-														 token:_accessToken
-														 realm:nil
-											 signatureProvider:nil] autorelease];
+    if(self.authentication.token)
+    {
+        theRequest = [self.authentication requestForURL:finalURL];
 		[theRequest setCachePolicy:NSURLRequestReloadIgnoringCacheData ];
 		[theRequest setTimeoutInterval:URL_REQUEST_TIMEOUT];
-	}else{
+	}
+    else
+    {
 		theRequest = [NSMutableURLRequest requestWithURL:finalURL 
 											 cachePolicy:NSURLRequestReloadIgnoringCacheData 
 										 timeoutInterval:URL_REQUEST_TIMEOUT];
@@ -573,32 +559,15 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
 	MGTWITTER_LOG(@"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] autorelease], [connection URL]);
 
-    // if this is the oauth request, the result isn't json, so handle it specially
-    if ([self.oauthRequest isEqualToString:identifier])
-    {
-        NSString* body = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-		OAToken *token = [[OAToken alloc] initWithHTTPResponseBody:body];
-        if ([self _isValidDelegateForSelector:@selector(accessTokenReceived:forRequest:)])
-        {
-            [_delegate accessTokenReceived:token forRequest:identifier];
-        }
-
-        self.oauthRequest = nil;
-        [token release];
-        [body release];
-    }
-	else
-	{
-        NSURL *URL = [connection URL];
-        MGTwitterYAJLGenericParser* parser =
-        [[MGTwitterYAJLGenericParser alloc]
-         initWithData:jsonData 
-         delegate:_delegate 
-         connectionIdentifier:identifier
-         URL:URL
-         deliveryOptions:MGTwitterEngineDeliveryAllResultsOption];
-        [parser release];
-	}
+    NSURL *URL = [connection URL];
+    MGTwitterYAJLGenericParser* parser =
+    [[MGTwitterYAJLGenericParser alloc]
+     initWithData:jsonData 
+     delegate:_delegate 
+     connectionIdentifier:identifier
+     URL:URL
+     deliveryOptions:MGTwitterEngineDeliveryAllResultsOption];
+    [parser release];
 
     [jsonData release];
     [identifier release];
@@ -639,13 +608,7 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
-	if (_username && _password && [challenge previousFailureCount] == 0 && ![challenge proposedCredential]) {
-		NSURLCredential *credential = [NSURLCredential credentialWithUser:_username password:_password 
-															  persistence:NSURLCredentialPersistenceForSession];
-		[[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
-	} else {
-		[[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
-	}
+    [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
 
@@ -791,84 +754,4 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 
 
 @end
-
-@implementation MGTwitterEngine (OAuth)
-
-- (NSString *)username
-{
-    return [[_username retain] autorelease];
-}
-
-- (void)setUsername:(NSString *)newUsername
-{
-    // Set new credentials.
-    [_username release];
-    _username = [newUsername retain];
-}
-
-- (void)setConsumerKey:(NSString *)key secret:(NSString *)secret{
-	[_consumerKey autorelease];
-	_consumerKey = [key copy];
-	
-	[_consumerSecret autorelease];
-	_consumerSecret = [secret copy];
-}
-
-- (NSString *)consumerKey{
-	return _consumerKey;
-}
-
-- (NSString *)consumerSecret{
-	return _consumerSecret;
-}
-
-- (void)setAccessToken: (OAToken *)token{
-	[_accessToken autorelease];
-	_accessToken = [token retain];
-}
-
-- (OAToken *)accessToken{
-	return _accessToken;
-}
-
-- (NSString *)getXAuthAccessTokenForUsername:(NSString *)username 
-									password:(NSString *)password{
-	OAConsumer *consumer = [[(OAConsumer*) [OAConsumer alloc] initWithKey:[self consumerKey] secret:[self consumerSecret]] autorelease];
-	
-	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"]
-																   consumer:consumer
-																	  token:nil // xAuth needs no request token?
-																	  realm:nil   // our service provider doesn't specify a realm
-														  signatureProvider:nil]; // use the default method, HMAC-SHA1
-	
-	[request setHTTPMethod:@"POST"];
-	
-	[request setParameters:[NSArray arrayWithObjects:
-							[OARequestParameter requestParameter:@"x_auth_mode" value:@"client_auth"],
-							[OARequestParameter requestParameter:@"x_auth_username" value:username],
-							[OARequestParameter requestParameter:@"x_auth_password" value:password],
-							nil]];		
-	
-    // Create a connection using this request, with the default timeout and caching policy, 
-    // and appropriate Twitter request and response types for parsing and error reporting.
-    MGTwitterHTTPURLConnection *connection;
-    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:request delegate:self];
-    [request release];
-
-    if (!connection) {
-        return nil;
-    } else {
-        [_connections setObject:connection forKey:[connection identifier]];
-        [connection release];
-    }
-	
-	if ([self _isValidDelegateForSelector:@selector(connectionStarted:)])
-		[_delegate connectionStarted:[connection identifier]];
-    
-    self.oauthRequest = [connection identifier];
-    return [connection identifier];
-}
-
-@end
-
 

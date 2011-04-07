@@ -34,8 +34,6 @@ typedef enum _MGTwitterEngineDeliveryOptions {
 // the deliveryOption is configured for MGTwitterEngineDeliveryIndividualResults.
 - (void)receivedObject:(NSDictionary *)dictionary forRequest:(NSString *)connectionIdentifier;
 
-- (void)accessTokenReceived:(OAToken *)token forRequest:(NSString *)connectionIdentifier;
-
 
 // These delegate methods are called after all results are parsed from the connection. If 
 // the deliveryOption is configured for MGTwitterEngineDeliveryAllResults (the default), a

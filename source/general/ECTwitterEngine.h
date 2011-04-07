@@ -5,14 +5,16 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import "MGTwitterEngine.h"
+#import "MGTwitterEngineDelegate.h"
 
 // --------------------------------------------------------------------------
 // Handler Protocol.
 // --------------------------------------------------------------------------
 
+@class MGTwitterEngine;
 @class ECTwitterEngine;
 @class ECTwitterHandler;
+@class ECTwitterAuthentication;
 
 // --------------------------------------------------------------------------
 //! Higher level wrapper for MGTwitterEngine.
@@ -21,7 +23,7 @@
 @interface ECTwitterEngine : NSObject <MGTwitterEngineDelegate> 
 {
 	ECPropertyVariable(engine, MGTwitterEngine*);
-	ECPropertyVariable(token, OAToken*);
+    ECPropertyVariable(authentication, ECTwitterAuthentication*);
 	ECPropertyVariable(requests, NSMutableDictionary*);
 }
 
@@ -30,25 +32,20 @@
 // --------------------------------------------------------------------------
 
 ECPropertyRetained(engine, MGTwitterEngine*);
-ECPropertyRetained(token, OAToken*);
+ECPropertyRetained(authentication, ECTwitterAuthentication*);
 ECPropertyRetained(requests, NSMutableDictionary*);
 
 // --------------------------------------------------------------------------
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithKey: (NSString*) key secret: (NSString*) secret;
-
-- (BOOL) authenticateForUser: (NSString*) user;
-- (void) authenticateForUser: (NSString*) user password: (NSString*) password target: (id) target selector: (SEL) selector;
+- (id) initWithAuthetication:(ECTwitterAuthentication*)authentication;
 
 - (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
 - (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
 
 - (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
 - (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
-
-- (BOOL) isAuthenticated;
 
 
 // --------------------------------------------------------------------------

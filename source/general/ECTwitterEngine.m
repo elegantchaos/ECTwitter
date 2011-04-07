@@ -10,6 +10,8 @@
 #import "ECTwitterUser.h"
 #import "ECTwitterPlace.h"
 #import "ECTwitterHandler.h"
+#import "ECTwitterAuthentication.h"
+#import "MGTwitterEngine.h"
 
 // --------------------------------------------------------------------------
 // Private Methods
@@ -37,17 +39,13 @@ ECDefineDebugChannel(TwitterChannel);
 // Constants
 // --------------------------------------------------------------------------
 
-NSString *const kSavedUserKey = @"ECTwitterEngineUser";
-NSString *const kProvider = @"ECTwitterEngine";
-NSString *const kPrefix = @"";
-
 // --------------------------------------------------------------------------
 // Properties
 // --------------------------------------------------------------------------
 
+ECPropertySynthesize(authentication);
 ECPropertySynthesize(engine);
 ECPropertySynthesize(requests);
-ECPropertySynthesize(token);
 
 // ==============================================
 // Lifecycle
@@ -60,17 +58,16 @@ ECPropertySynthesize(token);
 //! Initialise the engine.
 // --------------------------------------------------------------------------
 
-- (id) initWithKey: (NSString*) key secret: (NSString*) secret;
+- (id) initWithAuthetication:(ECTwitterAuthentication *)authentication
 {
 	if ((self = [super init]) != nil)
 	{
 		MGTwitterEngine* engine = [[MGTwitterEngine alloc] initWithDelegate:self];
-		
-		[engine setConsumerKey: key secret: secret];
+        self.authentication = authentication;
 		self.engine = engine;
-
+        
 		[engine release];
-
+        
 		self.requests = [NSMutableDictionary dictionary];
 
 		ECDebug(TwitterChannel, @"initialised engine");
@@ -88,97 +85,11 @@ ECPropertySynthesize(token);
 {
 	ECPropertyDealloc(engine);
 	ECPropertyDealloc(requests);
-	ECPropertyDealloc(token);
     
     [super dealloc];
 }
 
-// ==============================================
-// Authentication
-// ==============================================
 
-#pragma mark -
-#pragma mark Authentication
-
-// --------------------------------------------------------------------------
-//! Authenticate.
-//! Look to see if we've got an existing token stored
-//! for the user. If we have, we use it and return YES, 
-//! if not we return NO.
-// --------------------------------------------------------------------------
-
-- (BOOL) authenticateForUser: (NSString*) user
-{
-	ECDebug(TwitterChannel, @"checking saved authentication for %@", user);
-	
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	NSString* savedUser = [defaults stringForKey: kSavedUserKey];
-	OAToken* savedToken = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName: kProvider prefix: kPrefix];
-	
-	BOOL result = (user && savedToken && [savedToken isValid] && ([savedUser isEqualToString: user]));
-	if (result)
-	{
-		[self.engine setUsername: user];
-		[self.engine setAccessToken: savedToken];
-		self.token = savedToken;
-	}
-
-	[savedToken release];
-	
-	return result;
-}
-
-// --------------------------------------------------------------------------
-//! Authenticate.
-//! We look first to see if we've got an existing token stored
-//! for the user. If we have, we just use it, if not we request
-//! a new one.
-//! Calling with nil for the user will clear any saved token.
-// --------------------------------------------------------------------------
-
-- (void) authenticateForUser: (NSString*) user password: (NSString*) password target: (id) target selector: (SEL) selector
-{
-	ECDebug(TwitterChannel, @"requesting authentication for %@ password %@", user, password);
-
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	NSString* savedUser = [defaults stringForKey: kSavedUserKey];
-	OAToken* savedToken = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName: kProvider prefix: kPrefix];
-	
-	ECTwitterHandler* handler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
-
-	if (user && savedToken && [savedToken isValid] && ([savedUser isEqualToString: user]))
-	{
-		[self.engine setAccessToken: savedToken];
-		self.token = savedToken;
-		[handler invokeWithResult: savedToken];
-	}
-	else
-	{
-		self.token = nil;
-		[defaults removeObjectForKey: kSavedUserKey];
-		[OAToken removeFromUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
-		[self.engine setAccessToken: nil];
-		
-		if (user && password)
-		{
-			NSString* request = [self.engine getXAuthAccessTokenForUsername:user password: password];
-			[self setHandler: handler forRequest: request];
-			[defaults setValue: user forKey: kSavedUserKey];
-		}
-	}
-	
-	[handler release];
-	[savedToken release];
-}
-
-// --------------------------------------------------------------------------
-//! Has the engine been authenticated?
-// --------------------------------------------------------------------------
-
-- (BOOL) isAuthenticated
-{
-	return (self.token != nil) && [self.token isValid];
-}
 
 // ==============================================
 // Request Handling
@@ -247,26 +158,6 @@ ECPropertySynthesize(token);
 	ECDebug(TwitterChannel, @"request %@ for handler %@ failed with error %@ %@", request, handler, error, error.userInfo);
 	handler.error = error;
 	[handler invokeWithStatus: StatusFailed];
-	[self doneRequest: request];
-}
-
-
-// --------------------------------------------------------------------------
-//! Handle receiving an authorisation token.
-// --------------------------------------------------------------------------
-
-- (void) accessTokenReceived: (OAToken*) token forRequest: (NSString*) request
-{
-	ECDebug(TwitterChannel, @"authenticated ok");
-
-	MGTwitterEngine* engine = self.engine;
-    self.token = token;
-    [engine setAccessToken:token];
-	[token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
-
-	ECTwitterHandler* handler = [self handlerForRequest: request];
-    [handler invokeWithResult: token];
-	
 	[self doneRequest: request];
 }
 

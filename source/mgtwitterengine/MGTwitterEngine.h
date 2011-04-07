@@ -12,6 +12,8 @@
 
 #import <ECFoundation/ECProperties.h>
 
+@class ECTwitterAuthentication;
+
 @interface MGTwitterEngine : NSObject
 {
     __weak NSObject <MGTwitterEngineDelegate> *_delegate;
@@ -26,19 +28,10 @@
     BOOL _secureConnection;
 	BOOL _clearsCookies;
 	
-	// OAuth
-	NSString *_consumerKey;
-	NSString *_consumerSecret;
-	OAToken  *_accessToken;
-	
-	// basic auth - deprecated
-	NSString *_username;
-    NSString *_password;
-    
-    ECPropertyVariable(oauthRequest, NSString*);
+    ECPropertyVariable(authentication, ECTwitterAuthentication*);
 }
 
-ECPropertyRetained(oauthRequest, NSString*);
+ECPropertyRetained(authentication, ECTwitterAuthentication*);
 
 #pragma mark Class management
 
@@ -67,25 +60,6 @@ ECPropertyRetained(oauthRequest, NSString*);
 - (NSArray *)connectionIdentifiers;
 - (void)closeConnection:(NSString *)identifier;
 - (void)closeAllConnections;
-
-@end
-
-@interface MGTwitterEngine (OAuth)
-
-- (NSString *)username;
-- (void)setUsername:(NSString *) newUsername;
-
-- (void)setConsumerKey:(NSString *)key secret:(NSString *)secret;
-- (NSString *)consumerKey;
-- (NSString *)consumerSecret;
-
-- (void)setAccessToken: (OAToken *)token;
-- (OAToken *)accessToken;
-
-// XAuth login - NOTE: You MUST email Twitter with your application's OAuth key/secret to
-// get OAuth access. This will not work if you don't do this.
-- (NSString *)getXAuthAccessTokenForUsername:(NSString *)username 
-									password:(NSString *)password;
 
 @end
 
