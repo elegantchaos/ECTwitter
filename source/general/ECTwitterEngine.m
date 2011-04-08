@@ -239,7 +239,7 @@ ECPropertySynthesize(requests);
 		parameters = [NSDictionary dictionary];
 	}
 	
-    NSString* request = [self.engine genericRequestWithMethod: httpMethod path: method queryParameters: parameters body: nil];
+    NSString* request = [self.engine request:method parameters:parameters method:httpMethod];
 	ECTwitterHandler* handler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
 	handler.extra = extra;
 	[self setHandler: handler forRequest:request];

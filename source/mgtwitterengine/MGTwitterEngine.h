@@ -15,50 +15,34 @@
 
 @interface MGTwitterEngine : NSObject
 {
-    __weak NSObject <MGTwitterEngineDelegate> *_delegate;
-    NSMutableDictionary *_connections;   // MGTwitterHTTPURLConnection objects
-    NSString *_clientName;
-    NSString *_clientVersion;
-    NSString *_clientURL;
-    NSString *_clientSourceToken;
-	NSString *_APIDomain;
-	NSString *_searchDomain;
-	NSString *_APIFormat;
-    BOOL _secureConnection;
-	BOOL _clearsCookies;
+    __weak NSObject <MGTwitterEngineDelegate>*  mDelegate;
+    NSMutableDictionary*                        mConnections;   // MGTwitterHTTPURLConnection objects
 	
+    ECPropertyVariable(secure, BOOL);
     ECPropertyVariable(authentication, ECTwitterAuthentication*);
+    ECPropertyVariable(apiDomain, NSString*);
+    ECPropertyVariable(searchDomain, NSString*);
+    ECPropertyVariable(clientName, NSString*);
+    ECPropertyVariable(clientVersion, NSString*);
+    ECPropertyVariable(clientURL, NSString*);
+    ECPropertyVariable(clientToken, NSString*);
 }
 
+ECPropertyAssigned(secure, BOOL);
 ECPropertyRetained(authentication, ECTwitterAuthentication*);
+ECPropertyRetained(apiDomain, NSString*);
+ECPropertyRetained(searchDomain, NSString*);
 
 #pragma mark Class management
 
-// Constructors
-+ (MGTwitterEngine *)twitterEngineWithDelegate:(NSObject *)delegate;
-- (MGTwitterEngine *)initWithDelegate:(NSObject *)delegate;
-
-// Configuration and Accessors
-- (void)setClientName:(NSString *)name version:(NSString *)version URL:(NSString *)url token:(NSString *)token;
-- (NSString *)APIDomain;
-- (void)setAPIDomain:(NSString *)domain;
-- (NSString *)searchDomain;
-- (void)setSearchDomain:(NSString *)domain;
-- (BOOL)usesSecureConnection; // YES = uses HTTPS, default is YES
-- (void)setUsesSecureConnection:(BOOL)flag;
-- (BOOL)clearsCookies; // YES = deletes twitter.com cookies when setting username/password, default is NO (see README.txt)
-- (void)setClearsCookies:(BOOL)flag;
+- (MGTwitterEngine *)initWithDelegate:(NSObject*)delegate;
+- (void)setClientName:(NSString*)name version:(NSString*)version URL:(NSString*)url;
+- (NSString*) request:(NSString*)path parameters:(NSDictionary*)params method:(NSString*)method;
 
 // Connection methods
 - (NSUInteger)numberOfConnections;
 - (NSArray *)connectionIdentifiers;
-- (void)closeConnection:(NSString *)identifier;
+- (void)closeConnection:(NSString*)identifier;
 - (void)closeAllConnections;
-
-@end
-
-@interface MGTwitterEngine (Generic)
-
-- (NSString *) genericRequestWithMethod:(NSString *)method path:(NSString *)path queryParameters:(NSDictionary *)params body:(NSString *)body;
 
 @end

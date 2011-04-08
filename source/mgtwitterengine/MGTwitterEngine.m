@@ -1,10 +1,11 @@
-//
+// --------------------------------------------------------------------------
 //  MGTwitterEngine.m
 //  MGTwitterEngine
 //
 //  Created by Matt Gemmell on 10/02/2008.
+//  Heavily modified by Sam Deane.
 //  Copyright 2008 Instinctive Code.
-//
+// --------------------------------------------------------------------------
 
 #import "MGTwitterEngine.h"
 #import "MGTwitterHTTPURLConnection.h"
@@ -13,94 +14,93 @@
 
 #import <ECFoundation/NSDictionary+ECUtilities.h>
 
-#define TWITTER_DOMAIN          @"api.twitter.com/1"
-#define TWITTER_SEARCH_DOMAIN	@"search.twitter.com"
-#define HTTP_POST_METHOD        @"POST"
-#define MAX_MESSAGE_LENGTH      140 // Twitter recommends tweets of max 140 chars
-#define MAX_NAME_LENGTH			20
-#define MAX_EMAIL_LENGTH		40
-#define MAX_URL_LENGTH			100
-#define MAX_LOCATION_LENGTH		30
-#define MAX_DESCRIPTION_LENGTH	160
 
-#define DEFAULT_CLIENT_NAME     @"ECTwitter"
-#define DEFAULT_CLIENT_VERSION  @"1.0"
-#define DEFAULT_CLIENT_URL      @"http://www.elegantchaos.com/libraries/ectwitter"
-#define DEFAULT_CLIENT_TOKEN	@"ectwitter"
+#pragma mark - Private Interface
 
-#define URL_REQUEST_TIMEOUT     25.0 // Twitter usually fails quickly if it's going to fail at all.
+@interface MGTwitterEngine()
 
+ECPropertyRetained(clientName, NSString*);
+ECPropertyRetained(clientVersion, NSString*);
+ECPropertyRetained(clientURL, NSString*);
 
-@interface MGTwitterEngine (PrivateMethods)
-
-- (NSString *)_queryStringWithBase:(NSString *)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed;
-- (NSString *)_encodeString:(NSString *)string;
-- (NSString*)_sendRequest:(NSURLRequest *)theRequest;
-- (NSMutableURLRequest *)_baseRequestWithMethod:(NSString *)method path:(NSString *)path queryParameters:(NSDictionary *)params;
-- (void)_parseDataForConnection:(MGTwitterHTTPURLConnection *)connection;
-- (BOOL) _isValidDelegateForSelector:(SEL)selector;
-- (void)parsingSucceededForRequest:(NSString *)identifier withParsedObjects:(NSArray *)parsedObjects;
+- (NSString*)queryStringWithBase:(NSString*)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed;
+- (NSString*)encodeString:(NSString*)string;
+- (NSString*)sendRequest:(NSURLRequest *)theRequest;
+- (NSMutableURLRequest *)requestWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary *)params;
+- (void)parseDataFromConnection:(MGTwitterHTTPURLConnection *)connection;
+- (BOOL) isValidDelegateForSelector:(SEL)selector;
 
 @end
 
+#pragma mark - Implementation
 
 @implementation MGTwitterEngine
 
+#pragma mark - Properties
+
 ECPropertySynthesize(authentication);
+ECPropertySynthesize(clientName);
+ECPropertySynthesize(clientVersion);
+ECPropertySynthesize(clientURL);
+ECPropertySynthesize(secure);
+ECPropertySynthesize(apiDomain);
+ECPropertySynthesize(searchDomain);
 
 #pragma mark - Debug Channels
 
 ECDefineDebugChannel(MGTwitterEngineChannel);
 
+#pragma mark - Constants
 
-#pragma mark Constructors
+static NSString *const kAPIFormat              = @"json";
+static NSString *const kTwitterDomain          = @"api.twitter.com/1";
+static NSString *const kSearchDomain           = @"search.twitter.com";
+static NSString *const kPostMethod             = @"POST";
+
+static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails quickly if it's going to fail at all.
 
 
-+ (MGTwitterEngine *)twitterEngineWithDelegate:(NSObject *)theDelegate
-{
-    return [[[self alloc] initWithDelegate:theDelegate] autorelease];
-}
+#pragma mark - Lifecycle
 
+// --------------------------------------------------------------------------
+//! Construct engine.
+// --------------------------------------------------------------------------
 
 - (MGTwitterEngine *)initWithDelegate:(NSObject *)newDelegate
 {
     if ((self = [super init])) {
-        _delegate = newDelegate; // deliberately weak reference
-        _connections = [[NSMutableDictionary alloc] initWithCapacity:0];
-        _clientName = [DEFAULT_CLIENT_NAME retain];
-        _clientVersion = [DEFAULT_CLIENT_VERSION retain];
-        _clientURL = [DEFAULT_CLIENT_URL retain];
-        _clientSourceToken = [DEFAULT_CLIENT_TOKEN retain];
-        _APIDomain = [TWITTER_DOMAIN retain];
-        _searchDomain = [TWITTER_SEARCH_DOMAIN retain];
+        mDelegate = newDelegate; // deliberately weak reference
+        mConnections = [[NSMutableDictionary alloc] initWithCapacity:0];
+        self.clientName = @"ECTwitter";
+        self.clientVersion = @"1.0";
+        self.clientURL = @"http://www.elegantchaos.com/libraries/ectwitter";
+        self.apiDomain = kTwitterDomain;
+        self.searchDomain = kSearchDomain;
         
-        _secureConnection = YES;
-        _clearsCookies = NO;
-        
-        _APIFormat = @"json";
+        self.secure = YES;
 
     }
     
     return self;
 }
 
+// --------------------------------------------------------------------------
+//! Cleanup.
+// --------------------------------------------------------------------------
 
 - (void)dealloc
 {
-    _delegate = nil;
+    mDelegate = nil;
  
     ECPropertyDealloc(authentication);
+    ECPropertyDealloc(apiDomain);
+    ECPropertyDealloc(clientName);
+    ECPropertyDealloc(clientVersion);
+    ECPropertyDealloc(clientURL);
+    ECPropertyDealloc(searchDomain);
     
-    [[_connections allValues] makeObjectsPerformSelector:@selector(cancel)];
-    [_connections release];
-    
-    [_clientName release];
-    [_clientVersion release];
-    [_clientURL release];
-    [_clientSourceToken release];
-	[_APIDomain release];
-	[_APIFormat release];
-	[_searchDomain release];
+    [[mConnections allValues] makeObjectsPerformSelector:@selector(cancel)];
+    [mConnections release];
 	
     [super dealloc];
 }
@@ -108,113 +108,70 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 
 #pragma mark Configuration and Accessors
 
-- (void)setClientName:(NSString *)name version:(NSString *)version URL:(NSString *)url token:(NSString *)token;
+// --------------------------------------------------------------------------
+//! Set up client details for reporting to twitter.
+// --------------------------------------------------------------------------
+
+- (void)setClientName:(NSString*)name version:(NSString*)version URL:(NSString*)url;
 {
-    [_clientName release];
-    _clientName = [name retain];
-    [_clientVersion release];
-    _clientVersion = [version retain];
-    [_clientURL release];
-    _clientURL = [url retain];
-    [_clientSourceToken release];
-    _clientSourceToken = [token retain];
-}
-
-
-- (NSString *)APIDomain
-{
-	return [[_APIDomain retain] autorelease];
-}
-
-
-- (void)setAPIDomain:(NSString *)domain
-{
-	[_APIDomain release];
-	if (!domain || [domain length] == 0) {
-		_APIDomain = [TWITTER_DOMAIN retain];
-	} else {
-		_APIDomain = [domain retain];
-	}
-}
-
-
-- (NSString *)searchDomain
-{
-	return [[_searchDomain retain] autorelease];
-}
-
-
-- (void)setSearchDomain:(NSString *)domain
-{
-	[_searchDomain release];
-	if (!domain || [domain length] == 0) {
-		_searchDomain = [TWITTER_SEARCH_DOMAIN retain];
-	} else {
-		_searchDomain = [domain retain];
-	}
-}
-
-- (BOOL)usesSecureConnection
-{
-    return _secureConnection;
-}
-
-
-- (void)setUsesSecureConnection:(BOOL)flag
-{
-    _secureConnection = flag;
-}
-
-
-- (BOOL)clearsCookies
-{
-	return _clearsCookies;
-}
-
-
-- (void)setClearsCookies:(BOOL)flag
-{
-	_clearsCookies = flag;
+    self.clientName = name;
+    self.clientVersion = version;
+    self.clientURL = url;
 }
 
 #pragma mark Connection methods
 
+// --------------------------------------------------------------------------
+//! Return number of active connections.
+// --------------------------------------------------------------------------
 
 - (NSUInteger)numberOfConnections
 {
-    return [_connections count];
+    return [mConnections count];
 }
 
+// --------------------------------------------------------------------------
+//! Return array of identifiers for active connections.
+// --------------------------------------------------------------------------
 
 - (NSArray *)connectionIdentifiers
 {
-    return [_connections allKeys];
+    return [mConnections allKeys];
 }
 
+// --------------------------------------------------------------------------
+//! Close connection with a given identifier.
+// --------------------------------------------------------------------------
 
-- (void)closeConnection:(NSString *)connectionIdentifier
+- (void)closeConnection:(NSString*)connectionIdentifier
 {
-    MGTwitterHTTPURLConnection *connection = [_connections objectForKey:connectionIdentifier];
+    MGTwitterHTTPURLConnection *connection = [mConnections objectForKey:connectionIdentifier];
     if (connection) {
         [connection cancel];
-        [_connections removeObjectForKey:connectionIdentifier];
-		if ([self _isValidDelegateForSelector:@selector(connectionFinished:)])
-			[_delegate connectionFinished:connectionIdentifier];
+        [mConnections removeObjectForKey:connectionIdentifier];
+		if ([self isValidDelegateForSelector:@selector(connectionFinished:)])
+			[mDelegate connectionFinished:connectionIdentifier];
     }
 }
 
+// --------------------------------------------------------------------------
+//! Close all connections.
+// --------------------------------------------------------------------------
 
 - (void)closeAllConnections
 {
-    [[_connections allValues] makeObjectsPerformSelector:@selector(cancel)];
-    [_connections removeAllObjects];
+    [[mConnections allValues] makeObjectsPerformSelector:@selector(cancel)];
+    [mConnections removeAllObjects];
 }
 
 
 #pragma mark Utility methods
 
+// --------------------------------------------------------------------------
+//! Build query string.
+// --------------------------------------------------------------------------
 
-- (NSString *)_queryStringWithBase:(NSString *)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed
+- (NSString*)queryStringWithBase:(NSString*)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed
 {
     // Append base if specified.
     NSMutableString *str = [NSMutableString stringWithCapacity:0];
@@ -234,17 +191,20 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
             }
             NSString *name = [names objectAtIndex:i];
             [str appendString:[NSString stringWithFormat:@"%@=%@", 
-             name, [self _encodeString:[params objectForKey:name]]]];
+             name, [self encodeString:[params objectForKey:name]]]];
         }
     }
     
     return str;
 }
 
+// --------------------------------------------------------------------------
+//! Encode string.
+// --------------------------------------------------------------------------
 
-- (NSString *)_encodeString:(NSString *)string
+- (NSString*)encodeString:(NSString*)string
 {
-    NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, 
+    NSString *result = (NSString*)CFURLCreateStringByAddingPercentEscapes(NULL, 
                                                                  (CFStringRef)string, 
                                                                  NULL, 
                                                                  (CFStringRef)@";/?:@&=$+{}<>,",
@@ -254,7 +214,11 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 
 #pragma mark Request sending methods
 
--(NSString*)_sendRequest:(NSURLRequest *)theRequest;
+// --------------------------------------------------------------------------
+//! Send request.
+// --------------------------------------------------------------------------
+
+-(NSString*)sendRequest:(NSURLRequest *)theRequest;
 {
     
     // Create a connection using this request, with the default timeout and caching policy, 
@@ -265,21 +229,45 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
     if (!connection) {
         return nil;
     } else {
-        [_connections setObject:connection forKey:[connection identifier]];
+        [mConnections setObject:connection forKey:[connection identifier]];
         [connection release];
     }
 	
-	if ([self _isValidDelegateForSelector:@selector(connectionStarted:)])
-		[_delegate connectionStarted:[connection identifier]];
+	if ([self isValidDelegateForSelector:@selector(connectionStarted:)])
+		[mDelegate connectionStarted:[connection identifier]];
     
     return [connection identifier];
 }
 
 
-#pragma mark Base Request 
-- (NSMutableURLRequest *)_baseRequestWithMethod:(NSString *)method 
-                                           path:(NSString *)path
-                                queryParameters:(NSDictionary *)params 
+#pragma mark Request 
+
+// --------------------------------------------------------------------------
+//! Make a request.
+// --------------------------------------------------------------------------
+
+- (NSString*) request:(NSString*)twitterPath parameters:(NSDictionary *)params method:(NSString*)method;
+{
+	NSString* path = [NSString stringWithFormat:@"%@.%@", twitterPath, kAPIFormat];
+    NSMutableURLRequest* request = [self requestWithMethod:method path:path parameters:params];
+    
+    // Set the request body if this is a POST request.
+    BOOL isPOST = (method && [method isEqualToString:kPostMethod]);
+    if (isPOST) 
+    {
+        // Set request body, if specified (hopefully so), with 'source' parameter if appropriate.
+		NSString* body = [self queryStringWithBase:nil parameters:params prefixed:NO];
+        [request setHTTPBody:[body dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+	
+	return [self sendRequest:request];
+}
+
+// --------------------------------------------------------------------------
+//! Make a request.
+// --------------------------------------------------------------------------
+
+- (NSMutableURLRequest *)requestWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary *)params 
 {
 	NSString *contentType = [params objectForKey:@"Content-Type"];
 	if(contentType)
@@ -293,13 +281,13 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 	
     // Construct appropriate URL string.
     NSString *fullPath = [path stringByAddingPercentEscapesUsingEncoding:NSNonLossyASCIIStringEncoding];
-    if (params && ![method isEqualToString:HTTP_POST_METHOD]) {
-        fullPath = [self _queryStringWithBase:fullPath parameters:params prefixed:YES];
+    if (params && ![method isEqualToString:kPostMethod]) {
+        fullPath = [self queryStringWithBase:fullPath parameters:params prefixed:YES];
     }
     
 	BOOL isSearch = NO; // (requestType == MGTwitterSearchRequest || requestType == MGTwitterSearchCurrentTrendsRequest);
-	NSString* domain = isSearch ? _searchDomain : _APIDomain;
-	NSString* connectionType = (_secureConnection && !isSearch) ? @"https" : @"http";
+	NSString* domain = isSearch ? self.searchDomain : self.apiDomain;
+	NSString* connectionType = (self.secure && !isSearch) ? @"https" : @"http";
 		
     NSString *urlString = [NSString stringWithFormat:@"%@://%@/%@", 
                            connectionType,
@@ -318,13 +306,11 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
     {
         theRequest = [self.authentication requestForURL:finalURL];
 		[theRequest setCachePolicy:NSURLRequestReloadIgnoringCacheData ];
-		[theRequest setTimeoutInterval:URL_REQUEST_TIMEOUT];
+		[theRequest setTimeoutInterval:kRequestTimeout];
 	}
     else
     {
-		theRequest = [NSMutableURLRequest requestWithURL:finalURL 
-											 cachePolicy:NSURLRequestReloadIgnoringCacheData 
-										 timeoutInterval:URL_REQUEST_TIMEOUT];
+		theRequest = [NSMutableURLRequest requestWithURL:finalURL cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:kRequestTimeout];
 	}
     if (method) {
         [theRequest setHTTPMethod:method];
@@ -333,9 +319,9 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
     [theRequest setHTTPShouldHandleCookies:NO];
     
     // Set headers for client information, for tracking purposes at Twitter.
-    [theRequest setValue:_clientName    forHTTPHeaderField:@"X-Twitter-Client"];
-    [theRequest setValue:_clientVersion forHTTPHeaderField:@"X-Twitter-Client-Version"];
-    [theRequest setValue:_clientURL     forHTTPHeaderField:@"X-Twitter-Client-URL"];
+    [theRequest setValue:self.clientName    forHTTPHeaderField:@"X-Twitter-Client"];
+    [theRequest setValue:self.clientVersion forHTTPHeaderField:@"X-Twitter-Client-Version"];
+    [theRequest setValue:self.clientURL     forHTTPHeaderField:@"X-Twitter-Client-URL"];
 	
     [theRequest setValue:contentType    forHTTPHeaderField:@"Content-Type"];
     	
@@ -344,37 +330,51 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 
 #pragma mark Parsing methods
 
-- (void)_parseDataForConnection:(MGTwitterHTTPURLConnection *)connection
+// --------------------------------------------------------------------------
+//! Parse received data.
+// --------------------------------------------------------------------------
+
+- (void)parseDataFromConnection:(MGTwitterHTTPURLConnection*)connection
 {
-    NSData* jsonData = [[connection data] copy];
+    NSData* data = [[connection data] copy];
     NSString* identifier = [[connection identifier] copy];
 
-	ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] autorelease], [connection URL]);
+	ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease], [connection URL]);
 
-    ECTwitterParser* parser = [[ECTwitterParser alloc] initWithDelegate:_delegate options:MGTwitterEngineDeliveryAllResultsOption];
-    [parser parseData:jsonData identifier:identifier];
+    ECTwitterParser* parser = [[ECTwitterParser alloc] initWithDelegate:mDelegate options:MGTwitterEngineDeliveryAllResultsOption];
+    [parser parseData:data identifier:identifier];
     [parser release];
 
-    [jsonData release];
+    [data release];
     [identifier release];
 }
 
 #pragma mark Delegate methods
 
-- (BOOL) _isValidDelegateForSelector:(SEL)selector
+// --------------------------------------------------------------------------
+//! Does delegate support a method?
+// --------------------------------------------------------------------------
+
+- (BOOL) isValidDelegateForSelector:(SEL)selector
 {
-	return ((_delegate != nil) && [_delegate respondsToSelector:selector]);
+	return ((mDelegate != nil) && [mDelegate respondsToSelector:selector]);
 }
 
 
 #pragma mark NSURLConnection delegate methods
 
+// --------------------------------------------------------------------------
+//! Respond to challenge.
+// --------------------------------------------------------------------------
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
 {
     [[challenge sender] continueWithoutCredentialForAuthenticationChallenge:challenge];
 }
 
+// --------------------------------------------------------------------------
+//! Process response.
+// --------------------------------------------------------------------------
 
 - (void)connection:(MGTwitterHTTPURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
@@ -390,19 +390,18 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
     if (statusCode == 304)
     {
         // Not modified, or generic success.
-		if ([self _isValidDelegateForSelector:@selector(requestSucceeded:)])
-			[_delegate requestSucceeded:[connection identifier]];
-        if (statusCode == 304) {
-            [self parsingSucceededForRequest:[connection identifier] 
-                           withParsedObjects:[NSArray array]];
+		if ([self isValidDelegateForSelector:@selector(requestSucceeded:)])
+			[mDelegate requestSucceeded:[connection identifier]];
+        if (statusCode == 304) 
+        {
         }
         
         // Destroy the connection.
         [connection cancel];
 		NSString *connectionIdentifier = [connection identifier];
-		[_connections removeObjectForKey:connectionIdentifier];
-		if ([self _isValidDelegateForSelector:@selector(connectionFinished:)])
-			[_delegate connectionFinished:connectionIdentifier];
+		[mConnections removeObjectForKey:connectionIdentifier];
+		if ([self isValidDelegateForSelector:@selector(connectionFinished:)])
+			[mDelegate connectionFinished:connectionIdentifier];
     }
     
         ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: (%ld) [%@]:\r%@", 
@@ -411,6 +410,9 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
               [((NSHTTPURLResponse *)response) allHeaderFields]);
 }
 
+// --------------------------------------------------------------------------
+//! Process data.
+// --------------------------------------------------------------------------
 
 - (void)connection:(MGTwitterHTTPURLConnection *)connection didReceiveData:(NSData *)data
 {
@@ -418,23 +420,29 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
     [connection appendData:data];
 }
 
+// --------------------------------------------------------------------------
+//! Process failure.
+// --------------------------------------------------------------------------
 
 - (void)connection:(MGTwitterHTTPURLConnection *)connection didFailWithError:(NSError *)error
 {
 	NSString *connectionIdentifier = [connection identifier];
 	
     // Inform delegate.
-	if ([self _isValidDelegateForSelector:@selector(requestFailed:withError:)]){
-		[_delegate requestFailed:connectionIdentifier
+	if ([self isValidDelegateForSelector:@selector(requestFailed:withError:)]){
+		[mDelegate requestFailed:connectionIdentifier
 					   withError:error];
 	}
     
     // Release the connection.
-    [_connections removeObjectForKey:connectionIdentifier];
-	if ([self _isValidDelegateForSelector:@selector(connectionFinished:)])
-		[_delegate connectionFinished:connectionIdentifier];
+    [mConnections removeObjectForKey:connectionIdentifier];
+	if ([self isValidDelegateForSelector:@selector(connectionFinished:)])
+		[mDelegate connectionFinished:connectionIdentifier];
 }
 
+// --------------------------------------------------------------------------
+//! Process successful completion.
+// --------------------------------------------------------------------------
 
 - (void)connectionDidFinishLoading:(MGTwitterHTTPURLConnection *)connection
 {
@@ -451,15 +459,15 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
                                   body, @"body",
                                   nil];
         NSError *error = [NSError errorWithDomain:@"HTTP" code:statusCode userInfo:userInfo];
-		if ([self _isValidDelegateForSelector:@selector(requestFailed:withError:)])
-			[_delegate requestFailed:[connection identifier] withError:error];
+		if ([self isValidDelegateForSelector:@selector(requestFailed:withError:)])
+			[mDelegate requestFailed:[connection identifier] withError:error];
 
         // Destroy the connection.
         [connection cancel];
 		NSString *connectionIdentifier = [connection identifier];
-		[_connections removeObjectForKey:connectionIdentifier];
-		if ([self _isValidDelegateForSelector:@selector(connectionFinished:)])
-			[_delegate connectionFinished:connectionIdentifier];
+		[mConnections removeObjectForKey:connectionIdentifier];
+		if ([self isValidDelegateForSelector:@selector(connectionFinished:)])
+			[mDelegate connectionFinished:connectionIdentifier];
         return;
     }
 
@@ -467,8 +475,8 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 	connID = [connection identifier];
 	
     // Inform delegate.
-	if ([self _isValidDelegateForSelector:@selector(requestSucceeded:)])
-		[_delegate requestSucceeded:connID];
+	if ([self isValidDelegateForSelector:@selector(requestSucceeded:)])
+		[mDelegate requestSucceeded:connID];
     
     NSData *receivedData = [connection data];
     if (receivedData) {
@@ -479,58 +487,21 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
             // Dump XML to file for debugging.
             NSString *dataString = [NSString stringWithUTF8String:[receivedData bytes]];
             static NSUInteger index = 0;
-            [dataString writeToFile:[[NSString stringWithFormat:@"~/Desktop/Twitter Messages/message %d.%@", index++, _APIFormat] stringByExpandingTildeInPath] 
+            [dataString writeToFile:[[NSString stringWithFormat:@"~/Desktop/Twitter Messages/message %d.%@", index++, kAPIFormat] stringByExpandingTildeInPath] 
                          atomically:NO encoding:NSUTF8StringEncoding error:NULL];
         }
 #endif
         
         // Parse data from the connection (either XML or JSON.)
-        [self _parseDataForConnection:connection];
+        [self parseDataFromConnection:connection];
     }
     
     // Release the connection.
-    [_connections removeObjectForKey:connID];
-	if ([self _isValidDelegateForSelector:@selector(connectionFinished:)])
-		[_delegate connectionFinished:connID];
+    [mConnections removeObjectForKey:connID];
+	if ([self isValidDelegateForSelector:@selector(connectionFinished:)])
+		[mDelegate connectionFinished:connID];
 }
 
-
-#pragma mark -
-#pragma mark Generic API methods
-#pragma mark -
-
-- (NSString *) genericRequestWithMethod:(NSString *)method 
-                                path:(NSString *)path 
-                     queryParameters:(NSDictionary *)params
-                                body:(NSString *)body 
-{
-
-	NSString *fullPath = [NSString stringWithFormat:@"%@.%@", path, _APIFormat];
-    
-    BOOL isPOST = (method && [method isEqualToString:HTTP_POST_METHOD]);
-	if (!body && isPOST)
-	{
-		body = [self _queryStringWithBase:nil parameters:params prefixed:NO];
-	}
-	
-    NSMutableURLRequest *theRequest = [self _baseRequestWithMethod:method path:fullPath queryParameters:params];
-    
-    // Set the request body if this is a POST request.
-    if (isPOST) {
-        // Set request body, if specified (hopefully so), with 'source' parameter if appropriate.
-        NSString *finalBody = @"";
-		if (body) {
-			finalBody = [finalBody stringByAppendingString:body];
-		}
-        
-        if (finalBody) {
-            [theRequest setHTTPBody:[finalBody dataUsingEncoding:NSUTF8StringEncoding]];
-			ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: finalBody = %@", finalBody);
-        }
-    }
-	
-	return [self _sendRequest:theRequest];
-}
 
 
 @end
