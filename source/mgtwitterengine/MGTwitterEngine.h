@@ -39,10 +39,6 @@ ECPropertyRetained(authentication, ECTwitterAuthentication*);
 - (MGTwitterEngine *)initWithDelegate:(NSObject *)delegate;
 
 // Configuration and Accessors
-- (NSString *)clientName; // see README.txt for info on clientName/Version/URL/SourceToken
-- (NSString *)clientVersion;
-- (NSString *)clientURL;
-- (NSString *)clientSourceToken;
 - (void)setClientName:(NSString *)name version:(NSString *)version URL:(NSString *)url token:(NSString *)token;
 - (NSString *)APIDomain;
 - (void)setAPIDomain:(NSString *)domain;

@@ -11,6 +11,8 @@
 #import "ECTwitterParser.h"
 #import "ECTwitterAuthentication.h"
 
+#import <ECFoundation/NSDictionary+ECUtilities.h>
+
 #define TWITTER_DOMAIN          @"api.twitter.com/1"
 #define TWITTER_SEARCH_DOMAIN	@"search.twitter.com"
 #define HTTP_POST_METHOD        @"POST"
@@ -28,54 +30,15 @@
 
 #define URL_REQUEST_TIMEOUT     25.0 // Twitter usually fails quickly if it's going to fail at all.
 
-@interface NSDictionary (MGTwitterEngineExtensions)
-
--(NSDictionary *)MGTE_dictionaryByRemovingObjectForKey:(NSString *)key;
-
-@end
-
-@implementation NSDictionary (MGTwitterEngineExtensions)
-
--(NSDictionary *)MGTE_dictionaryByRemovingObjectForKey:(NSString *)key{
-	NSDictionary *result = self;
-	if(key){
-		NSMutableDictionary *newParams = [[self mutableCopy] autorelease];
-		[newParams removeObjectForKey:key];
-		result = [[newParams copy] autorelease];
-	}
-	return result;
-}
-
-@end
-
-
 
 @interface MGTwitterEngine (PrivateMethods)
 
-
-// Utility methods
 - (NSString *)_queryStringWithBase:(NSString *)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed;
 - (NSString *)_encodeString:(NSString *)string;
-
-// Connection/Request methods
 - (NSString*)_sendRequest:(NSURLRequest *)theRequest;
-- (NSString *)_sendDataRequestWithMethod:(NSString *)method 
-                                    path:(NSString *)path 
-                         queryParameters:(NSDictionary *)params 
-                                filePath:(NSString *)filePath
-                                    body:(NSString *)body;
-
-- (NSMutableURLRequest *)_baseRequestWithMethod:(NSString *)method 
-                                           path:(NSString *)path
-                                queryParameters:(NSDictionary *)params;
-
-
-// Parsing methods
+- (NSMutableURLRequest *)_baseRequestWithMethod:(NSString *)method path:(NSString *)path queryParameters:(NSDictionary *)params;
 - (void)_parseDataForConnection:(MGTwitterHTTPURLConnection *)connection;
-
-// Delegate methods
 - (BOOL) _isValidDelegateForSelector:(SEL)selector;
-
 - (void)parsingSucceededForRequest:(NSString *)identifier withParsedObjects:(NSArray *)parsedObjects;
 
 @end
@@ -144,31 +107,6 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 
 
 #pragma mark Configuration and Accessors
-
-
-- (NSString *)clientName
-{
-    return [[_clientName retain] autorelease];
-}
-
-
-- (NSString *)clientVersion
-{
-    return [[_clientVersion retain] autorelease];
-}
-
-
-- (NSString *)clientURL
-{
-    return [[_clientURL retain] autorelease];
-}
-
-
-- (NSString *)clientSourceToken
-{
-    return [[_clientSourceToken retain] autorelease];
-}
-
 
 - (void)setClientName:(NSString *)name version:(NSString *)version URL:(NSString *)url token:(NSString *)token;
 {
@@ -338,69 +276,18 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 }
 
 
-- (NSString *)_sendDataRequestWithMethod:(NSString *)method 
-                                    path:(NSString *)path 
-                         queryParameters:(NSDictionary *)params 
-                                filePath:(NSString *)filePath
-                                    body:(NSString *)body
-{
-    
-    NSMutableURLRequest *theRequest = [self _baseRequestWithMethod:method path:path queryParameters:params];
-
-    BOOL isPOST = (method && [method isEqualToString:HTTP_POST_METHOD]);
-    if (isPOST) {
-        NSString *boundary = @"0xKhTmLbOuNdArY";  
-        NSString *filename = [filePath lastPathComponent];
-        NSData *imageData = [NSData dataWithContentsOfFile:filePath];
-        
-        NSString *bodyPrefixString   = [NSString stringWithFormat:@"--%@\r\n", boundary];
-        NSString *bodySuffixString   = [NSString stringWithFormat:@"\r\n--%@--\r\n", boundary];
-        NSString *contentDisposition = [NSString stringWithFormat:@"Content-Disposition: form-data; name=\"image\"; filename=\"%@\"\r\n", filename];
-        NSString *contentImageType   = [NSString stringWithFormat:@"Content-Type: image/%@\r\n", [filename pathExtension]];
-        NSString *contentTransfer    = @"Content-Transfer-Encoding: binary\r\n\r\n";
-        
-        
-        NSMutableData *postBody = [NSMutableData data];
-        
-        [postBody appendData:[bodyPrefixString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO]];
-        [postBody appendData:[contentDisposition dataUsingEncoding:NSUTF8StringEncoding ]];
-        [postBody appendData:[contentImageType dataUsingEncoding:NSUTF8StringEncoding ]];
-        [postBody appendData:[contentTransfer dataUsingEncoding:NSUTF8StringEncoding]];
-        [postBody appendData:imageData];
-        [postBody appendData:[bodySuffixString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO]];
-        
-        [theRequest setHTTPBody:postBody];
-        NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary, nil];
-        [theRequest setValue:contentType forHTTPHeaderField:@"Content-Type"];
-    }
-    
-    MGTwitterHTTPURLConnection *connection;
-    
-    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:theRequest delegate:self ];
-    
-    if (!connection) {
-        return nil;
-    } else {
-        [_connections setObject:connection forKey:[connection identifier]];
-        [connection release];
-    }
-	
-	if ([self _isValidDelegateForSelector:@selector(connectionStarted:)])
-		[_delegate connectionStarted:[connection identifier]];
-    
-    return [connection identifier];
-    
-}
-
 #pragma mark Base Request 
 - (NSMutableURLRequest *)_baseRequestWithMethod:(NSString *)method 
                                            path:(NSString *)path
                                 queryParameters:(NSDictionary *)params 
 {
 	NSString *contentType = [params objectForKey:@"Content-Type"];
-	if(contentType){
-		params = [params MGTE_dictionaryByRemovingObjectForKey:@"Content-Type"];
-	}else{
+	if(contentType)
+    {
+		params = [params dictionaryWithoutKey:@"Content-Type"];
+	}
+    else
+    {
 		contentType = @"application/x-www-form-urlencoded";
 	}
 	
