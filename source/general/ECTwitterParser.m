@@ -202,6 +202,10 @@ static yajl_callbacks callbacks = {
         // free the yajl parser
         yajl_free(handle);
     }
+    
+    self.stack = nil;
+    self.currentDictionary = nil;
+    self.currentArray = nil;
 }
 
 #pragma mark - Parsing Stack

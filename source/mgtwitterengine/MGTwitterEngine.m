@@ -8,13 +8,8 @@
 
 #import "MGTwitterEngine.h"
 #import "MGTwitterHTTPURLConnection.h"
-#import "OAuthConsumer.h"
-
 #import "ECTwitterParser.h"
-
 #import "ECTwitterAuthentication.h"
-
-#include <ECFoundation/ECLogging.h>
 
 #define TWITTER_DOMAIN          @"api.twitter.com/1"
 #define TWITTER_SEARCH_DOMAIN	@"search.twitter.com"
@@ -59,19 +54,11 @@
 
 
 // Utility methods
-- (NSDateFormatter *)_HTTPDateFormatter;
 - (NSString *)_queryStringWithBase:(NSString *)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed;
-- (NSDate *)_HTTPToDate:(NSString *)httpDate;
-- (NSString *)_dateToHTTP:(NSDate *)date;
 - (NSString *)_encodeString:(NSString *)string;
 
 // Connection/Request methods
 - (NSString*)_sendRequest:(NSURLRequest *)theRequest;
-- (NSString *)_sendRequestWithMethod:(NSString *)method 
-                                path:(NSString *)path 
-                     queryParameters:(NSDictionary *)params
-                                body:(NSString *)body;
-
 - (NSString *)_sendDataRequestWithMethod:(NSString *)method 
                                     path:(NSString *)path 
                          queryParameters:(NSDictionary *)params 
@@ -289,18 +276,6 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 #pragma mark Utility methods
 
 
-- (NSDateFormatter *)_HTTPDateFormatter
-{
-    // Returns a formatter for dates in HTTP format (i.e. RFC 822, updated by RFC 1123).
-    // e.g. "Sun, 06 Nov 1994 08:49:37 GMT"
-	NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-	//[dateFormatter setDateFormat:@"%a, %d %b %Y %H:%M:%S GMT"]; // won't work with -init, which uses new (unicode) format behaviour.
-	[dateFormatter setFormatterBehavior:NSDateFormatterBehavior10_4];
-	[dateFormatter setDateFormat:@"EEE, dd MMM yyyy HH:mm:ss GMT"];
-	return dateFormatter;
-}
-
-
 - (NSString *)_queryStringWithBase:(NSString *)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed
 {
     // Append base if specified.
@@ -329,20 +304,6 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 }
 
 
-- (NSDate *)_HTTPToDate:(NSString *)httpDate
-{
-    NSDateFormatter *dateFormatter = [self _HTTPDateFormatter];
-    return [dateFormatter dateFromString:httpDate];
-}
-
-
-- (NSString *)_dateToHTTP:(NSDate *)date
-{
-    NSDateFormatter *dateFormatter = [self _HTTPDateFormatter];
-    return [dateFormatter stringFromDate:date];
-}
-
-
 - (NSString *)_encodeString:(NSString *)string
 {
     NSString *result = (NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, 
@@ -354,34 +315,6 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 }
 
 #pragma mark Request sending methods
-
-- (NSString *)_sendRequestWithMethod:(NSString *)method 
-                                path:(NSString *)path 
-                     queryParameters:(NSDictionary *)params 
-                                body:(NSString *)body
-{
-
-    NSMutableURLRequest *theRequest = [self _baseRequestWithMethod:method 
-                                                              path:path
-                                                   queryParameters:params];
-    
-    // Set the request body if this is a POST request.
-    BOOL isPOST = (method && [method isEqualToString:HTTP_POST_METHOD]);
-    if (isPOST) {
-        // Set request body, if specified (hopefully so), with 'source' parameter if appropriate.
-        NSString *finalBody = @"";
-		if (body) {
-			finalBody = [finalBody stringByAppendingString:body];
-		}
-
-        if (finalBody) {
-            [theRequest setHTTPBody:[finalBody dataUsingEncoding:NSUTF8StringEncoding]];
-			ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: finalBody = %@", finalBody);
-        }
-    }
-	
-	return [self _sendRequest:theRequest];
-}
 
 -(NSString*)_sendRequest:(NSURLRequest *)theRequest;
 {
@@ -546,28 +479,6 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 	return ((_delegate != nil) && [_delegate respondsToSelector:selector]);
 }
 
-#pragma mark MGTwitterParserDelegate methods
-
-- (void)parsingSucceededForRequest:(NSString *)identifier withParsedObjects:(NSArray *)parsedObjects
-{
-    // Forward appropriate message to _delegate
-    if ([self _isValidDelegateForSelector:@selector(genericResultsReceived:forRequest:)] && [parsedObjects count] > 0)
-        [_delegate genericResultsReceived:parsedObjects forRequest:identifier];
-}
-
-- (void)parsingFailedForRequest:(NSString *)requestIdentifier 
-                      withError:(NSError *)error
-{
-	if ([self _isValidDelegateForSelector:@selector(requestFailed:withError:)])
-		[_delegate requestFailed:requestIdentifier withError:error];
-}
-
-- (void)parsedObject:(NSDictionary *)dictionary forRequest:(NSString *)requestIdentifier 
-{
-	if ([self _isValidDelegateForSelector:@selector(receivedObject:forRequest:)])
-		[_delegate receivedObject:dictionary forRequest:requestIdentifier];
-}
-
 
 #pragma mark NSURLConnection delegate methods
 
@@ -709,13 +620,29 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 
 	NSString *fullPath = [NSString stringWithFormat:@"%@.%@", path, _APIFormat];
     
-	if (!body && method && [method isEqualToString: HTTP_POST_METHOD])
+    BOOL isPOST = (method && [method isEqualToString:HTTP_POST_METHOD]);
+	if (!body && isPOST)
 	{
 		body = [self _queryStringWithBase:nil parameters:params prefixed:NO];
 	}
 	
+    NSMutableURLRequest *theRequest = [self _baseRequestWithMethod:method path:fullPath queryParameters:params];
+    
+    // Set the request body if this is a POST request.
+    if (isPOST) {
+        // Set request body, if specified (hopefully so), with 'source' parameter if appropriate.
+        NSString *finalBody = @"";
+		if (body) {
+			finalBody = [finalBody stringByAppendingString:body];
+		}
+        
+        if (finalBody) {
+            [theRequest setHTTPBody:[finalBody dataUsingEncoding:NSUTF8StringEncoding]];
+			ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: finalBody = %@", finalBody);
+        }
+    }
 	
-	return [self _sendRequestWithMethod:method path:fullPath queryParameters:params body:body];	
+	return [self _sendRequest:theRequest];
 }
 
 
