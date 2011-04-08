@@ -8,14 +8,14 @@
 @class OAToken;
 @class ECTwitterHandler;
 @class ECTwitterEngine;
-@class MGTwitterHTTPURLConnection;
+@class ECTwitterConnection;
 
 extern NSString *const TwitterAuthenticationSucceeded;
 extern NSString *const TwitterAuthenticationFailed;
 
 @interface ECTwitterAuthentication : NSObject
 {
-    ECPropertyVariable(connection, MGTwitterHTTPURLConnection*);
+    ECPropertyVariable(connection, ECTwitterConnection*);
     ECPropertyVariable(consumerKey, NSString*);
     ECPropertyVariable(consumerSecret, NSString*);
     ECPropertyVariable(engine, ECTwitterEngine*);
@@ -28,7 +28,7 @@ extern NSString *const TwitterAuthenticationFailed;
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(connection, MGTwitterHTTPURLConnection*);
+ECPropertyRetained(connection, ECTwitterConnection*);
 ECPropertyRetained(consumerKey, NSString*);
 ECPropertyRetained(consumerSecret, NSString*);
 ECPropertyRetained(engine, ECTwitterEngine*);

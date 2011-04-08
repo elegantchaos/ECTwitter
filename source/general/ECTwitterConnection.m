@@ -1,13 +1,14 @@
 //
-//  MGTwitterHTTPURLConnection.m
+//  ECTwitterConnection.m
 //  MGTwitterEngine
 //
 //  Created by Matt Gemmell on 16/02/2008.
 //  Copyright 2008 Instinctive Code.
 //
 
-#import "MGTwitterHTTPURLConnection.h"
-#import "NSString+UUID.h"
+#import "ECTwitterConnection.h"
+
+#import <ECFoundation/NSString+ECUtilities.h>
 
 
 
@@ -17,6 +18,7 @@
 
 @implementation NSURLRequest (OAuthExtensions)
 
+
 -(void)prepare{
 	// do nothing
 }
@@ -25,10 +27,11 @@
 
 
 
-@implementation MGTwitterHTTPURLConnection
+@implementation ECTwitterConnection
 
-
-@synthesize response = _response;
+ECPropertySynthesize(data);
+ECPropertySynthesize(identifier);
+ECPropertySynthesize(response);
 
 #pragma mark Initializer
 
@@ -38,10 +41,10 @@
 	// OAuth requests need to have -prepare called on them first. handle that case before the NSURLConnection sends it
 	[request prepare];
 	
-    if ((self = [super initWithRequest:request delegate:delegate])) {
-        _data = [[NSMutableData alloc] initWithCapacity:0];
-        _identifier = [[NSString stringWithNewUUID] retain];
-		_URL = [[request URL] retain];
+    if ((self = [super initWithRequest:request delegate:delegate])) 
+    {
+        self.data = [NSMutableData dataWithCapacity:0];
+        self.identifier = [NSString stringWithNewUUID];
     }
     
     return self;
@@ -50,10 +53,10 @@
 
 - (void)dealloc
 {
-    [_response release];
-    [_data release];
-    [_identifier release];
-	[_URL release];
+    ECPropertyDealloc(data);
+    ECPropertyDealloc(identifier);
+    ECPropertyDealloc(response);
+
     [super dealloc];
 }
 
@@ -63,35 +66,18 @@
 
 - (void)resetDataLength
 {
-    [_data setLength:0];
+    [self.data setLength:0];
 }
 
 
 - (void)appendData:(NSData *)data
 {
-    [_data appendData:data];
+    [self.data appendData:data];
 }
 
 
 #pragma mark Accessors
 
-
-- (NSString *)identifier
-{
-    return [[_identifier retain] autorelease];
-}
-
-
-- (NSData *)data
-{
-    return [[_data retain] autorelease];
-}
-
-
-- (NSURL *)URL
-{
-    return [[_URL retain] autorelease];
-}
 
 - (NSString *)description
 {

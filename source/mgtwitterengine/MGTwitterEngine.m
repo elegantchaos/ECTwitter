@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------
 
 #import "MGTwitterEngine.h"
-#import "MGTwitterHTTPURLConnection.h"
+#import "ECTwitterConnection.h"
 #import "ECTwitterParser.h"
 #import "ECTwitterAuthentication.h"
 
@@ -27,7 +27,7 @@ ECPropertyRetained(clientURL, NSString*);
 - (NSString*)encodeString:(NSString*)string;
 - (NSString*)sendRequest:(NSURLRequest *)theRequest;
 - (NSMutableURLRequest *)requestWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary *)params;
-- (void)parseDataFromConnection:(MGTwitterHTTPURLConnection *)connection;
+- (void)parseDataFromConnection:(ECTwitterConnection*)connection;
 - (BOOL) isValidDelegateForSelector:(SEL)selector;
 
 @end
@@ -145,7 +145,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 
 - (void)closeConnection:(NSString*)connectionIdentifier
 {
-    MGTwitterHTTPURLConnection *connection = [mConnections objectForKey:connectionIdentifier];
+    ECTwitterConnection* connection = [mConnections objectForKey:connectionIdentifier];
     if (connection) {
         [connection cancel];
         [mConnections removeObjectForKey:connectionIdentifier];
@@ -223,8 +223,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
     
     // Create a connection using this request, with the default timeout and caching policy, 
     // and appropriate Twitter request and response types for parsing and error reporting.
-    MGTwitterHTTPURLConnection *connection;
-    connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:theRequest delegate:self ];
+    ECTwitterConnection* connection = [[ECTwitterConnection alloc] initWithRequest:theRequest delegate:self ];
     
     if (!connection) {
         return nil;
@@ -334,12 +333,12 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 //! Parse received data.
 // --------------------------------------------------------------------------
 
-- (void)parseDataFromConnection:(MGTwitterHTTPURLConnection*)connection
+- (void)parseDataFromConnection:(ECTwitterConnection*)connection
 {
     NSData* data = [[connection data] copy];
     NSString* identifier = [[connection identifier] copy];
 
-	ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: jsonData = %@ from %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease], [connection URL]);
+	ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: jsonData = %@", [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease]);
 
     ECTwitterParser* parser = [[ECTwitterParser alloc] initWithDelegate:mDelegate options:MGTwitterEngineDeliveryAllResultsOption];
     [parser parseData:data identifier:identifier];
@@ -376,7 +375,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 //! Process response.
 // --------------------------------------------------------------------------
 
-- (void)connection:(MGTwitterHTTPURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(ECTwitterConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
     // This method is called when the server has determined that it has enough information to create the NSURLResponse.
     // it can be called multiple times, for example in the case of a redirect, so each time we reset the data.
@@ -414,7 +413,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 //! Process data.
 // --------------------------------------------------------------------------
 
-- (void)connection:(MGTwitterHTTPURLConnection *)connection didReceiveData:(NSData *)data
+- (void)connection:(ECTwitterConnection*)connection didReceiveData:(NSData *)data
 {
     // Append the new data to the receivedData.
     [connection appendData:data];
@@ -424,7 +423,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 //! Process failure.
 // --------------------------------------------------------------------------
 
-- (void)connection:(MGTwitterHTTPURLConnection *)connection didFailWithError:(NSError *)error
+- (void)connection:(ECTwitterConnection*)connection didFailWithError:(NSError *)error
 {
 	NSString *connectionIdentifier = [connection identifier];
 	
@@ -444,7 +443,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 //! Process successful completion.
 // --------------------------------------------------------------------------
 
-- (void)connectionDidFinishLoading:(MGTwitterHTTPURLConnection *)connection
+- (void)connectionDidFinishLoading:(ECTwitterConnection*)connection
 {
 
     NSInteger statusCode = [[connection response] statusCode];

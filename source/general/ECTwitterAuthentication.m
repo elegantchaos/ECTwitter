@@ -11,7 +11,7 @@
 #import "OAToken.h"
 #import "OAConsumer.h"
 #import "OAMutableURLRequest.h"
-#import "MGTwitterHTTPURLConnection.h"
+#import "ECTwitterConnection.h"
 #import "MGTwitterEngine.h"
 
 // --------------------------------------------------------------------------
@@ -172,7 +172,7 @@ NSString *const kPrefix = @"";
 	
     // Create a connection using this request, with the default timeout and caching policy, 
     // and appropriate Twitter request and response types for parsing and error reporting.
-    MGTwitterHTTPURLConnection *connection = [[MGTwitterHTTPURLConnection alloc] initWithRequest:request delegate:self];
+    ECTwitterConnection* connection = [[ECTwitterConnection alloc] initWithRequest:request delegate:self];
     [request release];
     
     if (connection)
@@ -201,7 +201,7 @@ NSString *const kPrefix = @"";
 
 - (void)invokeHandlerForError
 {
-    MGTwitterHTTPURLConnection* connection = self.connection;
+    ECTwitterConnection* connection = self.connection;
     NSError* error = nil;
     
     if (connection)
@@ -241,7 +241,7 @@ NSString *const kPrefix = @"";
 }
 
 
-- (void)connection:(MGTwitterHTTPURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(ECTwitterConnection*)connection didReceiveResponse:(NSURLResponse *)response
 {
 	ECDebug(AuthenticationChannel, @"received response");
 
@@ -261,7 +261,7 @@ NSString *const kPrefix = @"";
 }
 
 
-- (void)connection:(MGTwitterHTTPURLConnection *)connection didReceiveData:(NSData *)data
+- (void)connection:(ECTwitterConnection*)connection didReceiveData:(NSData *)data
 {
 	ECDebug(AuthenticationChannel, @"received data");
 
@@ -269,14 +269,14 @@ NSString *const kPrefix = @"";
 }
 
 
-- (void)connection:(MGTwitterHTTPURLConnection *)connection didFailWithError:(NSError *)error
+- (void)connection:(ECTwitterConnection*)connection didFailWithError:(NSError *)error
 {
 	ECDebug(AuthenticationChannel, @"failed with error");
     [self invokeHandlerForError];
 }
 
 
-- (void)connectionDidFinishLoading:(MGTwitterHTTPURLConnection *)connection
+- (void)connectionDidFinishLoading:(ECTwitterConnection*)connection
 {
 	ECDebug(AuthenticationChannel, @"finished loading");
     
