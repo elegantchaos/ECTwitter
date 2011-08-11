@@ -69,7 +69,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 - (MGTwitterEngine *)initWithDelegate:(NSObject *)newDelegate
 {
     if ((self = [super init])) {
-        mDelegate = newDelegate; // deliberately weak reference
+        mDelegate = (NSObject <MGTwitterEngineDelegate>*) newDelegate; // deliberately weak reference
         mConnections = [[NSMutableDictionary alloc] initWithCapacity:0];
         self.clientName = @"ECTwitter";
         self.clientVersion = @"1.0";

@@ -43,6 +43,8 @@ ECPropertyRetained(twitterID, ECTwitterID*);
 
 - (id)				initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
 - (id)				initWithContentsOfURL: (NSURL*) url inCache: (ECTwitterCache*) cache;
+- (id)				initWithID: (ECTwitterID*) tweetID inCache: (ECTwitterCache*) cache;
+
 - (void)			refreshWithInfo: (NSDictionary*) info;
 
 - (BOOL)			gotData;

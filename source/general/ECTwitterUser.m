@@ -65,7 +65,8 @@ ECPropertySynthesize(twitterID);
 	{
 		
 	}
-	
+	[info release];
+    
 	return self;
 }
 

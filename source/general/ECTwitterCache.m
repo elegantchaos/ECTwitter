@@ -263,7 +263,7 @@ NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
 	{
 		for (NSURL* url in items)
 		{
-			ECTwitterUser* user = [[ECTwitterUser alloc] initWithContentsOfURL: url];
+			ECTwitterUser* user = [[ECTwitterUser alloc] initWithContentsOfURL: url inCache:self];
 			[self.users setObject: user forKey: user.twitterID.string];
 			[user release];
 		}
@@ -275,7 +275,7 @@ NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
 	{
 		for (NSURL* url in items)
 		{
-			ECTwitterTweet* tweet = [[ECTwitterTweet alloc] initWithContentsOfURL: url];
+			ECTwitterTweet* tweet = [[ECTwitterTweet alloc] initWithContentsOfURL: url inCache:self];
 			[self.tweets setObject: tweet forKey: tweet.twitterID.string];
 			[tweet release];
 		}
