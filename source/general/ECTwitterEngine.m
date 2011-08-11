@@ -245,6 +245,7 @@ ECPropertySynthesize(requests);
 	ECTwitterHandler* handler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
 	handler.extra = extra;
 	[self setHandler: handler forRequest:request];
+    [handler release];
 }
 
 @end

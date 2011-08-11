@@ -55,7 +55,8 @@ ECPropertySynthesize(viewed);
 	{
 		
 	}
-	
+	[info release];
+    
 	return self;
 }
 

@@ -127,7 +127,9 @@ static yajl_callbacks callbacks = {
     
     if (mOptions & MGTwitterEngineDeliveryAllResultsOption)
     {
-        self.parsedObjects = [[NSMutableArray alloc] initWithCapacity:0];
+        NSMutableArray* parsed = [[NSMutableArray alloc] initWithCapacity:0];
+        self.parsedObjects = parsed;
+        [parsed release];
     }
     
     if ([data length] <= 5)
@@ -243,7 +245,7 @@ static yajl_callbacks callbacks = {
     NSUInteger stackLevel = [self.stack count];
 	if (stackLevel > 1)
     {
-        id popped = [self.stack lastObject];
+        id popped = [[self.stack lastObject] retain];
         [self.stack removeLastObject];
         self.currentKey = [self.stack lastObject];
         [self.stack removeLastObject];
@@ -260,6 +262,7 @@ static yajl_callbacks callbacks = {
             ECDebug(MGTwitterEngineParsingChannel, @"popped dictionary with key %@", self.currentKey);
             self.currentDictionary = popped;
         }
+        [popped release];
     }
 }
 
@@ -395,7 +398,9 @@ int process_yajl_string(void *ctx, const unsigned char * stringVal, unsigned int
 int process_yajl_map_key(void *ctx, const unsigned char * stringVal, unsigned int stringLen)
 {
 	ECTwitterParser* parser = ctx;
-	parser.currentKey = [[NSString alloc] initWithBytes:stringVal length:stringLen encoding:NSUTF8StringEncoding];
+    NSString* newKey = [[NSString alloc] initWithBytes:stringVal length:stringLen encoding:NSUTF8StringEncoding];
+	parser.currentKey = newKey;
+    [newKey release];
     
     return 1;
 }
@@ -409,6 +414,7 @@ int process_yajl_start_map(void *ctx)
     [parser pushStack];
     parser.currentDictionary = newDictionary;
     parser.currentArray = nil;    
+    [newDictionary release];
     
 	return 1;
 }
@@ -419,9 +425,10 @@ int process_yajl_end_map(void *ctx)
 	ECTwitterParser* parser = ctx;
 	ECDebug(MGTwitterEngineParsingChannel, @"dictionary end %@", parser.currentDictionary);
 	
-    NSMutableDictionary* dictionary = parser.currentDictionary;
+    NSMutableDictionary* dictionary = [parser.currentDictionary retain];
     [parser popStack];
     [parser addValue:dictionary];
+    [dictionary release];
     
 	return 1;
 }
@@ -445,9 +452,10 @@ int process_yajl_end_array(void *ctx)
 	ECTwitterParser* parser = ctx;
 	ECDebug(MGTwitterEngineParsingChannel, @"array end %@", parser.currentArray);
 	
-    NSMutableArray* array = parser.currentArray;
+    NSMutableArray* array = [parser.currentArray retain];
     [parser popStack];
     [parser addValue:array];
+    [array release];
 	
     return 1;
 }

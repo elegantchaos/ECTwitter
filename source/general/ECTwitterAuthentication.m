@@ -178,6 +178,7 @@ NSString *const kPrefix = @"";
     if (connection)
     {
         self.connection = connection;
+        [connection release];
     }
 }
 

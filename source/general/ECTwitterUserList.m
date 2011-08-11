@@ -98,8 +98,10 @@ ECPropertySynthesize(users);
 - (ECTwitterUserList*)	sortedWithSelector: (SEL) selector
 {
 	ECTwitterUserList* userList = [[ECTwitterUserList alloc] init];
-	userList.users = [self.users mutableCopy];
+    NSMutableArray* usersCopy = [self.users mutableCopy];
+	userList.users = usersCopy;
 	[userList.users sortUsingSelector: selector];
+    [usersCopy release];
 	
 	return [userList autorelease];
 }

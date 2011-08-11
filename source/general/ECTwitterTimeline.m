@@ -115,9 +115,11 @@ ECPropertySynthesize(oldestTweet);
 	ECTwitterTimeline* timeline = [[ECTwitterTimeline alloc] init];
 	timeline.newestTweet = self.newestTweet;
 	timeline.oldestTweet = self.oldestTweet;
-	timeline.tweets = [self.tweets mutableCopy];
+    NSMutableArray* tweetsCopy = [self.tweets mutableCopy];
+	timeline.tweets = tweetsCopy;
 	[timeline.tweets sortUsingSelector: selector];
-	
+	[tweetsCopy release];
+    
 	return [timeline autorelease];
 }
 
