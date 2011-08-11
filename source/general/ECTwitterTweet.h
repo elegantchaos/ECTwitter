@@ -7,6 +7,8 @@
 
 #import "ECTwitterCachedObject.h"
 
+#import <ECFoundation/ECProperties.h>
+
 @class CLLocation;
 @class ECTwitterID;
 @class ECTwitterUser;

@@ -6,6 +6,8 @@
 //  Copyright 2008 Instinctive Code.
 //
 
+#import <ECFoundation/ECProperties.h>
+
 @interface ECTwitterConnection : NSURLConnection
 {
     ECPropertyVariable(data, NSMutableData*);

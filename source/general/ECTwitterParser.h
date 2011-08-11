@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------
 
 #import "MGTwitterEngineDelegate.h"
+#import <ECFoundation/ECProperties.h>
 
 @interface ECTwitterParser : NSObject 
 {
