@@ -12,6 +12,8 @@
 #import "ECTwitterTweet.h"
 #import "ECTwitterID.h"
 
+#import <ECFoundation/ECMacros.h>
+
 // --------------------------------------------------------------------------
 // Private Methods
 // --------------------------------------------------------------------------
