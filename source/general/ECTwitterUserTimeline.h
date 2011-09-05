@@ -12,6 +12,7 @@
 @interface ECTwitterUserTimeline : ECTwitterTimeline 
 {
 	ECPropertyVariable(user, ECTwitterUser*);
+	ECPropertyVariable(methods, NSString*);
 }
 
 // --------------------------------------------------------------------------
@@ -19,13 +20,15 @@
 // --------------------------------------------------------------------------
 
 ECPropertyRetained(user, ECTwitterUser*);
+ECPropertyRetained(method, NSString*);
 
 // --------------------------------------------------------------------------
 // Public Methods
 // --------------------------------------------------------------------------
 
 - (void)addTweet: (ECTwitterTweet*) tweet;
-
 - (void)refresh;
+- (void)trackPosts;
+- (void)trackHome;
 
 @end

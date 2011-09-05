@@ -38,6 +38,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 
 #pragma mark - Properties
 
+ECPropertySynthesize(method);
 ECPropertySynthesize(user);
 
 // ==============================================
@@ -72,9 +73,20 @@ ECPropertySynthesize(user);
 
 - (void) dealloc
 {
+	ECPropertyDealloc(method);
 	ECPropertyDealloc(user);
 	
 	[super dealloc];
+}
+
+- (void)trackHome
+{
+    self.method = @"statuses/home_timeline";
+}
+
+- (void)trackPosts
+{
+    self.method = @"statuses/user_timeline";
 }
 
 // --------------------------------------------------------------------------
@@ -128,10 +140,11 @@ ECPropertySynthesize(user);
     NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                                 self.user.twitterID.string, @"user_id",
                                 @"1", @"trim_user",
+                                @"1", @"include_rts",
                                 @"200", @"count",
                                 nil];
     
-    [self.user.engine callGetMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:)];
+    [self.user.engine callGetMethod: self.method parameters: parameters target: self selector: @selector(timelineHandler:)];
 }
 
 
@@ -149,11 +162,12 @@ ECPropertySynthesize(user);
     NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
                                 userID, @"user_id",
                                 @"1", @"trim_user",
+                                @"1", @"include_rts",
                                 @"200", @"count",
                                 newestID, @"since_id",
                                 nil];
     
-    [self.user.engine callGetMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:)];
+    [self.user.engine callGetMethod: self.method parameters: parameters target: self selector: @selector(timelineHandler:)];
 }
 
 @end
