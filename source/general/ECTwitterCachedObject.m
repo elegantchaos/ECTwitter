@@ -6,7 +6,8 @@
 // --------------------------------------------------------------------------
 
 #import "ECTwitterCachedObject.h"
-
+#import "ECTwitterCache.h"
+#import "ECTwitterEngine.h"
 
 // ==============================================
 // Private Methods
@@ -64,6 +65,15 @@
 - (void) dealloc
 {
 	[super dealloc];
+}
+
+// --------------------------------------------------------------------------
+//! Return our cache's engine.
+// --------------------------------------------------------------------------
+
+- (ECTwitterEngine*)engine
+{
+    return mCache.engine;
 }
 
 @end

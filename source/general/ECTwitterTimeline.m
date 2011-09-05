@@ -7,6 +7,8 @@
 
 #import "ECTwitterTimeline.h"
 #import "ECTwitterTweet.h"
+#import "ECTwitterHandler.h"
+#import "ECTwitterCache.h"
 
 // ==============================================
 // Private Methods
@@ -21,6 +23,10 @@
 
 
 @implementation ECTwitterTimeline
+
+#pragma mark - Channels
+
+ECDefineDebugChannel(TwitterTimelineChannel);
 
 // ==============================================
 // Properties
@@ -74,6 +80,10 @@ ECPropertySynthesize(oldestTweet);
 	[super dealloc];
 }
 
+- (void)refresh
+{
+    ECDebug(TwitterTimelineChannel, @"don't know how to refresh a plain timeline");
+}
 
 // --------------------------------------------------------------------------
 //! Add a tweet to our timeline.
@@ -121,6 +131,34 @@ ECPropertySynthesize(oldestTweet);
 	[tweetsCopy release];
     
 	return [timeline autorelease];
+}
+
+// --------------------------------------------------------------------------
+//! Handle confirmation that we've authenticated ok as a given user.
+//! We fire off a request for the list of friends for the user.
+// --------------------------------------------------------------------------
+
+- (void) timelineHandler: (ECTwitterHandler*) handler
+{
+	if (handler.status == StatusResults)
+	{
+		ECDebug(TwitterTimelineChannel, @"received timeline for: %@", self);
+        NSArray* tweets = handler.result;
+		for (NSDictionary* tweetData in tweets)
+		{
+			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
+			[self addTweet: tweet];
+			
+			ECDebug(TwitterTimelineChannel, @"tweet info received: %@", tweet);
+		}
+	}
+	else
+	{
+		ECDebug(TwitterTimelineChannel, @"error receiving timeline for: %@", self);
+	}
+    
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	[nc postNotificationName: ECTwitterTimelineUpdated object: self];
 }
 
 @end

@@ -11,14 +11,14 @@
 #import "ECTwitterCache.h"
 #import "ECTwitterHandler.h"
 #import "ECTwitterEngine.h"
-#import "ECTwitterTimeline.h"
+#import "ECTwitterUserTimeline.h"
 #import "ECTwitterUserList.h"
 
 @interface ECTwitterUser()
-- (void) timelineHandler: (ECTwitterHandler*) handler;
-- (void) friendsHandler: (ECTwitterHandler*) handler;
-- (void) followersHandler: (ECTwitterHandler*) handler;
-- (void) followerIDsHandler: (ECTwitterHandler*) handler;
+- (void)makeTimeline;
+- (void)friendsHandler: (ECTwitterHandler*) handler;
+- (void)followersHandler: (ECTwitterHandler*) handler;
+- (void)followerIDsHandler: (ECTwitterHandler*) handler;
 @end
 
 
@@ -49,6 +49,7 @@ ECPropertySynthesize(twitterID);
 	{
 		self.data = dictionary;
 		self.twitterID = [ECTwitterID idFromDictionary: dictionary];
+        [self makeTimeline];
 	}
 	
 	return self;
@@ -63,7 +64,7 @@ ECPropertySynthesize(twitterID);
 	NSDictionary* info = [[NSDictionary alloc] initWithContentsOfURL: url];
 	if ((self = [self initWithInfo: info inCache:cache]) != nil)
 	{
-		
+        [self makeTimeline];
 	}
 	[info release];
     
@@ -79,6 +80,7 @@ ECPropertySynthesize(twitterID);
 	if ((self = [super initWithCache: cache]) != nil)
 	{
 		self.twitterID = twitterID;
+        [self makeTimeline];
 	}
 	
 	return self;
@@ -100,6 +102,18 @@ ECPropertySynthesize(twitterID);
 	ECPropertyDealloc(twitterID);
 	
 	[super dealloc];
+}
+
+// --------------------------------------------------------------------------
+//! Make the main timeline associated with this user.
+// --------------------------------------------------------------------------
+
+- (void)makeTimeline
+{
+    ECTwitterUserTimeline* timeline = [[ECTwitterUserTimeline alloc] initWithCache:mCache];
+    timeline.user = self;
+    self.timeline = timeline;
+    [timeline release];
 }
 
 // --------------------------------------------------------------------------
@@ -230,44 +244,6 @@ ECPropertySynthesize(twitterID);
 }
 
 
-// --------------------------------------------------------------------------
-//! Request user timeline - everything they've received
-// --------------------------------------------------------------------------
-
-- (void) requestTimeline
-{
-	ECDebug(TwitterUserChannel, @"requesting timeline for %@", self);
-	
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								self.twitterID.string, @"user_id",
-								@"1", @"trim_user",
-								@"200", @"count",
-								nil];
-	
-	[mCache.engine callGetMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:)];
-}
-
-
-// --------------------------------------------------------------------------
-//! Request user timeline - everything they've received
-// --------------------------------------------------------------------------
-
-- (void) refreshTimeline
-{
-	ECDebug(TwitterUserChannel, @"refreshing timeline for %@", self);
-	
-	NSString* userID = self.twitterID.string;
-	NSString* newestID = self.timeline.newestTweet.twitterID.string;
-	
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								userID, @"user_id",
-								@"1", @"trim_user",
-								@"200", @"count",
-								newestID, @"since_id",
-								nil];
-	
-	[mCache.engine callGetMethod: @"statuses/home_timeline" parameters: parameters target: self selector: @selector(timelineHandler:)];
-}
 
 // --------------------------------------------------------------------------
 //! Request user posts - everything they've posted
@@ -357,34 +333,6 @@ ECPropertySynthesize(twitterID);
 								nil];
 	
 	[mCache.engine callGetMethod: @"statuses/friends" parameters: parameters target: self selector: @selector(friendsHandler:)];
-}
-
-// --------------------------------------------------------------------------
-//! Handle confirmation that we've authenticated ok as a given user.
-//! We fire off a request for the list of friends for the user.
-// --------------------------------------------------------------------------
-
-- (void) timelineHandler: (ECTwitterHandler*) handler
-{
-	if (handler.status == StatusResults)
-	{
-		ECDebug(TwitterUserChannel, @"received timeline for: %@", self);
-        NSArray* tweets = handler.result;
-		for (NSDictionary* tweetData in tweets)
-		{
-			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
-			[self addTweet: tweet];
-			
-			ECDebug(TwitterUserChannel, @"tweet info received: %@", tweet);
-		}
-	}
-	else
-	{
-		ECDebug(TwitterUserChannel, @"error receiving timeline for: %@", self);
-	}
-
-	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-	[nc postNotificationName: ECTwitterTimelineUpdated object: self];
 }
 
 // --------------------------------------------------------------------------

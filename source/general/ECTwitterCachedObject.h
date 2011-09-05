@@ -5,6 +5,7 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
+@class ECTwitterEngine;
 @class ECTwitterCache;
 
 @interface ECTwitterCachedObject : NSObject 
@@ -22,5 +23,7 @@
 // --------------------------------------------------------------------------
 // Public Methods
 // --------------------------------------------------------------------------
+
+- (ECTwitterEngine*)engine;
 
 @end

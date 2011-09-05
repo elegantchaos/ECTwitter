@@ -65,9 +65,6 @@ ECPropertyRetained(twitterID, ECTwitterID*);
 - (void)			addFriend: (ECTwitterUser*) user;
 - (void)			addFollower: (ECTwitterUser*) user;
 
-- (void)			requestTimeline;
-- (void)			refreshTimeline;
-
 - (void)			requestPosts;
 - (void)			refreshPosts;
 

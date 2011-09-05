@@ -5,35 +5,27 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <ECFoundation/ECProperties.h>
+#import "ECTwitterTimeline.h"
 
-#import "ECTwitterCachedObject.h"
+@class ECTwitterUser;
 
-@class ECTwitterTweet;
-@class ECTwitterHandler;
-
-@interface ECTwitterTimeline : ECTwitterCachedObject 
+@interface ECTwitterUserTimeline : ECTwitterTimeline 
 {
-	ECPropertyVariable(tweets, NSMutableArray*);
-	ECPropertyVariable(oldestTweet, ECTwitterTweet*);
-	ECPropertyVariable(newestTweet, ECTwitterTweet*);
+	ECPropertyVariable(user, ECTwitterUser*);
 }
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(tweets, NSMutableArray*);
-ECPropertyRetained(oldestTweet, ECTwitterTweet*);
-ECPropertyRetained(newestTweet, ECTwitterTweet*);
+ECPropertyRetained(user, ECTwitterUser*);
 
 // --------------------------------------------------------------------------
 // Public Methods
 // --------------------------------------------------------------------------
 
+- (void)addTweet: (ECTwitterTweet*) tweet;
+
 - (void)refresh;
-- (void) addTweet: (ECTwitterTweet*) tweet;
-- (ECTwitterTimeline*)sortedWithSelector: (SEL) selector;
-- (void)timelineHandler: (ECTwitterHandler*) handler;
 
 @end
