@@ -98,18 +98,9 @@ ECPropertySynthesize(user);
 - (void)addTweet: (ECTwitterTweet*) tweet;
 {
     [super addTweet:tweet];
-    
     if ([tweet mentionsUser:self.user])
 	{
-		ECTwitterTimeline* mentions = self.user.mentions;
-		if (!mentions)
-		{
-			mentions = [[ECTwitterTimeline alloc] init];
-			self.user.mentions = mentions;
-			[mentions release];
-		}
-		
-		[mentions addTweet: tweet];
+        [self.user addMention:tweet];
 	}
 }
 

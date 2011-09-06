@@ -168,52 +168,22 @@ ECPropertySynthesize(twitterID);
 	return [self.data objectForKey: @"screen_name"];
 }
 
+
 // --------------------------------------------------------------------------
-//! Add a tweet to our timeline.
+//! Add a tweet to our mentions list.
 // --------------------------------------------------------------------------
 
-- (void) addTweet: (ECTwitterTweet*) tweet;
+- (void) addMention:(ECTwitterTweet*)tweet;
 {
-	ECTwitterTimeline* timeline = self.timeline;
+	ECTwitterTimeline* timeline = self.mentions;
 	if (!timeline)
 	{
 		timeline = [[ECTwitterTimeline alloc] init];
-		self.timeline = timeline;
+		self.mentions = timeline;
 		[timeline release];
 	}
 	
-	[timeline addTweet: tweet];
-
-	if ([tweet mentionsUser: self])
-	{
-		ECTwitterTimeline* mentions = self.mentions;
-		if (!mentions)
-		{
-			mentions = [[ECTwitterTimeline alloc] init];
-			self.mentions = mentions;
-			[mentions release];
-		}
-		
-		[mentions addTweet: tweet];
-	}
-	
-}
-
-// --------------------------------------------------------------------------
-//! Add a tweet to our posts list.
-// --------------------------------------------------------------------------
-
-- (void) addPost: (ECTwitterTweet*) tweet;
-{
-	ECTwitterTimeline* timeline = self.posts;
-	if (!timeline)
-	{
-		timeline = [[ECTwitterTimeline alloc] init];
-		self.posts = timeline;
-		[timeline release];
-	}
-	
-	[timeline addTweet: tweet];
+	[timeline addTweet:tweet];
 }
 
 // --------------------------------------------------------------------------
