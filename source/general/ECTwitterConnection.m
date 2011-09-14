@@ -8,7 +8,7 @@
 
 #import "ECTwitterConnection.h"
 
-#import <ECFoundation/NSString+ECUtilities.h>
+#import <ECFoundation/NSString+ECCore.h>
 
 
 

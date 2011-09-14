@@ -12,7 +12,7 @@
 #import "ECTwitterParser.h"
 #import "ECTwitterAuthentication.h"
 
-#import <ECFoundation/NSDictionary+ECUtilities.h>
+#import <ECFoundation/NSDictionary+ECCore.h>
 
 
 #pragma mark - Private Interface
