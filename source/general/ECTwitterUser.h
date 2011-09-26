@@ -60,7 +60,6 @@ ECPropertyRetained(twitterID, ECTwitterID*);
 
 - (NSImage*)		image;
 
-- (void)            addMention:(ECTwitterTweet*)tweet;
 - (void)			addFriend:(ECTwitterUser*)user;
 - (void)			addFollower:(ECTwitterUser*)user;
 

@@ -11,6 +11,7 @@
 #import "ECTwitterCache.h"
 #import "ECTwitterHandler.h"
 #import "ECTwitterEngine.h"
+#import "ECTwitterUserMentionsTimeline.h"
 #import "ECTwitterUserTimeline.h"
 #import "ECTwitterUserList.h"
 
@@ -121,6 +122,11 @@ ECPropertySynthesize(twitterID);
     self.posts = postsTimeline;
     [postsTimeline trackPosts];
     [postsTimeline release];
+    
+    ECTwitterUserMentionsTimeline* mentionsTimeline = [[ECTwitterUserMentionsTimeline alloc] initWithCache:mCache];
+    mentionsTimeline.user = self;
+    self.mentions = mentionsTimeline;
+    [mentionsTimeline release];
 }
 
 // --------------------------------------------------------------------------
@@ -168,26 +174,8 @@ ECPropertySynthesize(twitterID);
 	return [self.data objectForKey: @"screen_name"];
 }
 
-
 // --------------------------------------------------------------------------
-//! Add a tweet to our mentions list.
-// --------------------------------------------------------------------------
-
-- (void) addMention:(ECTwitterTweet*)tweet;
-{
-	ECTwitterTimeline* timeline = self.mentions;
-	if (!timeline)
-	{
-		timeline = [[ECTwitterTimeline alloc] init];
-		self.mentions = timeline;
-		[timeline release];
-	}
-	
-	[timeline addTweet:tweet];
-}
-
-// --------------------------------------------------------------------------
-//! Add a tweet to our posts list.
+//! Add a friend to our friends list.
 // --------------------------------------------------------------------------
 
 - (void) addFriend: (ECTwitterUser*) user
