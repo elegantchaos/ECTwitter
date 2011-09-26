@@ -132,7 +132,7 @@ ECPropertySynthesize(user);
                                 self.user.twitterID.string, @"user_id",
                                 @"1", @"trim_user",
                                 @"1", @"include_rts",
-                                //                                @"200", @"count",
+                                @"200", @"count",
                                 nil];
     
     [self.user.engine callGetMethod: self.method parameters: parameters target: self selector: @selector(timelineHandler:)];
@@ -154,7 +154,7 @@ ECPropertySynthesize(user);
                                 userID, @"user_id",
                                 @"1", @"trim_user",
                                 @"1", @"include_rts",
-                                //                                @"200", @"count",
+                                @"200", @"count",
                                 newestID, @"since_id",
                                 nil];
     
