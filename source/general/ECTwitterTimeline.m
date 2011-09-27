@@ -161,4 +161,13 @@ ECPropertySynthesize(oldestTweet);
 	[nc postNotificationName: ECTwitterTimelineUpdated object: self];
 }
 
+// --------------------------------------------------------------------------
+//! Return debug description.
+// --------------------------------------------------------------------------
+
+- (NSString*)description
+{
+    return [NSString stringWithFormat:@"<ECTwitterTimeline: %d tweets>", [self.tweets count]];
+}
+
 @end
