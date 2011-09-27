@@ -6,6 +6,8 @@
 // --------------------------------------------------------------------------
 
 #import "ECTwitterUserTimeline.h"
+
+#import "ECTwitterCache.h"
 #import "ECTwitterUser.h"
 #import "ECTwitterID.h"
 #import "ECTwitterEngine.h"
@@ -159,6 +161,25 @@ ECPropertySynthesize(user);
                                 nil];
     
     [self.user.engine callGetMethod: self.method parameters: parameters target: self selector: @selector(timelineHandler:)];
+}
+
+// --------------------------------------------------------------------------
+//! Handle confirmation that we've authenticated ok as a given user.
+//! We do the normal thing, but also post an update for the mentions list
+//! if it has changed.
+// --------------------------------------------------------------------------
+
+- (void) timelineHandler: (ECTwitterHandler*) handler
+{
+    NSUInteger mentionCount = [self.user.mentions.tweets count];
+    
+    [super timelineHandler:handler];
+    
+    if ([self.user.mentions.tweets count] != mentionCount)
+    {
+        NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+        [nc postNotificationName: ECTwitterTimelineUpdated object:self.user.mentions];
+    }
 }
 
 @end
