@@ -182,4 +182,13 @@ ECPropertySynthesize(user);
     }
 }
 
+// --------------------------------------------------------------------------
+//! Return debug description.
+// --------------------------------------------------------------------------
+
+- (NSString*)description
+{
+    return [NSString stringWithFormat:@"<ECTwitterUserTimeline: %d tweets for user %@ type %@>", [self.tweets count], self.user, self.method];
+}
+
 @end

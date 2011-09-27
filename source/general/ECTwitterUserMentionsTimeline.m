@@ -70,5 +70,14 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
     ECDebug(TwitterUserMentionsTimelineChannel, @"refreshing mentions timeline for user %@", self.user);
     [self.user.timeline refresh];
 }
- 
+
+// --------------------------------------------------------------------------
+//! Return debug description.
+// --------------------------------------------------------------------------
+
+- (NSString*)description
+{
+    return [NSString stringWithFormat:@"<ECTwitterUserMentionsTimeline: %d tweets>", [self.tweets count]];
+}
+
 @end
