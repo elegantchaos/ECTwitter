@@ -20,12 +20,13 @@
 
 @interface ECTwitterCache()
 
-- (void)	requestUserByID: (ECTwitterID*) userID;
-- (void)	userInfoHandler: (ECTwitterHandler*) handler;
-- (void)	makeFavouriteHandler: (ECTwitterHandler*) handler;
-- (NSURL*)	userCacheFolder;
-- (NSURL*)	tweetCacheFolder;
-- (NSURL*)	imageCacheFolder;
+- (void)requestUserByID:(ECTwitterID*)userID;
+- (void)userInfoHandler:(ECTwitterHandler*)handler;
+- (void)makeFavouriteHandler:(ECTwitterHandler*)handler;
+
+- (NSURL*)baseCacheFolder;
+- (NSURL*)mainCacheFile;
+- (NSURL*)imageCacheFolder;
 
 @end
 
@@ -54,6 +55,12 @@ ECPropertySynthesize(engine);
 NSString *const ECTwitterUserUpdated = @"UserUpdated";
 NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
+
+// ==============================================
+// Globals
+// ==============================================
+
+static ECTwitterCache* gDecodingCache = nil;
 
 // ==============================================
 // Constants
@@ -237,17 +244,23 @@ NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
 
 - (void) save
 {
-	NSURL* cacheFolder = [self userCacheFolder];
-	for (ECTwitterUser* user in self.users)
-	{
-		[user saveTo: cacheFolder];
-	}
-	
-	cacheFolder = [self tweetCacheFolder];
-	for (ECTwitterTweet* tweet in self.tweets)
-	{
-		[tweet saveTo: cacheFolder];
-	}
+    NSMutableData *data = [[NSMutableData alloc] init];
+    NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
+
+    [archiver encodeObject:self.users forKey:@"users"];
+    [archiver encodeObject:self.tweets forKey:@"tweets"];
+    [archiver finishEncoding];
+    
+    NSURL* url = [self mainCacheFile];
+	BOOL ok = [data writeToURL:url atomically:YES];
+    if (!ok)
+    {
+		ECDebug(TwitterCacheChannel, @"failed to write cache to %@", url);
+    }
+    
+    [archiver release];
+    [data release];
+
 }
 
 // --------------------------------------------------------------------------
@@ -256,48 +269,75 @@ NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
 
 - (void) load
 {
-	NSFileManager* fm = [NSFileManager defaultManager];
-	NSError* error = nil;
+    NSURL* url = [self mainCacheFile];
+    NSData* data = [NSData dataWithContentsOfURL:url];
+    NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
 
-	NSURL* cacheFolder = [self userCacheFolder];
-	NSArray* items = [fm contentsOfDirectoryAtURL: cacheFolder includingPropertiesForKeys: nil options: 0 error: &error];
-	if (items && !error)
-	{
-		for (NSURL* url in items)
-		{
-			ECTwitterUser* user = [[ECTwitterUser alloc] initWithContentsOfURL: url inCache:self];
-			[self.users setObject: user forKey: user.twitterID.string];
-			[user release];
-		}
-	}
-
-	cacheFolder = [self tweetCacheFolder];
-	items = [fm contentsOfDirectoryAtURL: cacheFolder includingPropertiesForKeys: nil options: 0 error: &error];
-	if (items && !error)
-	{
-		for (NSURL* url in items)
-		{
-			ECTwitterTweet* tweet = [[ECTwitterTweet alloc] initWithContentsOfURL: url inCache:self];
-			[self.tweets setObject: tweet forKey: tweet.twitterID.string];
-			[tweet release];
-		}
-	}
-	
+    NSDictionary* cachedUsers;
+    NSDictionary* cachedTweets;
+    
+    @synchronized(self)
+    {
+        gDecodingCache = self;
+        cachedUsers = [unarchiver decodeObjectForKey:@"users"];
+        cachedTweets = [unarchiver decodeObjectForKey:@"tweets"];
+        gDecodingCache = nil;
+    }
+    
+    [self.users addEntriesFromDictionary:cachedUsers];
+    [self.tweets addEntriesFromDictionary:cachedTweets];
+    
+    [unarchiver release];
 }
 
-- (NSURL*) userCacheFolder
+// --------------------------------------------------------------------------
+//! Return the current decoding cache - used to provide some context
+//! when decoding cached objects.
+// --------------------------------------------------------------------------
+
++ (ECTwitterCache*)decodingCache
 {
-	return nil;
+    return gDecodingCache;
 }
 
-- (NSURL*) tweetCacheFolder
+// --------------------------------------------------------------------------
+//! Return the base cached folder for the app.
+// --------------------------------------------------------------------------
+
+- (NSURL*)baseCacheFolder
 {
-	return nil;
+    NSArray* urls = [[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask];
+    NSURL* root = [urls objectAtIndex:0];
+    NSURL* url = [root URLByAppendingPathComponent:@"com.elegantchaos.ambientweet"];
+
+    return url;
 }
+
+
+// --------------------------------------------------------------------------
+//! Return the path to the main cache file.
+// --------------------------------------------------------------------------
+
+- (NSURL*) mainCacheFile
+{
+    NSURL* root = [self baseCacheFolder];
+    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine.cache"];
+    
+	return url;
+}
+
+// --------------------------------------------------------------------------
+//! Return the path to the image cache folder.
+// --------------------------------------------------------------------------
 
 - (NSURL*) imageCacheFolder
 {
-	return nil;
+    NSURL* url = [[self baseCacheFolder] URLByAppendingPathComponent:@"Images"];
+
+    NSError* error = nil;
+    [[NSFileManager defaultManager] createDirectoryAtURL:url withIntermediateDirectories:YES attributes:nil error:&error];
+
+	return url;
 }
 
 @end

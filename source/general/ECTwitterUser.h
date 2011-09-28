@@ -14,7 +14,7 @@
 @class ECTwitterTweet;
 @class ECTwitterUserList;
 
-@interface ECTwitterUser : ECTwitterCachedObject  
+@interface ECTwitterUser : ECTwitterCachedObject
 {
 	ECPropertyVariable(cachedImage, NSImage*);
 	ECPropertyVariable(data, NSDictionary*);
@@ -44,7 +44,7 @@ ECPropertyRetained(twitterID, ECTwitterID*);
 // --------------------------------------------------------------------------
 
 - (id)				initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
-- (id)				initWithContentsOfURL: (NSURL*) url inCache: (ECTwitterCache*) cache;
+- (id)              initWithCoder:(NSCoder*)coder;
 - (id)				initWithID: (ECTwitterID*) tweetID inCache: (ECTwitterCache*) cache;
 
 - (void)			refreshWithInfo: (NSDictionary*) info;
@@ -65,7 +65,5 @@ ECPropertyRetained(twitterID, ECTwitterID*);
 
 - (void)            requestFollowers;
 - (void)            requestFriends;
-
-- (void)			saveTo: (NSURL*) url;
 
 @end

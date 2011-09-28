@@ -56,20 +56,19 @@ ECPropertySynthesize(twitterID);
 	return self;
 }
 
+
 // --------------------------------------------------------------------------
-//! Set up from a file.
+//! Set up from a coder.
 // --------------------------------------------------------------------------
 
-- (id) initWithContentsOfURL: (NSURL*) url inCache: (ECTwitterCache*) cache
+- (id)initWithCoder:(NSCoder*)coder
 {
-	NSDictionary* info = [[NSDictionary alloc] initWithContentsOfURL: url];
-	if ((self = [self initWithInfo: info inCache:cache]) != nil)
-	{
-        [self makeTimelines];
-	}
-	[info release];
+    NSDictionary* info = [coder decodeObjectForKey:@"info"];
+    if ((self = [self initWithInfo:info inCache:[ECTwitterCache decodingCache]]) != nil)
+    {
+    }
     
-	return self;
+    return self;
 }
 
 // --------------------------------------------------------------------------
@@ -390,7 +389,7 @@ ECPropertySynthesize(twitterID);
 //! Save the user to a file.
 // --------------------------------------------------------------------------
 
-- (void) saveTo: (NSURL*) url
+- (void)encodeWithCoder:(NSCoder*)coder
 {
 	NSDictionary* info = self.data;
 	if (!info)
@@ -398,7 +397,7 @@ ECPropertySynthesize(twitterID);
 		info = [NSDictionary dictionaryWithObject: self.twitterID.string forKey: @"id_str"];
 	}
 	
-	[info writeToURL: url atomically: YES];
+    [coder encodeObject:info forKey:@"info"];
 }
 
 @end

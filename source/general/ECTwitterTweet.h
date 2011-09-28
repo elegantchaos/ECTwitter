@@ -40,8 +40,8 @@ ECPropertyAssigned(viewed, NSUInteger);
 // --------------------------------------------------------------------------
 
 - (id)				initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
-- (id)				initWithContentsOfURL: (NSURL*) url inCache: (ECTwitterCache*) cache;
 - (id)				initWithID: (ECTwitterID*) tweetID inCache: (ECTwitterCache*) cache;
+- (id)              initWithCoder:(NSCoder*)coder;
 
 - (BOOL)			gotData;
 
@@ -67,8 +67,6 @@ ECPropertyAssigned(viewed, NSUInteger);
 - (NSComparisonResult) compareByDateAscending: (ECTwitterTweet*) other;
 - (NSComparisonResult) compareByDateDescending: (ECTwitterTweet*) other;
 - (NSComparisonResult) compareByViewsDateDescending: (ECTwitterTweet*) other;
-
-- (void)			saveTo: (NSURL*) url;
 
 @end
 

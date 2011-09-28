@@ -45,6 +45,8 @@ ECPropertyRetained(users, NSMutableDictionary*);
 - (void)			save;
 - (void)			load;
 
++ (ECTwitterCache*) decodingCache;
+
 // --------------------------------------------------------------------------
 // Notifications
 // --------------------------------------------------------------------------

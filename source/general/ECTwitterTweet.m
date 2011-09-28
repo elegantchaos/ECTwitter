@@ -45,22 +45,6 @@ ECPropertySynthesize(viewed);
 }
 
 // --------------------------------------------------------------------------
-//! Set up from a file.
-// --------------------------------------------------------------------------
-
-- (id) initWithContentsOfURL: (NSURL*) url inCache: (ECTwitterCache*) cache
-{
-	NSDictionary* info = [[NSDictionary alloc] initWithContentsOfURL: url];
-	if ((self = [self initWithInfo: info inCache:cache]) != nil)
-	{
-		
-	}
-	[info release];
-    
-	return self;
-}
-
-// --------------------------------------------------------------------------
 //! Set up with just an ID
 // --------------------------------------------------------------------------
 
@@ -72,6 +56,21 @@ ECPropertySynthesize(viewed);
 	}
 	
 	return self;
+}
+
+// --------------------------------------------------------------------------
+//! Set up from a coder.
+// --------------------------------------------------------------------------
+
+- (id)initWithCoder:(NSCoder*)coder
+{
+    NSDictionary* info = [coder decodeObjectForKey:@"info"];
+    if ((self = [self initWithInfo:info inCache:[ECTwitterCache decodingCache]]) != nil)
+    {
+        self.viewed = [coder decodeIntegerForKey:@"viewed"];
+    }
+    
+    return self;
 }
 
 // --------------------------------------------------------------------------
@@ -312,21 +311,16 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 //! Save the tweet to a file.
 // --------------------------------------------------------------------------
 
-- (void) saveTo: (NSURL*) url
+- (void)encodeWithCoder:(NSCoder*)coder
 {
 	NSDictionary* info = self.data;
 	if (!info)
 	{
 		info = [NSDictionary dictionaryWithObject: self.twitterID.string forKey: @"id_str"];
 	}
-	
-	[info writeToURL: url atomically: YES];
+    
+    [coder encodeObject:info forKey:@"info"];
+    [coder encodeInteger:self.viewed forKey:@"viewed"];
 }
-
-//"in_reply_to_screen_name" = "<null>";
-//"in_reply_to_status_id" = "<null>";
-//"in_reply_to_status_id_str" = "<null>";
-//"in_reply_to_user_id" = "<null>";
-//"in_reply_to_user_id_str" = "<null>";
 
 @end
