@@ -304,7 +304,7 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 - (BOOL) mentionsUser:(ECTwitterUser *)user
 {
 	NSString* text = [self text];
-	NSString* name = user.twitterName;
+	NSString* name = [NSString stringWithFormat:@"@%@", user.twitterName];
 	return [text rangeOfString: name].length > 0;
 }
 

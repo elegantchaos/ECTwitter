@@ -11,6 +11,20 @@
 
 @class ECTwitterTweet;
 @class ECTwitterHandler;
+@class ECTwitterUser;
+
+typedef enum
+{
+    MethodMentions,
+    MethodHome,
+    MethodTimeline
+} FetchMethod;
+
+typedef enum 
+{
+    FetchLatest,
+    FetchOlder
+} FetchType;
 
 @interface ECTwitterTimeline : ECTwitterCachedObject 
 {
@@ -35,5 +49,6 @@ ECPropertyRetained(newestTweet, ECTwitterTweet*);
 - (void) addTweet: (ECTwitterTweet*) tweet;
 - (ECTwitterTimeline*)sortedWithSelector: (SEL) selector;
 - (void)timelineHandler: (ECTwitterHandler*) handler;
+- (void)fetchTweetsForUser:(ECTwitterUser*)user method:(FetchMethod)method type:(FetchType)type;
 
 @end

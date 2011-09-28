@@ -22,9 +22,6 @@
 
 @interface ECTwitterUserTimeline()
 
-- (void)requestTimeline;
-- (void)refreshTimeline;
-
 @end
 
 
@@ -40,8 +37,8 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 
 #pragma mark - Properties
 
-ECPropertySynthesize(method);
-ECPropertySynthesize(user);
+@synthesize method;
+@synthesize user;
 
 // ==============================================
 // Constants
@@ -75,20 +72,19 @@ ECPropertySynthesize(user);
 
 - (void) dealloc
 {
-	ECPropertyDealloc(method);
-	ECPropertyDealloc(user);
+    [user release];
 	
 	[super dealloc];
 }
 
 - (void)trackHome
 {
-    self.method = @"statuses/home_timeline";
+    self.method = MethodHome;
 }
 
 - (void)trackPosts
 {
-    self.method = @"statuses/user_timeline";
+    self.method = MethodTimeline;
 }
 
 // --------------------------------------------------------------------------
@@ -112,55 +108,7 @@ ECPropertySynthesize(user);
 
 - (void)refresh
 {
-    if ([self.tweets count])
-    {
-        [self refreshTimeline];
-    }
-    else
-    {
-        [self requestTimeline];
-    }
-}
-         
-// --------------------------------------------------------------------------
-//! Request user timeline - everything they've received
-// --------------------------------------------------------------------------
-
-- (void) requestTimeline
-{
-    ECDebug(TwitterUserTimelineChannel, @"requesting timeline for %@", self.user);
-    
-    NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                self.user.twitterID.string, @"user_id",
-                                @"1", @"trim_user",
-                                @"1", @"include_rts",
-                                @"200", @"count",
-                                nil];
-    
-    [self.user.engine callGetMethod: self.method parameters: parameters target: self selector: @selector(timelineHandler:)];
-}
-
-
-// --------------------------------------------------------------------------
-//! Request user timeline - everything they've received
-// --------------------------------------------------------------------------
-
-- (void) refreshTimeline
-{
-    ECDebug(TwitterUserTimelineChannel, @"refreshing timeline for %@", self.user);
-    
-    NSString* userID = self.user.twitterID.string;
-    NSString* newestID = self.newestTweet.twitterID.string;
-    
-    NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                userID, @"user_id",
-                                @"1", @"trim_user",
-                                @"1", @"include_rts",
-                                @"200", @"count",
-                                newestID, @"since_id",
-                                nil];
-    
-    [self.user.engine callGetMethod: self.method parameters: parameters target: self selector: @selector(timelineHandler:)];
+    [self fetchTweetsForUser:self.user method:self.method type:FetchLatest];
 }
 
 // --------------------------------------------------------------------------

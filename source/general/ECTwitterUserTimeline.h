@@ -10,17 +10,13 @@
 @class ECTwitterUser;
 
 @interface ECTwitterUserTimeline : ECTwitterTimeline 
-{
-	ECPropertyVariable(user, ECTwitterUser*);
-	ECPropertyVariable(methods, NSString*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(user, ECTwitterUser*);
-ECPropertyRetained(method, NSString*);
+@property (nonatomic, assign) FetchMethod method;
+@property (nonatomic, retain) ECTwitterUser* user;
 
 // --------------------------------------------------------------------------
 // Public Methods

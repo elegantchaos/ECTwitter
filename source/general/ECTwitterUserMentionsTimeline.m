@@ -68,7 +68,7 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
 - (void)refresh
 {
     ECDebug(TwitterUserMentionsTimelineChannel, @"refreshing mentions timeline for user %@", self.user);
-    [self.user.timeline refresh];
+    [self fetchTweetsForUser:self.user method:MethodMentions type:FetchLatest];
 }
 
 // --------------------------------------------------------------------------
