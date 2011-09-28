@@ -174,10 +174,12 @@ ECPropertySynthesize(oldestTweet);
     ECDebug(TwitterTimelineChannel, @"requesting timeline for %@", user);
     
     NSString* methodName;
+    NSUInteger count = 200;
     switch (method)
     {
         case MethodMentions:
             methodName = @"statuses/mentions";
+            count = 10;
             break;
             
         case MethodHome:
@@ -189,10 +191,11 @@ ECPropertySynthesize(oldestTweet);
             break;
     }
 
+    
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 @"1", @"trim_user",
                                 @"1", @"include_rts",
-                                @"200", @"count",
+                                [NSString stringWithFormat:@"%d", count], @"count",
                                 nil];
     
     if (method != MethodMentions)

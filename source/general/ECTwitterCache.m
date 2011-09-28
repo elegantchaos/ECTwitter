@@ -271,23 +271,26 @@ static ECTwitterCache* gDecodingCache = nil;
 {
     NSURL* url = [self mainCacheFile];
     NSData* data = [NSData dataWithContentsOfURL:url];
-    NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-
-    NSDictionary* cachedUsers;
-    NSDictionary* cachedTweets;
-    
-    @synchronized(self)
+    if (data)
     {
-        gDecodingCache = self;
-        cachedUsers = [unarchiver decodeObjectForKey:@"users"];
-        cachedTweets = [unarchiver decodeObjectForKey:@"tweets"];
-        gDecodingCache = nil;
+        NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
+        
+        NSDictionary* cachedUsers;
+        NSDictionary* cachedTweets;
+        
+        @synchronized(self)
+        {
+            gDecodingCache = self;
+            cachedUsers = [unarchiver decodeObjectForKey:@"users"];
+            cachedTweets = [unarchiver decodeObjectForKey:@"tweets"];
+            gDecodingCache = nil;
+        }
+        
+        [self.users addEntriesFromDictionary:cachedUsers];
+        [self.tweets addEntriesFromDictionary:cachedTweets];
+        
+        [unarchiver release];
     }
-    
-    [self.users addEntriesFromDictionary:cachedUsers];
-    [self.tweets addEntriesFromDictionary:cachedTweets];
-    
-    [unarchiver release];
 }
 
 // --------------------------------------------------------------------------
@@ -321,7 +324,7 @@ static ECTwitterCache* gDecodingCache = nil;
 - (NSURL*) mainCacheFile
 {
     NSURL* root = [self baseCacheFolder];
-    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine.cache"];
+    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine Cache V2.cache"];
     
 	return url;
 }

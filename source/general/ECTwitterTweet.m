@@ -64,9 +64,11 @@ ECPropertySynthesize(viewed);
 
 - (id)initWithCoder:(NSCoder*)coder
 {
-    NSDictionary* info = [coder decodeObjectForKey:@"info"];
-    if ((self = [self initWithInfo:info inCache:[ECTwitterCache decodingCache]]) != nil)
+    if ((self = [self initWithCache:[ECTwitterCache decodingCache]]) != nil)
     {
+        self.data = [coder decodeObjectForKey:@"info"];
+        self.twitterID = [coder decodeObjectForKey:@"id"];
+        self.authorID = [coder decodeObjectForKey:@"author"];
         self.viewed = [coder decodeIntegerForKey:@"viewed"];
     }
     
@@ -319,6 +321,8 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 		info = [NSDictionary dictionaryWithObject: self.twitterID.string forKey: @"id_str"];
 	}
     
+    [coder encodeObject:self.twitterID forKey:@"id"];
+    [coder encodeObject:self.authorID forKey:@"author"];
     [coder encodeObject:info forKey:@"info"];
     [coder encodeInteger:self.viewed forKey:@"viewed"];
 }

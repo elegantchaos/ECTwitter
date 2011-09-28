@@ -50,11 +50,26 @@ ECPropertySynthesize(string);
 	return self;
 }
 
+- (id)initWithCoder:(NSCoder*)coder
+{
+    if ((self = [super init]) != nil)
+    {
+        self.string = [coder decodeObjectForKey:@"id"];
+    }
+    
+    return self;
+}
+
 - (void) dealloc
 {
 	ECPropertyDealloc(string);
 	
 	[super dealloc];
+}
+
+- (void)encodeWithCoder:(NSCoder*)coder
+{
+    [coder encodeObject:self.string forKey:@"id"];
 }
 
 // --------------------------------------------------------------------------

@@ -46,7 +46,7 @@ ECPropertySynthesize(twitterID);
 
 - (id) initWithInfo: (NSDictionary*) dictionary inCache: (ECTwitterCache*) cache
 {
-	if ((self = [super initWithCache: cache]) != nil)
+	if ((self = [super initWithCache:cache]) != nil)
 	{
 		self.data = dictionary;
 		self.twitterID = [ECTwitterID idFromDictionary: dictionary];
@@ -63,9 +63,11 @@ ECPropertySynthesize(twitterID);
 
 - (id)initWithCoder:(NSCoder*)coder
 {
-    NSDictionary* info = [coder decodeObjectForKey:@"info"];
-    if ((self = [self initWithInfo:info inCache:[ECTwitterCache decodingCache]]) != nil)
+    if ((self = [self initWithCache:[ECTwitterCache decodingCache]]) != nil)
     {
+        self.data = [coder decodeObjectForKey:@"info"];
+        self.twitterID = [coder decodeObjectForKey:@"id"];
+        [self makeTimelines];
     }
     
     return self;
@@ -398,6 +400,7 @@ ECPropertySynthesize(twitterID);
 	}
 	
     [coder encodeObject:info forKey:@"info"];
+    [coder encodeObject:self.twitterID forKey:@"id"];
 }
 
 @end
