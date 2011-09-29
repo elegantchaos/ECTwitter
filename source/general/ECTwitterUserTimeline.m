@@ -136,7 +136,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"<ECTwitterUserTimeline: %d tweets for user %@ type %@>", [self.tweets count], self.user, self.method];
+    return [NSString stringWithFormat:@"<ECTwitterUserTimeline: %d tweets for user %@ type %d>", [self.tweets count], self.user, self.method];
 }
 
 @end
