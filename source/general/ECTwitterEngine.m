@@ -21,10 +21,11 @@
 
 @interface ECTwitterEngine()
 
-- (void) setHandler: (ECTwitterHandler*) handler forRequest: (NSString*) request;
-- (ECTwitterHandler*) handlerForRequest: (NSString*) request;
-- (void) doneRequest: (NSString*) request;
-- (void) callMethod: (NSString*) method httpMethod: (NSString*) httpMethod parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
+- (void)setHandler:(ECTwitterHandler*)handler forRequest:(NSString*)request;
+- (ECTwitterHandler*)handlerForRequest:(NSString*)request;
+- (void)doneRequest:(NSString*)request;
+- (void)callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id)target selector:(SEL)selector extra:(NSObject*)extra;
+- (void)registerError:(NSError*)error inContext:(id)context;
 
 @end
 
@@ -36,6 +37,7 @@
 // --------------------------------------------------------------------------
 
 ECDefineDebugChannel(TwitterChannel);
+ECDefineDebugChannel(ErrorChannel);
 
 // --------------------------------------------------------------------------
 // Constants
@@ -159,6 +161,7 @@ ECPropertySynthesize(requests);
 	ECAssertNonNil(handler);
 	
 	ECDebug(TwitterChannel, @"request %@ for handler %@ failed with error %@ %@", request, handler, error, error.userInfo);
+    [self registerError:error inContext:handler];
 	handler.error = error;
 	[handler invokeWithStatus: StatusFailed];
 	[self doneRequest: request];
@@ -246,6 +249,16 @@ ECPropertySynthesize(requests);
 	handler.extra = extra;
 	[self setHandler: handler forRequest:request];
     [handler release];
+}
+
+// --------------------------------------------------------------------------
+//! Record/report an error.
+// --------------------------------------------------------------------------
+
+- (void)registerError:(NSError*)error inContext :(id)context
+{
+	ECDebug(ErrorChannel, @"%@ - %@ (in context %@)", error, error.userInfo, context);
+    [[NSApplication sharedApplication] presentError:error];
 }
 
 @end
