@@ -271,7 +271,8 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
-        NSArray* users = handler.result;
+        NSDictionary* info = handler.result;
+        NSArray* users = [info objectForKey:@"users"];
 		for (NSDictionary* userData in users)
 		{
 			ECTwitterUser* user = [mCache addOrRefreshUserWithInfo: userData];
