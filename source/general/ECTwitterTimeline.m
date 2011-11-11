@@ -80,10 +80,10 @@ ECPropertySynthesize(oldestTweet);
 	if ((self = [super init]) != nil)
     {
         NSArray* tweetIds = [coder decodeObjectForKey:@"tweets"];
-        NSMutableArray* tweets = [NSMutableArray arrayWithCapacity:[tweetIds count]];
+        NSMutableArray* cachedTweets = [NSMutableArray arrayWithCapacity:[tweetIds count]];
         for (ECTwitterID* tweetId in tweetIds)
         {
-            [tweets addObject:[cache tweetWithID:tweetId]];
+            [cachedTweets addObject:[cache tweetWithID:tweetId]];
         }
 
         ECTwitterID* oldestId = [coder decodeObjectForKey:@"oldest"];
@@ -97,6 +97,7 @@ ECPropertySynthesize(oldestTweet);
         {
             self.newestTweet = [cache tweetWithID:newestId];
         }
+        self.tweets = cachedTweets;
     }
     
     return self;

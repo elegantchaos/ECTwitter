@@ -63,14 +63,31 @@ ECPropertySynthesize(twitterID);
 
 - (id)initWithCoder:(NSCoder*)coder
 {
-    if ((self = [self initWithCache:[ECTwitterCache decodingCache]]) != nil)
+    // get the user id
+    ECTwitterID* userID = [coder decodeObjectForKey:@"id"];
+    
+    // is there already an instance with this id in the cache?
+    ECTwitterCache* cache = [ECTwitterCache decodingCache];
+    ECTwitterUser* existing = [cache.users objectForKey:userID.string];
+    if (existing)
+    {
+        // use the cached instance instead of this one
+        [self release];
+        self = [existing retain];
+    }
+    else
+    {
+        self = [super initWithCache:cache];
+    }
+
+    if (self)
     {
         self.data = [coder decodeObjectForKey:@"info"];
-        self.twitterID = [coder decodeObjectForKey:@"id"];
         self.mentions = [coder decodeObjectForKey:@"mentions"];
         self.posts = [coder decodeObjectForKey:@"posts"];
         self.timeline = [coder decodeObjectForKey:@"timeline"];
-        [self makeTimelines];
+        self.friends = [coder decodeObjectForKey:@"friends"];
+        self.followers = [coder decodeObjectForKey:@"followers"];
     }
     
     return self;

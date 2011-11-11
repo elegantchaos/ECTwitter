@@ -72,11 +72,12 @@ ECPropertySynthesize(users);
 	if ((self = [super init]) != nil)
     {
         NSArray* userIds = [coder decodeObjectForKey:@"users"];
-        NSMutableArray* users = [NSMutableArray arrayWithCapacity:[userIds count]];
+        NSMutableArray* cachedUsers = [NSMutableArray arrayWithCapacity:[userIds count]];
         for (ECTwitterID* userId in userIds)
         {
-            [users addObject:[cache userWithID:userId requestIfMissing:NO]];
+            [cachedUsers addObject:[cache userWithID:userId requestIfMissing:NO]];
         }
+        self.users = cachedUsers;
     }
     
     return self;

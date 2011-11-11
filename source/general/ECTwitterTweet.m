@@ -65,11 +65,26 @@ ECPropertySynthesize(viewed);
 
 - (id)initWithCoder:(NSCoder*)coder
 {
+    // get the tweet id
+    ECTwitterID* tweetID = [coder decodeObjectForKey:@"id"];
+    
+    // is there already an instance with this id in the cache?
     ECTwitterCache* cache = [ECTwitterCache decodingCache];
-    if ((self = [self initWithCache:cache]) != nil)
+    ECTwitterTweet* existing = [cache.tweets objectForKey:tweetID.string];
+    if (existing)
+    {
+        // use the cached instance instead of this one
+        [self release];
+        self = [existing retain];
+    }
+    else
+    {
+        self = [super initWithCache:cache];
+    }
+                        
+    if (self)
     {
         self.data = [coder decodeObjectForKey:@"info"];
-        self.twitterID = [coder decodeObjectForKey:@"id"];
         self.authorID = [coder decodeObjectForKey:@"author"];
         self.viewed = [coder decodeIntegerForKey:@"viewed"];
     }
