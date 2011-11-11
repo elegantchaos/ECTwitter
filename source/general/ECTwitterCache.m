@@ -290,6 +290,9 @@ static ECTwitterCache* gDecodingCache = nil;
         [self.tweets addEntriesFromDictionary:cachedTweets];
         
         [unarchiver release];
+        
+        ECDebug(TwitterCacheChannel, @"loaded cached users %@", self.users);
+        ECDebug(TwitterCacheChannel, @"loaded cached tweets %@", self.tweets);
     }
 }
 

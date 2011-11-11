@@ -25,7 +25,7 @@
 - (ECTwitterHandler*)handlerForRequest:(NSString*)request;
 - (void)doneRequest:(NSString*)request;
 - (void)callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id)target selector:(SEL)selector extra:(NSObject*)extra;
-- (void)registerError:(NSError*)error inContext:(id)context;
+- (void)registerError:(NSError*)error inContext:(NSObject*)context;
 
 @end
 
@@ -37,7 +37,7 @@
 // --------------------------------------------------------------------------
 
 ECDefineDebugChannel(TwitterChannel);
-ECDefineDebugChannel(ErrorChannel);
+ECDefineLogChannel(ErrorChannel);
 
 // --------------------------------------------------------------------------
 // Constants
@@ -255,10 +255,17 @@ ECPropertySynthesize(requests);
 //! Record/report an error.
 // --------------------------------------------------------------------------
 
-- (void)registerError:(NSError*)error inContext :(id)context
+- (void)registerError:(NSError*)error inContext:(NSObject*)context
 {
-	ECDebug(ErrorChannel, @"%@ - %@ (in context %@)", error, error.userInfo, context);
-    [[NSApplication sharedApplication] presentError:error];
+    #if EC_DEBUG
+        [[NSApplication sharedApplication] presentError:error];
+    #endif
+
+    NSString* es = [error description];
+    NSString* us = [error.userInfo description];
+    NSString* ds = [context description];
+    
+	ECLog(ErrorChannel, @"%@ - %@ (in context %@)", es, us, ds);
 }
 
 @end
