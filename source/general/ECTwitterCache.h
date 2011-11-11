@@ -37,7 +37,8 @@ ECPropertyRetained(users, NSMutableDictionary*);
 - (ECTwitterTweet*) addOrRefreshTweetWithInfo: (NSDictionary*) info;
 
 - (ECTwitterTweet*)	tweetWithID: (ECTwitterID*) tweetID;
-- (ECTwitterUser*)	userWithID: (ECTwitterID*) userID;
+- (ECTwitterUser*)userWithID:(ECTwitterID*)userID;
+- (ECTwitterUser*)userWithID:(ECTwitterID*)userID requestIfMissing:(BOOL)requestIfMissing;
 - (NSImage*)		imageWithID: (ECTwitterID*) imageID URL: (NSURL*) url;
 
 - (void)			setFavouritedStateForTweet: (ECTwitterTweet*) tweet to: (BOOL) state;

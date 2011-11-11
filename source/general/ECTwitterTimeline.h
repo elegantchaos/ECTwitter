@@ -45,6 +45,9 @@ ECPropertyRetained(newestTweet, ECTwitterTweet*);
 // Public Methods
 // --------------------------------------------------------------------------
 
+- (id)init;
+- (id)initWithCoder:(NSCoder*)coder;
+- (void)encodeWithCoder:(NSCoder*)coder;
 - (void)refresh;
 - (void) addTweet: (ECTwitterTweet*) tweet;
 - (ECTwitterTimeline*)sortedWithSelector: (SEL) selector;

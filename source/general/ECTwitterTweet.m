@@ -9,6 +9,7 @@
 #import "ECTwitterID.h"
 #import "ECTwitterCache.h"
 #import "ECTwitterUser.h"
+#import "ECTwitterTimeline.h"
 
 #import "RegexKitLite.h"
 
@@ -64,7 +65,8 @@ ECPropertySynthesize(viewed);
 
 - (id)initWithCoder:(NSCoder*)coder
 {
-    if ((self = [self initWithCache:[ECTwitterCache decodingCache]]) != nil)
+    ECTwitterCache* cache = [ECTwitterCache decodingCache];
+    if ((self = [self initWithCache:cache]) != nil)
     {
         self.data = [coder decodeObjectForKey:@"info"];
         self.twitterID = [coder decodeObjectForKey:@"id"];

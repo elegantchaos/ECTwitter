@@ -96,12 +96,20 @@ static ECTwitterCache* gDecodingCache = nil;
 
 - (ECTwitterUser*) userWithID: (ECTwitterID*) userID
 {
+    return [self userWithID:userID requestIfMissing:YES];
+}
+
+- (ECTwitterUser*)userWithID:(ECTwitterID *)userID requestIfMissing:(BOOL)requestIfMissing
+{
 	ECTwitterUser* user = [self.users objectForKey: userID.string];
 	if (!user)
 	{
 		user = [[[ECTwitterUser alloc] initWithID: userID inCache: self] autorelease];
 		[self.users setObject: user forKey: userID.string];
-		[self requestUserByID: userID];
+        if (requestIfMissing)
+        {
+            [self requestUserByID: userID];
+        }
 	}
 	
 	return user;
@@ -327,7 +335,7 @@ static ECTwitterCache* gDecodingCache = nil;
 - (NSURL*) mainCacheFile
 {
     NSURL* root = [self baseCacheFolder];
-    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine Cache V2.cache"];
+    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine Cache V3.cache"];
     
 	return url;
 }

@@ -71,6 +71,38 @@ ECPropertySynthesize(oldestTweet);
 }
 
 // --------------------------------------------------------------------------
+//! Set up from a coder.
+// --------------------------------------------------------------------------
+
+- (id)initWithCoder:(NSCoder*)coder
+{
+    ECTwitterCache* cache = [ECTwitterCache decodingCache];
+	if ((self = [super init]) != nil)
+    {
+        NSArray* tweetIds = [coder decodeObjectForKey:@"tweets"];
+        NSMutableArray* tweets = [NSMutableArray arrayWithCapacity:[tweetIds count]];
+        for (ECTwitterID* tweetId in tweetIds)
+        {
+            [tweets addObject:[cache tweetWithID:tweetId]];
+        }
+
+        ECTwitterID* oldestId = [coder decodeObjectForKey:@"oldest"];
+        if (oldestId)
+        {
+            self.oldestTweet = [cache tweetWithID:oldestId];
+        }
+        
+        ECTwitterID* newestId = [coder decodeObjectForKey:@"newest"];
+        if (newestId)
+        {
+            self.newestTweet = [cache tweetWithID:newestId];
+        }
+    }
+    
+    return self;
+}
+
+// --------------------------------------------------------------------------
 //! Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
@@ -82,6 +114,26 @@ ECPropertySynthesize(oldestTweet);
 	
 	[super dealloc];
 }
+
+// --------------------------------------------------------------------------
+//! Save the timeline to a file.
+// --------------------------------------------------------------------------
+
+- (void)encodeWithCoder:(NSCoder*)coder
+{
+    NSMutableArray* tweetIds = [NSMutableArray arrayWithCapacity:[self.tweets count]];
+    for (ECTwitterTweet* tweet in self.tweets)
+    {
+        [tweetIds addObject:tweet.twitterID];
+    }
+    [coder encodeObject:tweetIds forKey:@"tweets"];
+    [coder encodeObject:self.oldestTweet.twitterID forKey:@"oldest"];
+    [coder encodeObject:self.newestTweet.twitterID forKey:@"newest"];
+}
+
+// --------------------------------------------------------------------------
+//! Refresh timeline.
+// --------------------------------------------------------------------------
 
 - (void)refresh
 {

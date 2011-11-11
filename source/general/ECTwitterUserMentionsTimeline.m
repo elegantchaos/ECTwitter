@@ -6,6 +6,8 @@
 // --------------------------------------------------------------------------
 
 #import "ECTwitterUserMentionsTimeline.h"
+
+#import "ECTwitterCache.h"
 #import "ECTwitterUser.h"
 #import "ECTwitterID.h"
 #import "ECTwitterEngine.h"
@@ -51,6 +53,22 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
 
 
 // --------------------------------------------------------------------------
+//! Set up from a coder.
+// --------------------------------------------------------------------------
+
+- (id)initWithCoder:(NSCoder*)coder
+{
+    ECTwitterCache* cache = [ECTwitterCache decodingCache];
+	if ((self = [super initWithCoder:coder]) != nil)
+    {
+        ECTwitterID* userID = [coder decodeObjectForKey:@"user"];
+        self.user = [cache userWithID:userID requestIfMissing:NO];
+    }
+    
+    return self;
+}
+
+// --------------------------------------------------------------------------
 //! Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
@@ -59,6 +77,16 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
     [user release];
 	
 	[super dealloc];
+}
+
+// --------------------------------------------------------------------------
+//! Save the timeline to a file.
+// --------------------------------------------------------------------------
+
+- (void)encodeWithCoder:(NSCoder*)coder
+{
+    [coder encodeObject:self.user.twitterID forKey:@"user"];
+    [super encodeWithCoder:coder];
 }
 
 // --------------------------------------------------------------------------

@@ -67,6 +67,23 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
+//! Set up from a coder.
+// --------------------------------------------------------------------------
+
+- (id)initWithCoder:(NSCoder*)coder
+{
+    ECTwitterCache* cache = [ECTwitterCache decodingCache];
+	if ((self = [super initWithCoder:coder]) != nil)
+    {
+        self.method = (FetchMethod) [coder decodeIntForKey:@"method"];
+        ECTwitterID* userID = [coder decodeObjectForKey:@"user"];
+        self.user = [cache userWithID:userID requestIfMissing:NO];
+    }
+    
+    return self;
+}
+
+// --------------------------------------------------------------------------
 //! Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
@@ -75,6 +92,17 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
     [user release];
 	
 	[super dealloc];
+}
+
+// --------------------------------------------------------------------------
+//! Save the timeline to a file.
+// --------------------------------------------------------------------------
+
+- (void)encodeWithCoder:(NSCoder*)coder
+{
+    [coder encodeObject:self.user.twitterID forKey:@"user"];
+    [coder encodeInt:self.method forKey:@"method"];
+    [super encodeWithCoder:coder];
 }
 
 - (void)trackHome

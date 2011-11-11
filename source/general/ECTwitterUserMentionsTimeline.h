@@ -21,6 +21,8 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
+- (id)initWithCoder:(NSCoder*)coder;
+- (void)encodeWithCoder:(NSCoder*)coder;
 - (void)refresh;
 
 @end

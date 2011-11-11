@@ -67,6 +67,9 @@ ECPropertySynthesize(twitterID);
     {
         self.data = [coder decodeObjectForKey:@"info"];
         self.twitterID = [coder decodeObjectForKey:@"id"];
+        self.mentions = [coder decodeObjectForKey:@"mentions"];
+        self.posts = [coder decodeObjectForKey:@"posts"];
+        self.timeline = [coder decodeObjectForKey:@"timeline"];
         [self makeTimelines];
     }
     
@@ -401,6 +404,11 @@ ECPropertySynthesize(twitterID);
 	
     [coder encodeObject:info forKey:@"info"];
     [coder encodeObject:self.twitterID forKey:@"id"];
+    [coder encodeObject:self.posts forKey:@"posts"];
+    [coder encodeObject:self.timeline forKey:@"timeline"];
+    [coder encodeObject:self.mentions forKey:@"mentions"];
+    [coder encodeObject:self.friends forKey:@"friends"];
+    [coder encodeObject:self.followers forKey:@"followers"];
 }
 
 @end

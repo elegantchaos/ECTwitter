@@ -6,6 +6,8 @@
 // --------------------------------------------------------------------------
 
 #import "ECTwitterUserList.h"
+
+#import "ECTwitterCache.h"
 #import "ECTwitterUser.h"
 
 // ==============================================
@@ -59,6 +61,28 @@ ECPropertySynthesize(users);
 	return self;
 }
 
+
+// --------------------------------------------------------------------------
+//! Set up from a coder.
+// --------------------------------------------------------------------------
+
+- (id)initWithCoder:(NSCoder*)coder
+{
+    ECTwitterCache* cache = [ECTwitterCache decodingCache];
+	if ((self = [super init]) != nil)
+    {
+        NSArray* userIds = [coder decodeObjectForKey:@"users"];
+        NSMutableArray* users = [NSMutableArray arrayWithCapacity:[userIds count]];
+        for (ECTwitterID* userId in userIds)
+        {
+            [users addObject:[cache userWithID:userId requestIfMissing:NO]];
+        }
+    }
+    
+    return self;
+}
+
+
 // --------------------------------------------------------------------------
 //! Clean up and release retained objects.
 // --------------------------------------------------------------------------
@@ -70,6 +94,20 @@ ECPropertySynthesize(users);
 	[super dealloc];
 }
 
+
+// --------------------------------------------------------------------------
+//! Save the timeline to a file.
+// --------------------------------------------------------------------------
+
+- (void)encodeWithCoder:(NSCoder*)coder
+{
+    NSMutableArray* userIds = [NSMutableArray arrayWithCapacity:[self.users count]];
+    for (ECTwitterUser* user in self.users)
+    {
+        [userIds addObject:user.twitterID];
+    }
+    [coder encodeObject:userIds forKey:@"users"];
+}
 
 // --------------------------------------------------------------------------
 //! Add a tweet to our timeline.
