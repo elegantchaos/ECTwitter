@@ -288,6 +288,8 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
+        ECAssertIsKindOfClass(handler.result, NSDictionary);
+        
         NSDictionary* info = handler.result;
         NSArray* users = [info objectForKey:@"users"];
 		for (NSDictionary* userData in users)
@@ -318,6 +320,8 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
+        ECAssertIsKindOfClass(handler.result, NSDictionary);
+
         NSDictionary* result = handler.result;
         NSArray* users = [result objectForKey:@"users"];
 		for (NSDictionary* userData in users)
@@ -347,6 +351,8 @@ ECPropertySynthesize(twitterID);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterUserChannel, @"received followers for: %@", self);
+        ECAssertIsKindOfClass(handler.result, NSDictionary);
+
         NSDictionary* result = handler.result;
         NSArray* userIDs = [result objectForKey:@"ids"];
 		for (NSNumber* value in userIDs)

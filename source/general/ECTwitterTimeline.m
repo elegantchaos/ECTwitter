@@ -199,7 +199,10 @@ ECPropertySynthesize(oldestTweet);
 	if (handler.status == StatusResults)
 	{
 		ECDebug(TwitterTimelineChannel, @"received timeline for: %@", self);
+        ECAssertIsKindOfClass(handler.result, NSArray);
+        
         NSArray* tweets = handler.result;
+
 		for (NSDictionary* tweetData in tweets)
 		{
 			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];

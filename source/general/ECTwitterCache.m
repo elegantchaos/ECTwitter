@@ -202,6 +202,8 @@ static ECTwitterCache* gDecodingCache = nil;
 {
 	if (handler.status == StatusResults)
 	{
+        ECAssertIsKindOfClass(handler.result, NSDictionary);
+
         NSDictionary* userData = handler.result;
         ECTwitterID* userID = [ECTwitterID idFromDictionary: userData];
         
@@ -223,6 +225,8 @@ static ECTwitterCache* gDecodingCache = nil;
 {
 	if (handler.status == StatusResults)
 	{
+        ECAssertIsKindOfClass(handler.result, NSArray);
+
         NSArray* tweets = handler.result;
 		for (NSDictionary* tweetData in tweets)
 		{
