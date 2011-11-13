@@ -170,6 +170,7 @@ static ECTwitterCache* gDecodingCache = nil;
 - (void) requestUserByID: (ECTwitterID*) userID
 {
 	ECDebug(TwitterCacheChannel, @"requesting user info");
+    ECAssertNonNil(userID.string);
 	
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								userID.string, @"user_id",

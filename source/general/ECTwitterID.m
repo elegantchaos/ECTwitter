@@ -42,6 +42,8 @@ ECPropertySynthesize(string);
 
 - (id) initWithString: (NSString*) string
 {
+    ECAssertNonNil(string);
+
 	if ((self = [super init]) != nil)
 	{
 		self.string = string;
@@ -57,6 +59,8 @@ ECPropertySynthesize(string);
         self.string = [coder decodeObjectForKey:@"id"];
     }
     
+    ECAssertNonNil(self.string);
+    
     return self;
 }
 
@@ -69,6 +73,7 @@ ECPropertySynthesize(string);
 
 - (void)encodeWithCoder:(NSCoder*)coder
 {
+    ECAssertNonNil(self.string);
     [coder encodeObject:self.string forKey:@"id"];
 }
 

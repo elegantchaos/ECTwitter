@@ -10,7 +10,8 @@
 #import <ECFoundation/ECProperties.h>
 
 @class ECTwitterID;
-@class ECTwitterTimeline;
+@class ECTwitterUserTimeline;
+@class ECTwitterUserMentionsTimeline;
 @class ECTwitterTweet;
 @class ECTwitterUserList;
 
@@ -20,9 +21,9 @@
 	ECPropertyVariable(data, NSDictionary*);
 	ECPropertyVariable(followers, ECTwitterUserList*);
 	ECPropertyVariable(friends, ECTwitterUserList*);
-	ECPropertyVariable(mentions, ECTwitterTimeline*);
-    ECPropertyVariable(posts, ECTwitterTimeline*);
-	ECPropertyVariable(timeline, ECTwitterTimeline*);
+	ECPropertyVariable(mentions, ECTwitterUserMentionsTimeline*);
+    ECPropertyVariable(posts, ECTwitterUserTimeline*);
+	ECPropertyVariable(timeline, ECTwitterUserTimeline*);
 	ECPropertyVariable(twitterID, ECTwitterID*);
 }
 
@@ -34,9 +35,9 @@ ECPropertyRetained(cachedImage, NSImage*);
 ECPropertyRetained(data, NSDictionary*);
 ECPropertyRetained(followers, ECTwitterUserList*);
 ECPropertyRetained(friends, ECTwitterUserList*);
-ECPropertyRetained(mentions, ECTwitterTimeline*);
-ECPropertyRetained(posts, ECTwitterTimeline*);
-ECPropertyRetained(timeline, ECTwitterTimeline*);
+ECPropertyRetained(mentions, ECTwitterUserMentionsTimeline*);
+ECPropertyRetained(posts, ECTwitterUserTimeline*);
+ECPropertyRetained(timeline, ECTwitterUserTimeline*);
 ECPropertyRetained(twitterID, ECTwitterID*);
 
 // --------------------------------------------------------------------------

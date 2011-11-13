@@ -79,11 +79,14 @@ ECPropertySynthesize(viewed);
     }
     else
     {
+        // put this object into the cache now so that restoring other objects below will pick it up
         self = [super initWithCache:cache];
+        [cache.tweets setObject:self forKey:tweetID.string];
     }
                         
     if (self)
     {
+        self.twitterID = tweetID;
         self.data = [coder decodeObjectForKey:@"info"];
         self.authorID = [coder decodeObjectForKey:@"author"];
         self.viewed = [coder decodeIntegerForKey:@"viewed"];
@@ -126,7 +129,7 @@ ECPropertySynthesize(viewed);
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat: @"%@ %@", self.twitterID, self.text];
+	return [NSString stringWithFormat: @"%@ by %@ %@", self.twitterID, self.author.twitterName, [self.text substringToIndex:MIN(10, [self.text length])]];
 }
 
 - (NSString*) text

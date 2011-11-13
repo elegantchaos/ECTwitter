@@ -53,5 +53,6 @@ ECPropertyRetained(newestTweet, ECTwitterTweet*);
 - (ECTwitterTimeline*)sortedWithSelector: (SEL) selector;
 - (void)timelineHandler: (ECTwitterHandler*) handler;
 - (void)fetchTweetsForUser:(ECTwitterUser*)user method:(FetchMethod)method type:(FetchType)type;
+- (NSUInteger)count;
 
 @end

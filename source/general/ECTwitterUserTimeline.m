@@ -12,6 +12,7 @@
 #import "ECTwitterID.h"
 #import "ECTwitterEngine.h"
 #import "ECTwitterTweet.h"
+#import "ECTwitterUserMentionsTimeline.h"
 
 // ==============================================
 // Private Methods

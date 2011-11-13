@@ -77,17 +77,24 @@ ECPropertySynthesize(twitterID);
     }
     else
     {
+        // put this object into the cache now so that restoring other objects below will pick it up
         self = [super initWithCache:cache];
+        [cache.users setObject:self forKey:userID.string];
     }
 
     if (self)
     {
+        self.twitterID = userID;
         self.data = [coder decodeObjectForKey:@"info"];
         self.mentions = [coder decodeObjectForKey:@"mentions"];
         self.posts = [coder decodeObjectForKey:@"posts"];
         self.timeline = [coder decodeObjectForKey:@"timeline"];
         self.friends = [coder decodeObjectForKey:@"friends"];
         self.followers = [coder decodeObjectForKey:@"followers"];
+        
+        ECAssert(self.timeline.user == self);
+        ECAssert(self.posts.user == self);
+        ECAssert(self.mentions.user == self);
     }
     
     return self;
@@ -174,7 +181,7 @@ ECPropertySynthesize(twitterID);
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat: @"%@ %@", self.twitterID, self.name];
+	return [NSString stringWithFormat: @"<TwitterUser: %@ %@ posts:%d timeline:%d mentions:%d>", self.twitterName, self.twitterID, [self.posts count], [self.timeline count], [self.mentions count]];
 }
 
 // --------------------------------------------------------------------------
@@ -236,7 +243,8 @@ ECPropertySynthesize(twitterID);
 - (void) requestFollowerIDs
 {
 	ECDebug(TwitterUserChannel, @"requesting followers for %@", self);
-	
+    ECAssertNonNil(self.twitterID.string);
+
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								self.twitterID.string, @"user_id",
 								@"-1", @"cursor",
@@ -252,6 +260,7 @@ ECPropertySynthesize(twitterID);
 - (void) requestFollowers
 {
 	ECDebug(TwitterUserChannel, @"requesting followers for %@", self);
+    ECAssertNonNil(self.twitterID.string);
 	
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								self.twitterID.string, @"user_id",
@@ -268,6 +277,7 @@ ECPropertySynthesize(twitterID);
 - (void) requestFriends
 {
 	ECDebug(TwitterUserChannel, @"requesting friends for %@", self);
+    ECAssertNonNil(self.twitterID.string);
 	
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								self.twitterID.string, @"user_id",

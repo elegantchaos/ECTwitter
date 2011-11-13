@@ -256,6 +256,7 @@ ECPropertySynthesize(oldestTweet);
     
     if (method != MethodMentions)
     {
+        ECAssertNonNil(user.twitterID.string);
         [parameters setObject:user.twitterID.string forKey:@"user_id"];
     }
     
@@ -280,4 +281,12 @@ ECPropertySynthesize(oldestTweet);
     return [NSString stringWithFormat:@"<ECTwitterTimeline: %d tweets>", [self.tweets count]];
 }
 
+// --------------------------------------------------------------------------
+//! Return the number of tweets in this timeline.
+// --------------------------------------------------------------------------
+
+- (NSUInteger)count
+{
+    return [self.tweets count];
+}
 @end
