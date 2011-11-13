@@ -45,7 +45,7 @@ ECPropertyRetained(newestTweet, ECTwitterTweet*);
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id)init;
+- (id)initWithCache:(ECTwitterCache *)cache;
 - (id)initWithCoder:(NSCoder*)coder;
 - (void)encodeWithCoder:(NSCoder*)coder;
 - (void)refresh;

@@ -60,9 +60,9 @@ ECPropertySynthesize(oldestTweet);
 //! Set up the object.
 // --------------------------------------------------------------------------
 
-- (id) init
+- (id) initWithCache:(ECTwitterCache *)cache
 {
-	if ((self = [super init]) != nil)
+	if ((self = [super initWithCache:cache]) != nil)
 	{
 		
 	}
@@ -77,7 +77,7 @@ ECPropertySynthesize(oldestTweet);
 - (id)initWithCoder:(NSCoder*)coder
 {
     ECTwitterCache* cache = [ECTwitterCache decodingCache];
-	if ((self = [super init]) != nil)
+	if ((self = [super initWithCache:cache]) != nil)
     {
         NSArray* tweetIds = [coder decodeObjectForKey:@"tweets"];
         NSMutableArray* cachedTweets = [NSMutableArray arrayWithCapacity:[tweetIds count]];

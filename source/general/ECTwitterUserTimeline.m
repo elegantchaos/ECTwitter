@@ -137,6 +137,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 
 - (void)refresh
 {
+    ECAssertNonNil(self.user);
     [self fetchTweetsForUser:self.user method:self.method type:FetchLatest];
 }
 
