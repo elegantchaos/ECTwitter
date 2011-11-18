@@ -106,10 +106,8 @@ static ECTwitterCache* gDecodingCache = nil;
 
 - (ECTwitterUser*)userWithID:(ECTwitterID *)userID requestIfMissing:(BOOL)requestIfMissing
 {
-    if (userID.string == nil)
-    {
-        NSLog(@"blah");
-    }
+    ECAssertNonNil(userID);
+    ECAssertNonNil(userID.string);
     
 	ECTwitterUser* user = [self.users objectForKey: userID.string];
 	if (!user)

@@ -11,6 +11,8 @@
 #import "ECTwitterUser.h"
 #import "ECTwitterTimeline.h"
 
+#import <ECFoundation/NSString+ECCore.h>
+
 #import "RegexKitLite.h"
 
 @implementation ECTwitterTweet
@@ -83,7 +85,8 @@ ECPropertySynthesize(viewed);
         self = [super initWithCache:cache];
         [cache.tweets setObject:self forKey:tweetID.string];
     }
-                        
+            
+    ECAssertNonNil(self);
     if (self)
     {
         self.twitterID = tweetID;
@@ -129,7 +132,9 @@ ECPropertySynthesize(viewed);
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat: @"%@ by %@ %@", self.twitterID, self.author.twitterName, [self.text substringToIndex:MIN(10, [self.text length])]];
+    NSString* truncated = [self.text truncateToLength:20];
+    NSString* date = [NSDateFormatter localizedStringFromDate:self.created dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle];
+	return [NSString stringWithFormat: @"%@: '%@' %@ views:%d #%@", self.author.twitterName, truncated, date, self.viewed, self.twitterID];
 }
 
 - (NSString*) text
