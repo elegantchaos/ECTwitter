@@ -289,4 +289,22 @@ ECPropertySynthesize(oldestTweet);
 {
     return [self.tweets count];
 }
+
+// --------------------------------------------------------------------------
+//! Remove any tweets that we don't have data for from this list.
+// --------------------------------------------------------------------------
+
+- (void)removeMissingTweets
+{
+    NSUInteger n = [self.tweets count];
+    while(n--)
+    {
+        ECTwitterTweet* tweet = [self.tweets objectAtIndex:n];
+        if (![tweet gotData])
+        {
+            [self.tweets removeObjectAtIndex:n];
+        }
+    }
+}
+
 @end

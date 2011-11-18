@@ -11,6 +11,7 @@
 #import "ECTwitterUser.h"
 #import "ECTwitterTweet.h"
 #import "ECTwitterID.h"
+#import "ECTwitterTimeline.h"
 
 #import <ECFoundation/ECMacros.h>
 
@@ -19,6 +20,8 @@
 // --------------------------------------------------------------------------
 
 @interface ECTwitterCache()
+
+@property (nonatomic, assign) NSUInteger maxCached;
 
 - (void)requestUserByID:(ECTwitterID*)userID;
 - (void)userInfoHandler:(ECTwitterHandler*)handler;
@@ -43,6 +46,7 @@ ECDefineDebugChannel(TwitterCacheChannel);
 // Properties
 // ==============================================
 
+@synthesize maxCached;
 ECPropertySynthesize(users);
 ECPropertySynthesize(tweets);
 ECPropertySynthesize(engine);
@@ -77,6 +81,7 @@ static ECTwitterCache* gDecodingCache = nil;
 		self.engine = engine;
 		self.tweets = [NSMutableDictionary dictionary];
 		self.users = [NSMutableDictionary dictionary];
+        self.maxCached = 1000;
  	}
 	
 	return self;
@@ -101,6 +106,11 @@ static ECTwitterCache* gDecodingCache = nil;
 
 - (ECTwitterUser*)userWithID:(ECTwitterID *)userID requestIfMissing:(BOOL)requestIfMissing
 {
+    if (userID.string == nil)
+    {
+        NSLog(@"blah");
+    }
+    
 	ECTwitterUser* user = [self.users objectForKey: userID.string];
 	if (!user)
 	{
@@ -252,6 +262,36 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
+//! Restoring from the cache can leave us with some tweets that have no data
+//! because references to them were in timelines that were restored, even though
+//! the timelines themselves weren't.
+//!
+//! This method cleans up all the timelines and removes these tweets.
+// --------------------------------------------------------------------------
+
+- (void)removeMissingTweets
+{
+    NSArray* allUsers = [self.users allValues];
+    for (ECTwitterUser* user in allUsers)
+    {
+        [user.mentions removeMissingTweets];
+        [user.posts removeMissingTweets];
+        [user.timeline removeMissingTweets];
+    }
+    
+    NSArray* allTweets = [self.tweets allValues];
+    NSUInteger n = [allTweets count];
+    while (n--)
+    {
+        ECTwitterTweet* tweet = [allTweets objectAtIndex:0];
+        if (![tweet gotData])
+        {
+            [self.tweets removeObjectForKey:tweet.twitterID.string];
+        }
+    }
+
+}
+// --------------------------------------------------------------------------
 //! Save current users and tweets to a local cache.
 // --------------------------------------------------------------------------
 
@@ -261,7 +301,21 @@ static ECTwitterCache* gDecodingCache = nil;
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
 
     [archiver encodeObject:self.users forKey:@"users"];
-    [archiver encodeObject:self.tweets forKey:@"tweets"];
+    
+    NSArray* allTweets = [self.tweets allValues];
+    NSArray* sortedTweets = [allTweets sortedArrayUsingSelector:@selector(compareByViewsDateDescending:)];
+    NSUInteger count = [sortedTweets count];
+    count = MIN(count, self.maxCached);
+    NSMutableDictionary* recentTweets = [NSMutableDictionary dictionaryWithCapacity:count];
+    for (ECTwitterTweet* tweet in sortedTweets)
+    {
+        [recentTweets setObject:tweet forKey:tweet.twitterID.string];
+        if (--count == 0)
+        {
+            break;
+        }
+    }
+    [archiver encodeObject:recentTweets forKey:@"tweets"];
     [archiver finishEncoding];
     
     NSURL* url = [self mainCacheFile];
@@ -288,21 +342,20 @@ static ECTwitterCache* gDecodingCache = nil;
     {
         NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
         
-        NSDictionary* cachedUsers;
-        NSDictionary* cachedTweets;
-        
+        // unarchive the users & tweets
+        // just loading them in is enough to add them to the cache,
+        // so we don't actually have to do anything with the result of the decode calls
         @synchronized(self)
         {
             gDecodingCache = self;
-            cachedUsers = [unarchiver decodeObjectForKey:@"users"];
-            cachedTweets = [unarchiver decodeObjectForKey:@"tweets"];
+            [unarchiver decodeObjectForKey:@"users"];
+            [unarchiver decodeObjectForKey:@"tweets"];
             gDecodingCache = nil;
         }
         
-        [self.users addEntriesFromDictionary:cachedUsers];
-        [self.tweets addEntriesFromDictionary:cachedTweets];
-        
         [unarchiver release];
+        
+        [self removeMissingTweets];
         
         ECDebug(TwitterCacheChannel, @"loaded cached users %@", self.users);
         ECDebug(TwitterCacheChannel, @"loaded cached tweets %@", self.tweets);

@@ -54,5 +54,6 @@ ECPropertyRetained(newestTweet, ECTwitterTweet*);
 - (void)timelineHandler: (ECTwitterHandler*) handler;
 - (void)fetchTweetsForUser:(ECTwitterUser*)user method:(FetchMethod)method type:(FetchType)type;
 - (NSUInteger)count;
+- (void)removeMissingTweets;
 
 @end
