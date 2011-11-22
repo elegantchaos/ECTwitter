@@ -81,7 +81,7 @@ static ECTwitterCache* gDecodingCache = nil;
 		self.engine = engine;
 		self.tweets = [NSMutableDictionary dictionary];
 		self.users = [NSMutableDictionary dictionary];
-        self.maxCached = 1000;
+        self.maxCached = 10; // temporary
  	}
 	
 	return self;
