@@ -103,7 +103,10 @@ ECPropertySynthesize(viewed);
 {
 	self.data = info;
     NSDictionary* authorInfo = [info objectForKey: @"user"];
-    self.authorID = [ECTwitterID idFromDictionary: authorInfo];
+    if (authorInfo)
+    {
+        self.authorID = [ECTwitterID idFromDictionary: authorInfo];
+    }
 }
 
 // --------------------------------------------------------------------------

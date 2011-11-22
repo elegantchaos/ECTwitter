@@ -42,6 +42,10 @@ ECPropertySynthesize(string);
 
 - (id) initWithString: (NSString*) string
 {
+    if (string == nil)
+    {
+        NSLog(@"nil string detected");
+    }
     ECAssertNonNil(string);
 
 	if ((self = [super init]) != nil)
