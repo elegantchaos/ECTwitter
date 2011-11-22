@@ -106,6 +106,10 @@ static ECTwitterCache* gDecodingCache = nil;
 
 - (ECTwitterUser*)userWithID:(ECTwitterID *)userID requestIfMissing:(BOOL)requestIfMissing
 {
+    if ((userID == nil) || (userID.string == nil))
+    {
+        NSLog(@"nil userID or userID.string found");
+    }
     ECAssertNonNil(userID);
     ECAssertNonNil(userID.string);
     
@@ -391,7 +395,7 @@ static ECTwitterCache* gDecodingCache = nil;
 - (NSURL*) mainCacheFile
 {
     NSURL* root = [self baseCacheFolder];
-    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine Cache V3.cache"];
+    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine Cache V4.cache"];
     
 	return url;
 }
