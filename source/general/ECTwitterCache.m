@@ -81,7 +81,7 @@ static ECTwitterCache* gDecodingCache = nil;
 		self.engine = engine;
 		self.tweets = [NSMutableDictionary dictionary];
 		self.users = [NSMutableDictionary dictionary];
-        self.maxCached = 10; // temporary
+        self.maxCached = 100; // temporary
  	}
 	
 	return self;
@@ -395,7 +395,7 @@ static ECTwitterCache* gDecodingCache = nil;
 - (NSURL*) mainCacheFile
 {
     NSURL* root = [self baseCacheFolder];
-    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine Cache V4.cache"];
+    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine Cache V5.cache"];
     
 	return url;
 }
