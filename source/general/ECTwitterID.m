@@ -46,7 +46,7 @@
     {
         NSLog(@"nil string detected");
     }
-    ECAssertNonNil(string);
+    ECAssertNonNil(stringIn);
 
 	if ((self = [super init]) != nil)
 	{
