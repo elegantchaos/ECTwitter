@@ -230,6 +230,7 @@ NSString *const kPrefix = @"";
         self.handler = nil;
     }
     
+    [self.engine registerError:error inContext:@"authentication error"];
     self.engine.engine.authentication = nil;
 }
 

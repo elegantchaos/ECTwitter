@@ -49,6 +49,8 @@ ECPropertyRetained(requests, NSMutableDictionary*);
 - (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
 - (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
 
+- (void)registerError:(NSError*)error inContext:(NSObject*)context;
+
 
 // --------------------------------------------------------------------------
 // Notifications

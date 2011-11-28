@@ -14,6 +14,7 @@
 #import "MGTwitterEngine.h"
 
 #import <ECFoundation/ECMacros.h>
+#import <ECFoundation/ECErrorReporter.h>
 
 // --------------------------------------------------------------------------
 // Private Methods
@@ -25,7 +26,6 @@
 - (ECTwitterHandler*)handlerForRequest:(NSString*)request;
 - (void)doneRequest:(NSString*)request;
 - (void)callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id)target selector:(SEL)selector extra:(NSObject*)extra;
-- (void)registerError:(NSError*)error inContext:(NSObject*)context;
 
 @end
 
@@ -143,7 +143,7 @@ ECPropertySynthesize(requests);
 //! Handle succeeded message.
 // --------------------------------------------------------------------------
 
-- (void) requestSucceeded: (NSString *) request
+- (void)requestSucceeded:(NSString *)request
 {
 	ECTwitterHandler* handler EC_HINT_UNUSED = [self handlerForRequest: request];
 	ECAssertNonNil(handler);
@@ -155,7 +155,7 @@ ECPropertySynthesize(requests);
 //! Handle failed message.
 // --------------------------------------------------------------------------
 
-- (void) requestFailed: (NSString*) request withError: (NSError*) error
+- (void)requestFailed:(NSString*)request withError:(NSError*)error
 {
 	ECTwitterHandler* handler = [self handlerForRequest: request];
 	ECAssertNonNil(handler);
@@ -172,7 +172,7 @@ ECPropertySynthesize(requests);
 //! Handle receiving generic results.
 // --------------------------------------------------------------------------
 
-- (void) genericResultsReceived:(NSArray*) results forRequest:(NSString *) request;
+- (void)genericResultsReceived:(NSArray*)results forRequest:(NSString *)request;
 {
 	ECDebug(TwitterChannel, @"generic results %@ for request %@", results, request);
     
@@ -257,15 +257,10 @@ ECPropertySynthesize(requests);
 
 - (void)registerError:(NSError*)error inContext:(NSObject*)context
 {
-    #if EC_DEBUG
-        [[NSApplication sharedApplication] presentError:error];
-    #endif
-
     NSString* es = [error description];
     NSString* us = [error.userInfo description];
     NSString* ds = [context description];
-    
-	ECLog(ErrorChannel, @"%@ - %@ (in context %@)", es, us, ds);
+    [ECErrorReporter reportError:error message:@"%@ - %@ (in context %@)", es, us, ds];
 }
 
 @end
