@@ -1,10 +1,11 @@
+// --------------------------------------------------------------------------
+//! @author Sam Deane
+//! @date 24/11/2010
 //
-//  MGTwitterHTTPURLConnection.h
-//  MGTwitterEngine
-//
-//  Created by Matt Gemmell on 16/02/2008.
-//  Copyright 2008 Instinctive Code.
-//
+//  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
+//  This source code is distributed under the terms of Elegant Chaos's 
+//  liberal license: http://www.elegantchaos.com/license/liberal
+// --------------------------------------------------------------------------
 
 @interface ECTwitterConnection : NSURLConnection
 
