@@ -11,12 +11,12 @@
 
 @interface ECTwitterParser()
 
-ECPropertyRetained(currentDictionary, NSMutableDictionary*);
-ECPropertyRetained(currentArray, NSMutableArray*);
-ECPropertyRetained(currentKey, NSString*);
-ECPropertyRetained(identifier, NSString*);
-ECPropertyRetained(parsedObjects, NSMutableArray*);
-ECPropertyRetained(stack, NSMutableArray*);
+@property (nonatomic, retain) NSMutableDictionary* currentDictionary;
+@property (nonatomic, retain) NSMutableArray* currentArray;
+@property (nonatomic, retain) NSString* currentKey;
+@property (nonatomic, retain) NSString* identifier;
+@property (nonatomic, retain) NSMutableArray* parsedObjects;
+@property (nonatomic, retain) NSMutableArray* stack;
 
 - (void)parseSimpleData:(NSData*)data;
 - (void)parseJSONData:(NSData*)data;
@@ -41,12 +41,12 @@ ECDefineDebugChannel(MGTwitterEngineParsingChannel);
 #pragma mark - Properties
 // --------------------------------------------------------------------------
 
-ECPropertySynthesize(currentDictionary);
-ECPropertySynthesize(currentArray);
-ECPropertySynthesize(currentKey);
-ECPropertySynthesize(identifier);
-ECPropertySynthesize(parsedObjects);
-ECPropertySynthesize(stack);
+@synthesize currentDictionary;
+@synthesize currentArray;
+@synthesize currentKey;
+@synthesize identifier;
+@synthesize parsedObjects;
+@synthesize stack;
 
 // --------------------------------------------------------------------------
 #pragma mark - Prototypes
@@ -104,12 +104,12 @@ static yajl_callbacks callbacks = {
 
 - (void)dealloc
 {
-    ECPropertyDealloc(currentDictionary);
-    ECPropertyDealloc(currentArray);
-    ECPropertyDealloc(currentKey);
-    ECPropertyDealloc(identifier);
-    ECPropertyDealloc(parsedObjects);
-    ECPropertyDealloc(stack);
+    [currentDictionary release];
+    [currentArray release];
+    [currentKey release];
+    [identifier release];
+    [parsedObjects release];
+    [stack release];
 	
 	mDelegate = nil;
 	[super dealloc];
@@ -121,9 +121,9 @@ static yajl_callbacks callbacks = {
 //! Parse some data.
 // --------------------------------------------------------------------------
 
-- (void)parseData:(NSData*)data identifier:(NSString*)identifier
+- (void)parseData:(NSData*)data identifier:(NSString*)identifierIn
 {
-    self.identifier = identifier;
+    self.identifier = identifierIn;
     
     if (mOptions & MGTwitterEngineDeliveryAllResultsOption)
     {

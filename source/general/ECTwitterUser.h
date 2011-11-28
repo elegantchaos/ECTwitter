@@ -7,8 +7,6 @@
 
 #import "ECTwitterCachedObject.h"
 
-#import <ECFoundation/ECProperties.h>
-
 @class ECTwitterID;
 @class ECTwitterUserTimeline;
 @class ECTwitterUserMentionsTimeline;
@@ -16,29 +14,19 @@
 @class ECTwitterUserList;
 
 @interface ECTwitterUser : ECTwitterCachedObject
-{
-	ECPropertyVariable(cachedImage, NSImage*);
-	ECPropertyVariable(data, NSDictionary*);
-	ECPropertyVariable(followers, ECTwitterUserList*);
-	ECPropertyVariable(friends, ECTwitterUserList*);
-	ECPropertyVariable(mentions, ECTwitterUserMentionsTimeline*);
-    ECPropertyVariable(posts, ECTwitterUserTimeline*);
-	ECPropertyVariable(timeline, ECTwitterUserTimeline*);
-	ECPropertyVariable(twitterID, ECTwitterID*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(cachedImage, NSImage*);
-ECPropertyRetained(data, NSDictionary*);
-ECPropertyRetained(followers, ECTwitterUserList*);
-ECPropertyRetained(friends, ECTwitterUserList*);
-ECPropertyRetained(mentions, ECTwitterUserMentionsTimeline*);
-ECPropertyRetained(posts, ECTwitterUserTimeline*);
-ECPropertyRetained(timeline, ECTwitterUserTimeline*);
-ECPropertyRetained(twitterID, ECTwitterID*);
+@property (nonatomic, retain) NSImage* cachedImage;
+@property (nonatomic, retain) NSDictionary* data;
+@property (nonatomic, retain) ECTwitterUserList* followers;
+@property (nonatomic, retain) ECTwitterUserList* friends;
+@property (nonatomic, retain) ECTwitterUserMentionsTimeline* mentions;
+@property (nonatomic, retain) ECTwitterUserTimeline* posts;
+@property (nonatomic, retain) ECTwitterUserTimeline* timeline;
+@property (nonatomic, retain) ECTwitterID* twitterID;
 
 // --------------------------------------------------------------------------
 // Public Methods

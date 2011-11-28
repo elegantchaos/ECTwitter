@@ -23,12 +23,12 @@
 // Properties
 // ==============================================
 
-ECPropertySynthesize(operation);
-ECPropertySynthesize(status);
-ECPropertySynthesize(result);
-ECPropertySynthesize(engine);
-ECPropertySynthesize(extra);
-ECPropertySynthesize(error);
+@synthesize engine;
+@synthesize error;
+@synthesize extra;
+@synthesize operation;
+@synthesize result;
+@synthesize status;
 
 // ==============================================
 // Lifecycle
@@ -41,14 +41,14 @@ ECPropertySynthesize(error);
 //! Initialise a handler to call a selector on a target.
 // --------------------------------------------------------------------------
 
-- (id) initWithEngine: (ECTwitterEngine*) engine target: (id) target selector: (SEL) selector
+- (id) initWithEngine:(ECTwitterEngine*)engineIn target:(id)target selector:(SEL)selector
 {
 	if ((self = [super init]) != nil)
 	{
-		NSOperation* operation = [[NSInvocationOperation alloc] initWithTarget: target selector: selector object: self];
-		self.operation = operation;
-		self.engine = engine;
-		[operation release];
+		NSOperation* newOperation = [[NSInvocationOperation alloc] initWithTarget: target selector: selector object: self];
+		self.operation = newOperation;
+		self.engine = engineIn;
+		[newOperation release];
 	}
 	
 	return self;
@@ -60,11 +60,11 @@ ECPropertySynthesize(error);
 
 - (void) dealloc
 {
-	ECPropertyDealloc(operation);
-	ECPropertyDealloc(engine);
-	ECPropertyDealloc(result);
-	ECPropertyDealloc(extra);
-	ECPropertyDealloc(error);
+	[operation release];
+	[engine release];
+	[result release];
+	[extra release];
+	[error release];
 
 	[super dealloc];
 }
@@ -80,9 +80,9 @@ ECPropertySynthesize(error);
 //! Invoke the handler with a given status.
 // --------------------------------------------------------------------------
 
-- (void) invokeWithStatus: (ECTwitterStatus) status
+- (void) invokeWithStatus:(ECTwitterStatus)statusIn
 {
-	self.status = status;
+	self.status = statusIn;
 	[[NSOperationQueue mainQueue] addOperation: self.operation];
 }
 
@@ -90,9 +90,9 @@ ECPropertySynthesize(error);
 //! Invoke the handler with a given result object.
 // --------------------------------------------------------------------------
 
-- (void) invokeWithResult: (id) result
+- (void) invokeWithResult:(id)resultIn
 {
-	self.result = result;
+	self.result = resultIn;
 	[self invokeWithStatus: StatusResults];
 }
 

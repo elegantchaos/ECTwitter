@@ -31,7 +31,7 @@
 #pragma mark -
 #pragma mark Properties
 
-ECPropertySynthesize(users);
+@synthesize users;
 
 // ==============================================
 // Constants
@@ -90,7 +90,7 @@ ECPropertySynthesize(users);
 
 - (void) dealloc
 {
-	ECPropertyDealloc(users);
+	[users release];
 	
 	[super dealloc];
 }
@@ -114,19 +114,19 @@ ECPropertySynthesize(users);
 //! Add a tweet to our timeline.
 // --------------------------------------------------------------------------
 
-- (void) addUser: (ECTwitterUser*) user;
+- (void) addUser:(ECTwitterUser*)user;
 {
-	NSMutableArray* users = self.users;
-	if (!users)
+	NSMutableArray* array = self.users;
+	if (!array)
 	{
-		users = [[NSMutableArray alloc] initWithCapacity: 1];
-		self.users = users;
-		[users release];
+		array = [[NSMutableArray alloc] initWithCapacity: 1];
+		self.users = array;
+		[array release];
 	}
 	
-	if ([users indexOfObject: user] == NSNotFound)
+	if ([array indexOfObject: user] == NSNotFound)
 	{
-		[users addObject: user];
+		[array addObject: user];
 	}
 }
 

@@ -23,11 +23,11 @@ ECDefineDebugChannel(TweetChannel);
 // Properties
 // --------------------------------------------------------------------------
 
-ECPropertySynthesize(data);
-ECPropertySynthesize(cachedAuthor);
-ECPropertySynthesize(twitterID);
-ECPropertySynthesize(authorID);
-ECPropertySynthesize(viewed);
+@synthesize data;
+@synthesize cachedAuthor;
+@synthesize twitterID;
+@synthesize authorID;
+@synthesize viewed;
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
@@ -48,11 +48,11 @@ ECPropertySynthesize(viewed);
 //! Set up with just an ID
 // --------------------------------------------------------------------------
 
-- (id) initWithID: (ECTwitterID*) twitterID inCache: (ECTwitterCache*) cache
+- (id) initWithID:(ECTwitterID*)idIn inCache:(ECTwitterCache*)cache
 {
-	if ((self = [super initWithCache: cache]) != nil)
+	if ((self = [super initWithCache:cache]) != nil)
 	{
-		self.twitterID = twitterID;
+		self.twitterID = idIn;
 	}
 	
 	return self;
@@ -124,10 +124,10 @@ ECPropertySynthesize(viewed);
 
 - (void) dealloc
 {
-	ECPropertyDealloc(data);
-	ECPropertyDealloc(authorID);
-	ECPropertyDealloc(twitterID);
-	ECPropertyDealloc(cachedAuthor);
+	[data release];
+	[authorID release];
+	[twitterID release];
+	[cachedAuthor release];
 	
 	[super dealloc];
 }

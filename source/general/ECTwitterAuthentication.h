@@ -5,8 +5,6 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <ECFoundation/ECProperties.h>
-
 @class OAToken;
 @class ECTwitterHandler;
 @class ECTwitterEngine;
@@ -16,27 +14,18 @@ extern NSString *const TwitterAuthenticationSucceeded;
 extern NSString *const TwitterAuthenticationFailed;
 
 @interface ECTwitterAuthentication : NSObject
-{
-    ECPropertyVariable(connection, ECTwitterConnection*);
-    ECPropertyVariable(consumerKey, NSString*);
-    ECPropertyVariable(consumerSecret, NSString*);
-    ECPropertyVariable(engine, ECTwitterEngine*);
-    ECPropertyVariable(handler, ECTwitterHandler*);
-    ECPropertyVariable(token, OAToken*);
-    ECPropertyVariable(username, NSString*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(connection, ECTwitterConnection*);
-ECPropertyRetained(consumerKey, NSString*);
-ECPropertyRetained(consumerSecret, NSString*);
-ECPropertyRetained(engine, ECTwitterEngine*);
-ECPropertyRetained(handler, ECTwitterHandler*);
-ECPropertyRetained(token, OAToken*);
-ECPropertyRetained(username, NSString*);
+@property (nonatomic, retain) ECTwitterConnection* connection;
+@property (nonatomic, retain) NSString* consumerKey;
+@property (nonatomic, retain) NSString* consumerSecret;
+@property (nonatomic, retain) ECTwitterEngine* engine;
+@property (nonatomic, retain) ECTwitterHandler* handler;
+@property (nonatomic, retain) OAToken* token;
+@property (nonatomic, retain) NSString* username;
 
 // --------------------------------------------------------------------------
 // Public Methods

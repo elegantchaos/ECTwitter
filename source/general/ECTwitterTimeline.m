@@ -38,9 +38,9 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 #pragma mark -
 #pragma mark Properties
 
-ECPropertySynthesize(tweets);
-ECPropertySynthesize(newestTweet);
-ECPropertySynthesize(oldestTweet);
+@synthesize tweets;
+@synthesize newestTweet;
+@synthesize oldestTweet;
 
 // ==============================================
 // Constants
@@ -109,9 +109,9 @@ ECPropertySynthesize(oldestTweet);
 
 - (void) dealloc
 {
-	ECPropertyDealloc(tweets);
-	ECPropertyDealloc(newestTweet);
-	ECPropertyDealloc(oldestTweet);
+	[tweets release];
+	[newestTweet release];
+	[oldestTweet release];
 	
 	[super dealloc];
 }
@@ -147,12 +147,12 @@ ECPropertySynthesize(oldestTweet);
 
 - (void) addTweet: (ECTwitterTweet*) tweet;
 {
-	NSMutableArray* tweets = self.tweets;
-	if (!tweets)
+	NSMutableArray* array = self.tweets;
+	if (!array)
 	{
-		tweets = [[NSMutableArray alloc] initWithCapacity: 1];
-		self.tweets = tweets;
-		[tweets release];
+		array = [[NSMutableArray alloc] initWithCapacity: 1];
+		self.tweets = array;
+		[array release];
 	}
 	
 	NSDate* tweetDate = [tweet created];
@@ -166,9 +166,9 @@ ECPropertySynthesize(oldestTweet);
 		self.oldestTweet = tweet;
 	}
 	
-	if ([tweets indexOfObject: tweet] == NSNotFound)
+	if ([array indexOfObject:tweet] == NSNotFound)
 	{
-		[tweets addObject: tweet];
+		[array addObject:tweet];
 	}
 }
 
@@ -201,9 +201,8 @@ ECPropertySynthesize(oldestTweet);
 		ECDebug(TwitterTimelineChannel, @"received timeline for: %@", self);
         ECAssertIsKindOfClass(handler.result, NSArray);
         
-        NSArray* tweets = handler.result;
-
-		for (NSDictionary* tweetData in tweets)
+        NSArray* results = handler.result;
+		for (NSDictionary* tweetData in results)
 		{
 			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
 			[self addTweet: tweet];

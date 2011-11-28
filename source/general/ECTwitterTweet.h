@@ -7,33 +7,22 @@
 
 #import "ECTwitterCachedObject.h"
 
-#import <ECFoundation/ECProperties.h>
-
 @class CLLocation;
 @class ECTwitterID;
 @class ECTwitterUser;
 
 @interface ECTwitterTweet : ECTwitterCachedObject 
-{
-	ECPropertyVariable(twitterID, ECTwitterID*);
-	ECPropertyVariable(authorID, ECTwitterID*);
-	ECPropertyVariable(cachedAuthor, ECTwitterUser*);
-	ECPropertyVariable(data, NSDictionary*);
-	ECPropertyVariable(text, NSString*);
-	ECPropertyVariable(viewed, NSUInteger);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyDefine(text, NSString*, assign, nonatomic, readonly);
-ECPropertyRetained(data, NSDictionary*);
-ECPropertyRetained(twitterID, ECTwitterID*);
-ECPropertyRetained(authorID, ECTwitterID*);
-ECPropertyRetained(cachedAuthor, ECTwitterUser*);
-
-ECPropertyAssigned(viewed, NSUInteger);
+@property (nonatomic, readonly) NSString* text;
+@property (nonatomic, retain) NSDictionary* data;
+@property (nonatomic, retain) ECTwitterID* twitterID;
+@property (nonatomic, retain) ECTwitterID* authorID;
+@property (nonatomic, retain) ECTwitterUser* cachedAuthor;
+@property (nonatomic, assign) NSUInteger viewed;
 
 // --------------------------------------------------------------------------
 // Public Methods

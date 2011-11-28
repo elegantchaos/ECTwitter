@@ -47,9 +47,9 @@ ECDefineDebugChannel(TwitterCacheChannel);
 // ==============================================
 
 @synthesize maxCached;
-ECPropertySynthesize(users);
-ECPropertySynthesize(tweets);
-ECPropertySynthesize(engine);
+@synthesize users;
+@synthesize tweets;
+@synthesize engine;
 
 
 // ==============================================
@@ -74,17 +74,26 @@ static ECTwitterCache* gDecodingCache = nil;
 // Methods
 // ==============================================
 
-- (id) initWithEngine: (ECTwitterEngine*) engine
+- (id) initWithEngine:(ECTwitterEngine*)engineIn
 {
 	if ((self = [super init]) != nil)
 	{
-		self.engine = engine;
+		self.engine = engineIn;
 		self.tweets = [NSMutableDictionary dictionary];
 		self.users = [NSMutableDictionary dictionary];
         self.maxCached = 100; // temporary
  	}
 	
 	return self;
+}
+
+- (void)dealloc 
+{
+    [engine release];
+    [tweets release];
+    [users release];
+    
+    [super dealloc];
 }
 
 - (ECTwitterTweet*) tweetWithID: (ECTwitterID*) tweetID
@@ -240,8 +249,8 @@ static ECTwitterCache* gDecodingCache = nil;
 	{
         ECAssertIsKindOfClass(handler.result, NSArray);
 
-        NSArray* tweets = handler.result;
-		for (NSDictionary* tweetData in tweets)
+        NSArray* favourites = handler.result;
+		for (NSDictionary* tweetData in favourites)
 		{
 
 			ECTwitterTweet* tweet = [self addOrRefreshTweetWithInfo: tweetData];

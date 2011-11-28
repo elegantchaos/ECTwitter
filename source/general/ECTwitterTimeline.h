@@ -5,8 +5,6 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <ECFoundation/ECProperties.h>
-
 #import "ECTwitterCachedObject.h"
 
 @class ECTwitterTweet;
@@ -27,19 +25,14 @@ typedef enum
 } FetchType;
 
 @interface ECTwitterTimeline : ECTwitterCachedObject 
-{
-	ECPropertyVariable(tweets, NSMutableArray*);
-	ECPropertyVariable(oldestTweet, ECTwitterTweet*);
-	ECPropertyVariable(newestTweet, ECTwitterTweet*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(tweets, NSMutableArray*);
-ECPropertyRetained(oldestTweet, ECTwitterTweet*);
-ECPropertyRetained(newestTweet, ECTwitterTweet*);
+@property (nonatomic, retain) NSMutableArray* tweets;
+@property (nonatomic, retain) ECTwitterTweet* oldestTweet;
+@property (nonatomic, retain) ECTwitterTweet* newestTweet;
 
 // --------------------------------------------------------------------------
 // Public Methods

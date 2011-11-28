@@ -31,14 +31,14 @@ ECDefineDebugChannel(TwitterUserChannel);
 // Properties
 // --------------------------------------------------------------------------
 
-ECPropertySynthesize(cachedImage);
-ECPropertySynthesize(data);
-ECPropertySynthesize(followers);
-ECPropertySynthesize(friends);
-ECPropertySynthesize(mentions);
-ECPropertySynthesize(posts);
-ECPropertySynthesize(timeline);
-ECPropertySynthesize(twitterID);
+@synthesize cachedImage;
+@synthesize data;
+@synthesize followers;
+@synthesize friends;
+@synthesize mentions;
+@synthesize posts;
+@synthesize timeline;
+@synthesize twitterID;
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
@@ -104,11 +104,11 @@ ECPropertySynthesize(twitterID);
 //! Set up with just an ID.
 // --------------------------------------------------------------------------
 
-- (id) initWithID: (ECTwitterID*) twitterID inCache: (ECTwitterCache*) cache
+- (id)initWithID:(ECTwitterID*)idIn inCache:(ECTwitterCache*)cache
 {
 	if ((self = [super initWithCache: cache]) != nil)
 	{
-		self.twitterID = twitterID;
+		self.twitterID = idIn;
         [self makeTimelines];
 	}
 	
@@ -121,14 +121,14 @@ ECPropertySynthesize(twitterID);
 
 - (void) dealloc
 {
-	ECPropertyDealloc(cachedImage);
-	ECPropertyDealloc(data);
-	ECPropertyDealloc(followers);
-	ECPropertyDealloc(friends);
-	ECPropertyDealloc(mentions);
-	ECPropertyDealloc(posts);
-	ECPropertyDealloc(timeline);
-	ECPropertyDealloc(twitterID);
+	[cachedImage release];
+	[data release];
+	[followers release];
+	[friends release];
+	[mentions release];
+	[posts release];
+	[timeline release];
+	[twitterID release];
 	
 	[super dealloc];
 }

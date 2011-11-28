@@ -5,8 +5,6 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <ECFoundation/ECProperties.h>
-
 // --------------------------------------------------------------------------
 // Status Values
 // --------------------------------------------------------------------------
@@ -22,25 +20,17 @@ typedef enum
 @class ECTwitterEngine;
 
 @interface ECTwitterHandler : NSObject 
-{
-	ECPropertyVariable(operation, NSOperation*);
-	ECPropertyVariable(status, ECTwitterStatus);
-	ECPropertyVariable(engine, ECTwitterEngine*);
-	ECPropertyVariable(result, id);
-	ECPropertyVariable(extra, id);
-	ECPropertyVariable(error, NSError*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(operation, NSOperation*);
-ECPropertyRetained(engine, ECTwitterEngine*);
-ECPropertyRetained(result, id);
-ECPropertyAssigned(status, ECTwitterStatus);
-ECPropertyRetained(extra, id);
-ECPropertyRetained(error, NSError*);
+@property (nonatomic, retain) ECTwitterEngine* engine;
+@property (nonatomic, retain) NSError* error;
+@property (nonatomic, retain) id extra;
+@property (nonatomic, retain) NSOperation* operation;
+@property (nonatomic, retain) id result;
+@property (nonatomic, assign) ECTwitterStatus status;
 
 // --------------------------------------------------------------------------
 // Public Methods

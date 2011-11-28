@@ -47,9 +47,9 @@ ECDefineLogChannel(ErrorChannel);
 // Properties
 // --------------------------------------------------------------------------
 
-ECPropertySynthesize(authentication);
-ECPropertySynthesize(engine);
-ECPropertySynthesize(requests);
+@synthesize authentication;
+@synthesize engine;
+@synthesize requests;
 
 // ==============================================
 // Lifecycle
@@ -62,16 +62,16 @@ ECPropertySynthesize(requests);
 //! Initialise the engine.
 // --------------------------------------------------------------------------
 
-- (id) initWithAuthetication:(ECTwitterAuthentication *)authentication
+- (id) initWithAuthetication:(ECTwitterAuthentication *)authenticationIn
 {
 	if ((self = [super init]) != nil)
 	{
-		MGTwitterEngine* engine = [[MGTwitterEngine alloc] initWithDelegate:self];
-        self.authentication = authentication;
+		MGTwitterEngine* newEngine = [[MGTwitterEngine alloc] initWithDelegate:self];
+        self.authentication = authenticationIn;
         authentication.engine = self;
-		self.engine = engine;
+		self.engine = newEngine;
         
-		[engine release];
+		[newEngine release];
         
 		self.requests = [NSMutableDictionary dictionary];
 
@@ -88,8 +88,9 @@ ECPropertySynthesize(requests);
 
 - (void) dealloc 
 {
-	ECPropertyDealloc(engine);
-	ECPropertyDealloc(requests);
+    [authentication release];
+	[engine release];
+	[requests release];
     
     [super dealloc];
 }

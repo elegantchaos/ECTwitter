@@ -5,27 +5,20 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <ECFoundation/ECProperties.h>
-
 @class ECTwitterTweet;
 @class ECTwitterUser;
 @class ECTwitterEngine;
 @class ECTwitterID;
 
 @interface ECTwitterCache : NSObject 
-{
-	ECPropertyVariable(engine, ECTwitterEngine*);
-	ECPropertyVariable(tweets, NSMutableDictionary*);
-	ECPropertyVariable(users, NSMutableDictionary*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(engine, ECTwitterEngine*);
-ECPropertyRetained(tweets, NSMutableDictionary*);
-ECPropertyRetained(users, NSMutableDictionary*);
+@property (nonatomic, retain) ECTwitterEngine* engine;
+@property (nonatomic, retain) NSMutableDictionary* tweets;
+@property (nonatomic, retain) NSMutableDictionary* users;
 
 // --------------------------------------------------------------------------
 // Public Methods

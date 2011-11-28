@@ -6,18 +6,11 @@
 //  Copyright 2008 Instinctive Code.
 //
 
-#import <ECFoundation/ECProperties.h>
-
 @interface ECTwitterConnection : NSURLConnection
-{
-    ECPropertyVariable(data, NSMutableData*);
-    ECPropertyVariable(identifier, NSString*);
-    ECPropertyVariable(response, NSHTTPURLResponse*);
-}
 
-ECPropertyRetained(data, NSMutableData*);
-ECPropertyRetained(identifier, NSString*);
-ECPropertyRetained(response, NSHTTPURLResponse*);
+@property (nonatomic, retain) NSMutableData* data;
+@property (nonatomic, retain) NSString* identifier;
+@property (nonatomic, retain) NSHTTPURLResponse* response;
 
 // Initializer
 - (id)initWithRequest:(NSURLRequest *)request delegate:(id)delegate;

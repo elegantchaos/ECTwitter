@@ -23,7 +23,7 @@
 // Properties
 // --------------------------------------------------------------------------
 
-ECPropertySynthesize(string);
+@synthesize string;
 
 // --------------------------------------------------------------------------
 // Constants
@@ -40,9 +40,9 @@ ECPropertySynthesize(string);
 	return [newID autorelease];
 }
 
-- (id) initWithString: (NSString*) string
+- (id) initWithString:(NSString*)stringIn
 {
-    if (string == nil)
+    if (stringIn == nil)
     {
         NSLog(@"nil string detected");
     }
@@ -50,7 +50,7 @@ ECPropertySynthesize(string);
 
 	if ((self = [super init]) != nil)
 	{
-		self.string = string;
+		self.string = stringIn;
 	}
 	
 	return self;
@@ -70,7 +70,7 @@ ECPropertySynthesize(string);
 
 - (void) dealloc
 {
-	ECPropertyDealloc(string);
+	[string release];
 	
 	[super dealloc];
 }

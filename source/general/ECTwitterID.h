@@ -5,18 +5,13 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <ECFoundation/ECProperties.h>
-
 @interface ECTwitterID : NSObject
-{
-	ECPropertyVariable(string, NSString*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(string, NSString*);
+@property (nonatomic, retain) NSString* string;
 
 // --------------------------------------------------------------------------
 // Public Methods

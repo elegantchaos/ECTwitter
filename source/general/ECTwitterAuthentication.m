@@ -38,13 +38,13 @@ ECDefineDebugChannel(AuthenticationChannel);
 // Properties
 // --------------------------------------------------------------------------
 
-ECPropertySynthesize(connection);
-ECPropertySynthesize(consumerKey);
-ECPropertySynthesize(consumerSecret);
-ECPropertySynthesize(engine);
-ECPropertySynthesize(handler);
-ECPropertySynthesize(token);
-ECPropertySynthesize(username);
+@synthesize connection;
+@synthesize consumerKey;
+@synthesize consumerSecret;
+@synthesize engine;
+@synthesize handler;
+@synthesize token;
+@synthesize username;
 
 // --------------------------------------------------------------------------
 // Constants
@@ -73,7 +73,18 @@ NSString *const kPrefix = @"";
 	return self;
 }
 
-
+- (void)dealloc 
+{
+    [connection dealloc];
+    [consumerKey dealloc];
+    [consumerSecret dealloc];
+    [engine dealloc];
+    [handler dealloc];
+    [token dealloc];
+    [username dealloc];
+    
+    [super dealloc];
+}
 // --------------------------------------------------------------------------
 //! Has the engine been authenticated?
 // --------------------------------------------------------------------------
@@ -128,7 +139,7 @@ NSString *const kPrefix = @"";
 	NSString* savedUser = [defaults stringForKey: kSavedUserKey];
 	OAToken* savedToken = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName: kProvider prefix: kPrefix];
 	
-	ECTwitterHandler* handler = [[ECTwitterHandler alloc] initWithEngine:self.engine target: target selector: selector];
+	ECTwitterHandler* newHandler = [[ECTwitterHandler alloc] initWithEngine:self.engine target: target selector: selector];
     self.username = user;
 	if (user && savedToken && [savedToken isValid] && ([savedUser isEqualToString: user]))
 	{
@@ -142,13 +153,13 @@ NSString *const kPrefix = @"";
 		
 		if (user && password)
 		{
-            self.handler = handler;
+            self.handler = newHandler;
 			[defaults setValue: user forKey: kSavedUserKey];
 			[self requestXAuthAccessTokenForUsername:user password: password];
 		}
 	}
 	
-	[handler release];
+	[newHandler release];
 	[savedToken release];
 }
 
@@ -166,33 +177,33 @@ NSString *const kPrefix = @"";
 	
 	[request setParameters:[NSArray arrayWithObjects:
 							[OARequestParameter requestParameter:@"x_auth_mode" value:@"client_auth"],
-							[OARequestParameter requestParameter:@"x_auth_username" value:username],
+							[OARequestParameter requestParameter:@"x_auth_username" value:self.username],
 							[OARequestParameter requestParameter:@"x_auth_password" value:password],
 							nil]];		
 	
     // Create a connection using this request, with the default timeout and caching policy, 
     // and appropriate Twitter request and response types for parsing and error reporting.
-    ECTwitterConnection* connection = [[ECTwitterConnection alloc] initWithRequest:request delegate:self];
+    ECTwitterConnection* newConnection = [[ECTwitterConnection alloc] initWithRequest:request delegate:self];
     [request release];
     
-    if (connection)
+    if (newConnection)
     {
-        self.connection = connection;
-        [connection release];
+        self.connection = newConnection;
+        [newConnection release];
     }
 }
 
 #pragma mark - Handler routines
 
-- (void)invokeHandlerForToken:(OAToken*)token
+- (void)invokeHandlerForToken:(OAToken*)tokenIn
 {
-    self.token = token;
+    self.token = tokenIn;
     [token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
     self.engine.engine.authentication = self;
 
     if (self.handler)
     {
-        [self.handler invokeWithResult: token];
+        [self.handler invokeWithResult:tokenIn];
         self.handler.operation = nil;
         self.handler = nil;
     }
@@ -202,31 +213,31 @@ NSString *const kPrefix = @"";
 
 - (void)invokeHandlerForError
 {
-    ECTwitterConnection* connection = self.connection;
+    ECTwitterConnection* c = self.connection;
     NSError* error = nil;
     
-    if (connection)
+    if (c)
     {
-        NSInteger statusCode = [[connection response] statusCode];
-        NSMutableDictionary* info = [NSMutableDictionary dictionaryWithObjectsAndKeys: [connection response], @"response", nil];
-        NSData* data = [connection data];
+        NSInteger statusCode = [[c response] statusCode];
+        NSMutableDictionary* info = [NSMutableDictionary dictionaryWithObjectsAndKeys: [c response], @"response", nil];
+        NSData* data = [c data];
         if (data)
         {
-            NSString* body = [[NSString alloc] initWithData:[connection data] encoding:NSUTF8StringEncoding];
+            NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             [info setObject:body forKey:@"body"];
             [body release];
         }
         error = [NSError errorWithDomain:@"HTTP" code:statusCode userInfo:info];
-        [connection cancel];
+        [c cancel];
         self.connection = nil;
     }
 
-    ECTwitterHandler* handler = self.handler;
-    if (handler)
+    ECTwitterHandler* h = self.handler;
+    if (h)
     {
-        handler.error = error;
-        [handler invokeWithStatus:StatusFailed];
-        handler.operation = nil;
+        h.error = error;
+        [h invokeWithStatus:StatusFailed];
+        h.operation = nil;
         self.handler = nil;
     }
     
@@ -243,13 +254,13 @@ NSString *const kPrefix = @"";
 }
 
 
-- (void)connection:(ECTwitterConnection*)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(ECTwitterConnection*)connectionIn didReceiveResponse:(NSURLResponse *)response
 {
 	ECDebug(AuthenticationChannel, @"received response");
 
     // This method is called when the server has determined that it has enough information to create the NSURLResponse.
     // it can be called multiple times, for example in the case of a redirect, so each time we reset the data.
-    [connection resetDataLength];
+    [connectionIn resetDataLength];
     
     // Get response code.
     NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
@@ -263,11 +274,11 @@ NSString *const kPrefix = @"";
 }
 
 
-- (void)connection:(ECTwitterConnection*)connection didReceiveData:(NSData *)data
+- (void)connection:(ECTwitterConnection*)connectionIn didReceiveData:(NSData *)data
 {
 	ECDebug(AuthenticationChannel, @"received data");
 
-    [connection appendData:data];
+    [connectionIn appendData:data];
 }
 
 
@@ -278,11 +289,11 @@ NSString *const kPrefix = @"";
 }
 
 
-- (void)connectionDidFinishLoading:(ECTwitterConnection*)connection
+- (void)connectionDidFinishLoading:(ECTwitterConnection*)connectionIn
 {
 	ECDebug(AuthenticationChannel, @"finished loading");
     
-    NSInteger statusCode = [[connection response] statusCode];
+    NSInteger statusCode = [[connectionIn response] statusCode];
     if (statusCode >= 400) 
     {
         [self invokeHandlerForError];
@@ -290,9 +301,9 @@ NSString *const kPrefix = @"";
     else
     {
         NSString* body = [[NSString alloc] initWithData:[connection data] encoding:NSUTF8StringEncoding];
-        OAToken *token = [[OAToken alloc] initWithHTTPResponseBody:body];
-        [self invokeHandlerForToken:token];
-        [token release];
+        OAToken* newToken = [[OAToken alloc] initWithHTTPResponseBody:body];
+        [self invokeHandlerForToken:newToken];
+        [newToken release];
         [body release];
     }
 

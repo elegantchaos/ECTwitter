@@ -5,20 +5,15 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <ECFoundation/ECProperties.h>
-
 @class ECTwitterUser;
 
 @interface ECTwitterUserList : NSObject 
-{
-	ECPropertyVariable(users, NSMutableArray*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(users, NSMutableArray*);
+@property (nonatomic, retain) NSMutableArray* users;
 
 // --------------------------------------------------------------------------
 // Public Methods

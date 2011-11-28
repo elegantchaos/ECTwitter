@@ -6,19 +6,11 @@
 // --------------------------------------------------------------------------
 
 #import "MGTwitterEngineDelegate.h"
-#import <ECFoundation/ECProperties.h>
 
 @interface ECTwitterParser : NSObject 
 {
 	__weak id<MGTwitterEngineDelegate>  mDelegate;
 	MGTwitterEngineDeliveryOptions      mOptions;
-
-    ECPropertyVariable(identifier, NSString*);
-    ECPropertyVariable(stack, NSMutableArray*);
-    ECPropertyVariable(currentDictionary, NSMutableDictionary*);
-    ECPropertyVariable(currentArray, NSMutableArray*);
-    ECPropertyVariable(currentKey, NSString*);
-    ECPropertyVariable(parsedObjects, NSMutableArray*);
 }
 
 - (id)initWithDelegate:(id<MGTwitterEngineDelegate>)theDelegate options:(MGTwitterEngineDeliveryOptions)options;

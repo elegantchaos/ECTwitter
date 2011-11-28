@@ -28,29 +28,29 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 // Properties
 // ==============================================
 
-ECPropertySynthesize(data);
-ECPropertySynthesize(containers);
+@synthesize data;
+@synthesize containers;
 
 // --------------------------------------------------------------------------
 //! Set up with data properties.
 // --------------------------------------------------------------------------
 
-- (id) initWithPlaceInfo: (NSDictionary*) dictionary
+- (id)initWithPlaceInfo:(NSDictionary*)dictionary
 {
 	if ((self = [super init]) != nil)
 	{
 		self.data = dictionary;
 		
-		NSMutableArray* containers = [[NSMutableArray alloc] init];
+		NSMutableArray* newContainers = [[NSMutableArray alloc] init];
 		NSArray* containersInfo = [dictionary objectForKey: @"contained_within"];
 		for (NSDictionary* containerInfo in containersInfo)
 		{
 			ECTwitterPlace* place = [[ECTwitterPlace alloc] initWithPlaceInfo: containerInfo];
-			[containers addObject: place];
+			[newContainers addObject: place];
 			[place release];
 		}
-		self.containers = containers;
-		[containers release];
+		self.containers = newContainers;
+		[newContainers release];
 		
 		ECDebug(TwitterPlaceChannel, @"made place: %@", self.name);
 	}
@@ -64,8 +64,8 @@ ECPropertySynthesize(containers);
 
 - (void) dealloc
 {
-	ECPropertyDealloc(data);
-	ECPropertyDealloc(containers);
+	[data release];
+	[containers release];
 
 	[super dealloc];
 }

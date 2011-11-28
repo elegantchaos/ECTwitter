@@ -23,19 +23,14 @@
 // --------------------------------------------------------------------------
 
 @interface ECTwitterEngine : NSObject <MGTwitterEngineDelegate> 
-{
-	ECPropertyVariable(engine, MGTwitterEngine*);
-    ECPropertyVariable(authentication, ECTwitterAuthentication*);
-	ECPropertyVariable(requests, NSMutableDictionary*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(engine, MGTwitterEngine*);
-ECPropertyRetained(authentication, ECTwitterAuthentication*);
-ECPropertyRetained(requests, NSMutableDictionary*);
+@property (nonatomic, retain) ECTwitterAuthentication* authentication;
+@property (nonatomic, retain) MGTwitterEngine* engine;
+@property (nonatomic, retain) NSMutableDictionary* requests;
 
 // --------------------------------------------------------------------------
 // Public Methods

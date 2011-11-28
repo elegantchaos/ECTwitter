@@ -5,20 +5,14 @@
 //  Copyright 2011 Sam Deane, Elegant Chaos. All rights reserved.
 // --------------------------------------------------------------------------
 
-#import <ECFoundation/ECProperties.h>
-
 @interface ECTwitterPlace : NSObject 
-{
-	ECPropertyVariable(data, NSDictionary*);
-	ECPropertyVariable(containers, NSArray*);
-}
 
 // --------------------------------------------------------------------------
 // Public Properties
 // --------------------------------------------------------------------------
 
-ECPropertyRetained(data, NSDictionary*);
-ECPropertyRetained(containers, NSArray*);
+@property (nonatomic, retain) NSDictionary* data;
+@property (nonatomic, retain) NSArray* containers;
 
 // --------------------------------------------------------------------------
 // Public Methods

@@ -29,9 +29,9 @@
 
 @implementation ECTwitterConnection
 
-ECPropertySynthesize(data);
-ECPropertySynthesize(identifier);
-ECPropertySynthesize(response);
+@synthesize data;
+@synthesize identifier;
+@synthesize response;
 
 #pragma mark Initializer
 
@@ -53,9 +53,9 @@ ECPropertySynthesize(response);
 
 - (void)dealloc
 {
-    ECPropertyDealloc(data);
-    ECPropertyDealloc(identifier);
-    ECPropertyDealloc(response);
+    [data release];
+    [identifier release];
+    [response release];
 
     [super dealloc];
 }
@@ -70,9 +70,9 @@ ECPropertySynthesize(response);
 }
 
 
-- (void)appendData:(NSData *)data
+- (void)appendData:(NSData*)dataToAppend
 {
-    [self.data appendData:data];
+    [self.data appendData:dataToAppend];
 }
 
 
@@ -83,7 +83,7 @@ ECPropertySynthesize(response);
 {
     NSString *description = [super description];
     
-    return [description stringByAppendingFormat:@" (identifier = %@)", _identifier];
+    return [description stringByAppendingFormat:@" (identifier = %@)", self.identifier];
 }
 
 @end
