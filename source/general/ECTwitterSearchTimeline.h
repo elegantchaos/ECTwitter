@@ -23,10 +23,6 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id)init;
-- (void)addTweet: (ECTwitterTweet*) tweet;
 - (void)refresh;
-- (void)trackPosts;
-- (void)trackHome;
 
 @end
