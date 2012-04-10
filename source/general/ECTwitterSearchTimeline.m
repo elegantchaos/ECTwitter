@@ -15,6 +15,7 @@
 #import "ECTwitterEngine.h"
 #import "ECTwitterTweet.h"
 #import "ECTwitterUserMentionsTimeline.h"
+#import "ECTwitterHandler.h"
 
 // ==============================================
 // Private Methods
@@ -86,20 +87,41 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
     ECDebug(TwitterSearchTimelineChannel, @"requesting timeline for search %@", self.text);
     
     NSString* methodName = @"search";
-    NSUInteger count = 200;
+    NSUInteger count = 100;
     
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        search, @"q",
-                                       [NSString stringWithFormat:@"%d", count], @"count",
+                                       [NSString stringWithFormat:@"%d", count], @"rpp",
                                        nil];
     
-    [self.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(timelineHandler:)];
+    [self.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(searchHandler:)];
 }
 
-- (void) timelineHandler: (ECTwitterHandler*) handler
+- (void) searchHandler: (ECTwitterHandler*) handler
 {
-    [super timelineHandler:handler];
+	if (handler.status == StatusResults)
+	{
+        
+		ECDebug(TwitterSearchTimelineChannel, @"received timeline for: %@", self);
+        ECAssertIsKindOfClass(handler.result, NSDictionary);
+        
+        NSArray* results = [handler.result objectForKey:@"results"];
+		for (NSDictionary* tweetData in results)
+		{
+			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
+			[self addTweet: tweet];
+			
+			ECDebug(TwitterSearchTimelineChannel, @"tweet info received: %@", tweet);
+		}
+	}
+	else
+	{
+		ECDebug(TwitterSearchTimelineChannel, @"error receiving search results for: %@", self);
+	}
+    
+	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+	[nc postNotificationName: ECTwitterTimelineUpdated object: self];
 }
 
 // --------------------------------------------------------------------------

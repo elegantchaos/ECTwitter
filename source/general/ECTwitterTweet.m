@@ -107,7 +107,17 @@ ECDefineDebugChannel(TweetChannel);
     NSDictionary* authorInfo = [info objectForKey: @"user"];
     if (authorInfo)
     {
+        // this is a normal tweet
         self.authorID = [ECTwitterID idFromDictionary: authorInfo];
+    }
+    else
+    {
+        NSString* searchAuthor = [info objectForKey:@"from_user_id_str"];
+        if (searchAuthor)
+        {
+            // this is a search result - the author is given in a different format
+            self.authorID = [[[ECTwitterID alloc] initWithString:searchAuthor] autorelease];
+        }
     }
 }
 

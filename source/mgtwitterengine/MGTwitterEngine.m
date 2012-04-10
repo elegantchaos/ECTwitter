@@ -284,7 +284,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
         fullPath = [self queryStringWithBase:fullPath parameters:params prefixed:YES];
     }
     
-	BOOL isSearch = NO; // (requestType == MGTwitterSearchRequest || requestType == MGTwitterSearchCurrentTrendsRequest);
+	BOOL isSearch = [method isEqualToString:@"search"];
 	NSString* domain = isSearch ? self.searchDomain : self.apiDomain;
 	NSString* connectionType = (self.secure && !isSearch) ? @"https" : @"http";
 		
