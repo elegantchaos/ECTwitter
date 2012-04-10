@@ -26,6 +26,8 @@
 
 @interface ECTwitterSearchTimeline()
 
+@property (strong, nonatomic) ECTwitterID* maxID;
+
 - (void)fetchTweetsMatchingSearch:(NSString*)search;
 
 @end
@@ -33,17 +35,19 @@
 
 @implementation ECTwitterSearchTimeline
 
-// ==============================================
-// Properties
-// ==============================================
 
 #pragma mark - Channels
 
 ECDefineDebugChannel(TwitterSearchTimelineChannel);
 
+// ==============================================
+// Properties
+// ==============================================
+
 #pragma mark - Properties
 
-@synthesize text;
+@synthesize text = _text;
+@synthesize maxID = _maxID;
 
 // ==============================================
 // Constants
@@ -63,7 +67,8 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
 
 - (void) dealloc
 {
-    [text release];
+    [_maxID release];
+    [_text release];
 	
 	[super dealloc];
 }
@@ -95,6 +100,11 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
                                        [NSString stringWithFormat:@"%d", count], @"rpp",
                                        nil];
     
+    if (self.maxID)
+    {
+        [parameters setObject:self.maxID.string forKey:@"since_id"];
+    }
+    
     [self.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(searchHandler:)];
 }
 
@@ -105,6 +115,9 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
         
 		ECDebug(TwitterSearchTimelineChannel, @"received timeline for: %@", self);
         ECAssertIsKindOfClass(handler.result, NSDictionary);
+        
+        NSDictionary* result = handler.result;
+        self.maxID = [ECTwitterID idFromKey:@"max_id_str" dictionary:result];
         
         NSArray* results = [handler.result objectForKey:@"results"];
 		for (NSDictionary* tweetData in results)

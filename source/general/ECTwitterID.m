@@ -35,11 +35,21 @@
 // Methods
 // --------------------------------------------------------------------------
 
++ (ECTwitterID*)idFromString:(NSString *)string
+{
+    ECTwitterID* result = [[ECTwitterID alloc] initWithString: string];
+	return [result autorelease];
+}
+
++ (ECTwitterID*)idFromKey:(NSString *)key dictionary:(NSDictionary *)dictionary
+{
+	NSString* string = [dictionary objectForKey: key];
+    return [self idFromString:string];
+}
+
 + (ECTwitterID*) idFromDictionary:(NSDictionary *)dictionary
 {
-	NSString* string = [dictionary objectForKey: @"id_str"];
-	ECTwitterID* newID = [[ECTwitterID alloc] initWithString: string];
-	return [newID autorelease];
+    return [self idFromKey:@"id_str" dictionary:dictionary];
 }
 
 - (id) initWithString:(NSString*)stringIn

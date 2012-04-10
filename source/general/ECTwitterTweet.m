@@ -116,7 +116,7 @@ ECDefineDebugChannel(TweetChannel);
         if (searchAuthor)
         {
             // this is a search result - the author is given in a different format
-            self.authorID = [[[ECTwitterID alloc] initWithString:searchAuthor] autorelease];
+            self.authorID = [ECTwitterID idFromString:searchAuthor];
         }
     }
 }
@@ -291,7 +291,7 @@ ECDefineDebugChannel(TweetChannel);
 	NSString* string = [self.data objectForKey: @"in_reply_to_status_id_str"];
 	if (string)
 	{
-		result = [[[ECTwitterID alloc] initWithString: string] autorelease];
+		result = [ECTwitterID idFromString:string];
 	}
 	
 	return result;
@@ -303,7 +303,7 @@ ECDefineDebugChannel(TweetChannel);
 	NSString* string = [self.data objectForKey: @"in_reply_to_user_id_str"];
 	if (string)
 	{
-		result = [[[ECTwitterID alloc] initWithString: string] autorelease];
+		result = [ECTwitterID idFromString:string];
 	}
 	
 	return result;

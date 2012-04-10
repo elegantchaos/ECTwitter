@@ -19,7 +19,9 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-+ idFromDictionary: (NSDictionary*) dictionary;
++ (ECTwitterID*)idFromKey:(NSString*)key dictionary:(NSDictionary*)dictionary;
++ (ECTwitterID*)idFromDictionary:(NSDictionary*)dictionary;
++ (ECTwitterID*)idFromString:(NSString*)string;
 
 - (id) initWithString: (NSString*) string;
 
