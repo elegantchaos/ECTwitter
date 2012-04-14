@@ -21,6 +21,7 @@
 @property (nonatomic, retain) ECTwitterEngine* engine;
 @property (nonatomic, retain) NSMutableDictionary* tweets;
 @property (nonatomic, retain) NSMutableDictionary* users;
+@property (nonatomic, retain) NSMutableDictionary* authenticated;
 
 // --------------------------------------------------------------------------
 // Public Methods

@@ -14,6 +14,7 @@
 #import "ECTwitterTweet.h"
 #import "ECTwitterID.h"
 #import "ECTwitterTimeline.h"
+#import "ECTwitterUserMentionsTimeline.h"
 
 #import <ECFoundation/ECMacros.h>
 
@@ -48,11 +49,11 @@ ECDefineDebugChannel(TwitterCacheChannel);
 // Properties
 // ==============================================
 
-@synthesize maxCached;
-@synthesize users;
-@synthesize tweets;
-@synthesize engine;
-
+@synthesize authenticated = _authenticated;
+@synthesize engine = _engine;
+@synthesize maxCached = _maxCached;
+@synthesize tweets = _tweets;
+@synthesize users = _users;
 
 // ==============================================
 // Notifications
@@ -83,6 +84,7 @@ static ECTwitterCache* gDecodingCache = nil;
 		self.engine = engineIn;
 		self.tweets = [NSMutableDictionary dictionary];
 		self.users = [NSMutableDictionary dictionary];
+		self.authenticated = [NSMutableDictionary dictionary];
         self.maxCached = 100; // temporary
  	}
 	
@@ -91,9 +93,10 @@ static ECTwitterCache* gDecodingCache = nil;
 
 - (void)dealloc 
 {
-    [engine release];
-    [tweets release];
-    [users release];
+    [_authenticated release];
+    [_engine release];
+    [_tweets release];
+    [_users release];
     
     [super dealloc];
 }
@@ -314,7 +317,8 @@ static ECTwitterCache* gDecodingCache = nil;
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
 
     [archiver encodeObject:self.users forKey:@"users"];
-    
+
+    // save recent tweets
     NSArray* allTweets = [self.tweets allValues];
     NSArray* sortedTweets = [allTweets sortedArrayUsingSelector:@selector(compareByViewsDateDescending:)];
     NSUInteger count = [sortedTweets count];
@@ -328,6 +332,17 @@ static ECTwitterCache* gDecodingCache = nil;
             break;
         }
     }
+
+    // save mentions of authenticated users
+    for (ECTwitterUser* user in [self.authenticated allValues])
+    {
+        NSArray* mentions = user.mentions.tweets;
+        for (ECTwitterTweet* tweet in mentions)
+        {
+            [recentTweets setObject:tweet forKey:tweet.twitterID.string];
+        }
+    }
+    
     [archiver encodeObject:recentTweets forKey:@"tweets"];
     [archiver finishEncoding];
     

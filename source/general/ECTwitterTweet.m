@@ -92,6 +92,7 @@ ECDefineDebugChannel(TweetChannel);
         self.viewed = [coder decodeIntegerForKey:@"viewed"];
         NSDictionary* info = [coder decodeObjectForKey:@"info"];
         [self refreshWithInfo:info];
+        NSLog(@"restored tweet %@ with view count %ld", self.twitterID, self.viewed);
     }
     
     return self;
@@ -363,6 +364,7 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
     [coder encodeObject:self.twitterID forKey:@"id"];
     [coder encodeObject:info forKey:@"info"];
     [coder encodeInteger:self.viewed forKey:@"viewed"];
+    NSLog(@"saved tweet %@ with view count %ld", self.twitterID, self.viewed);
 }
 
 @end
