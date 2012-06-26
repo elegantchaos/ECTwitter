@@ -252,7 +252,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                 @"1", @"trim_user",
                                 @"1", @"include_rts",
-                                [NSString stringWithFormat:@"%d", count], @"count",
+                                [NSString stringWithFormat:@"%ld", (long) count], @"count",
                                 nil];
     
     if (method != MethodMentions)
@@ -279,7 +279,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"<ECTwitterTimeline: %d tweets>", [self.tweets count]];
+    return [NSString stringWithFormat:@"<ECTwitterTimeline: %ld tweets>", (long) [self.tweets count]];
 }
 
 // --------------------------------------------------------------------------

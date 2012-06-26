@@ -97,7 +97,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
     
     NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
                                        search, @"q",
-                                       [NSString stringWithFormat:@"%d", count], @"rpp",
+                                       [NSString stringWithFormat:@"%ld", (long) count], @"rpp",
                                        nil];
     
     if (self.maxID)
@@ -143,7 +143,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"<ECTwitterSearchTimeline: %d tweets for text %@>", [self.tweets count], self.text];
+    return [NSString stringWithFormat:@"<ECTwitterSearchTimeline: %ld tweets for text %@>", (long) [self.tweets count], self.text];
 }
 
 @end

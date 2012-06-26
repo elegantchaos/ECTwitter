@@ -148,7 +148,7 @@ ECDefineDebugChannel(TweetChannel);
 {
     NSString* truncated = [self.text truncateToLength:20];
     NSString* date = [NSDateFormatter localizedStringFromDate:self.created dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle];
-	return [NSString stringWithFormat: @"%@: '%@' %@ views:%d #%@", self.author.twitterName, truncated, date, self.viewed, self.twitterID];
+	return [NSString stringWithFormat: @"%@: '%@' %@ views:%ld #%@", self.author.twitterName, truncated, date, (long) self.viewed, self.twitterID];
 }
 
 - (NSString*) text

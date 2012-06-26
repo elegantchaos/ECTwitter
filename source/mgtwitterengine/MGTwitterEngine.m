@@ -486,7 +486,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
             // Dump XML to file for debugging.
             NSString *dataString = [NSString stringWithUTF8String:[receivedData bytes]];
             static NSUInteger index = 0;
-            [dataString writeToFile:[[NSString stringWithFormat:@"~/Desktop/Twitter Messages/message %d.%@", index++, kAPIFormat] stringByExpandingTildeInPath] 
+            [dataString writeToFile:[[NSString stringWithFormat:@"~/Desktop/Twitter Messages/message %ld.%@", (long) index++, kAPIFormat] stringByExpandingTildeInPath]
                          atomically:NO encoding:NSUTF8StringEncoding error:NULL];
         }
 #endif

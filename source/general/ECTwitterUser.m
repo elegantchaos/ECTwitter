@@ -183,7 +183,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat: @"<TwitterUser: %@ %@ posts:%d timeline:%d mentions:%d>", self.twitterName, self.twitterID, [self.posts count], [self.timeline count], [self.mentions count]];
+	return [NSString stringWithFormat: @"<TwitterUser: %@ %@ posts:%ld timeline:%ld mentions:%ld>", self.twitterName, self.twitterID, (long) [self.posts count], (long) [self.timeline count], (long) [self.mentions count]];
 }
 
 // --------------------------------------------------------------------------

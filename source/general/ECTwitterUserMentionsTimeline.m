@@ -107,7 +107,7 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"<ECTwitterUserMentionsTimeline: %d tweets>", [self.tweets count]];
+    return [NSString stringWithFormat:@"<ECTwitterUserMentionsTimeline: %ld tweets>", (long) [self.tweets count]];
 }
 
 @end
