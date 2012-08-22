@@ -172,7 +172,7 @@ ECDefineLogChannel(ErrorChannel);
 //! Handle receiving generic results.
 // --------------------------------------------------------------------------
 
-- (void)genericResultsReceived:(NSArray*)results forRequest:(NSString *)request;
+- (void)genericResultsReceived:(NSArray*)results forRequest:(NSString *)request
 {
 	ECDebug(TwitterChannel, @"generic results %@ for request %@", results, request);
     
@@ -197,7 +197,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
+- (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector
 {
 	[self callMethod: method httpMethod: nil parameters: parameters target: target selector: selector extra: nil];
 }
@@ -207,7 +207,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
+- (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra
 {
 	[self callMethod: method httpMethod: nil parameters: parameters target: target selector: selector extra: extra];
 }
@@ -217,7 +217,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
+- (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector
 {
 	[self callMethod: method httpMethod: @"POST" parameters: parameters target: target selector: selector extra: nil];
 }
@@ -227,7 +227,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
+- (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra
 {
 	[self callMethod: method httpMethod: @"POST" parameters: parameters target: target selector: selector extra: extra];
 }
@@ -237,7 +237,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callMethod: (NSString*) method httpMethod: (NSString*) httpMethod parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
+- (void) callMethod: (NSString*) method httpMethod: (NSString*) httpMethod parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra
 {
 	if (parameters == nil)
 	{

@@ -64,7 +64,7 @@ NSString *const kPrefix = @"";
 //! Initialise the engine.
 // --------------------------------------------------------------------------
 
-- (id) initWithKey: (NSString*) key secret: (NSString*) secret;
+- (id) initWithKey: (NSString*) key secret: (NSString*) secret
 {
 	if ((self = [super init]) != nil)
 	{

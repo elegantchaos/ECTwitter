@@ -263,7 +263,7 @@ ECDefineDebugChannel(TweetChannel);
 	return [other.created compare: self.created];
 }
 
-- (NSComparisonResult) compareByViewsDateDescending: (ECTwitterTweet*) other;
+- (NSComparisonResult) compareByViewsDateDescending: (ECTwitterTweet*) other
 {
 	if (self.viewed < other.viewed)
 	{

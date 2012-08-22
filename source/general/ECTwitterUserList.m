@@ -116,7 +116,7 @@
 //! Add a tweet to our timeline.
 // --------------------------------------------------------------------------
 
-- (void) addUser:(ECTwitterUser*)user;
+- (void) addUser:(ECTwitterUser*)user
 {
 	NSMutableArray* array = self.users;
 	if (!array)

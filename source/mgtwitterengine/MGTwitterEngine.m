@@ -110,7 +110,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 //! Set up client details for reporting to twitter.
 // --------------------------------------------------------------------------
 
-- (void)setClientName:(NSString*)name version:(NSString*)version URL:(NSString*)url;
+- (void)setClientName:(NSString*)name version:(NSString*)version URL:(NSString*)url
 {
     self.clientName = name;
     self.clientVersion = version;
@@ -216,7 +216,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 //! Send request.
 // --------------------------------------------------------------------------
 
--(NSString*)sendRequest:(NSURLRequest *)theRequest;
+-(NSString*)sendRequest:(NSURLRequest *)theRequest
 {
     
     // Create a connection using this request, with the default timeout and caching policy, 
@@ -243,7 +243,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 //! Make a request.
 // --------------------------------------------------------------------------
 
-- (NSString*) request:(NSString*)twitterPath parameters:(NSDictionary *)params method:(NSString*)method;
+- (NSString*) request:(NSString*)twitterPath parameters:(NSDictionary *)params method:(NSString*)method
 {
 	NSString* path = [NSString stringWithFormat:@"%@.%@", twitterPath, kAPIFormat];
     NSMutableURLRequest* request = [self requestWithMethod:method path:path parameters:params];

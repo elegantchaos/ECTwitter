@@ -124,7 +124,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 //! timeline.
 // --------------------------------------------------------------------------
 
-- (void)addTweet: (ECTwitterTweet*) tweet;
+- (void)addTweet: (ECTwitterTweet*) tweet
 {
     [super addTweet:tweet];
     if ([tweet mentionsUser:self.user])

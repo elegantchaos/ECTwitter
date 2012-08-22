@@ -147,7 +147,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 //! Add a tweet to our timeline.
 // --------------------------------------------------------------------------
 
-- (void) addTweet: (ECTwitterTweet*) tweet;
+- (void) addTweet: (ECTwitterTweet*) tweet
 {
 	NSMutableArray* array = self.tweets;
 	if (!array)
