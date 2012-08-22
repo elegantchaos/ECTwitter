@@ -13,7 +13,8 @@
 #import "ECTwitterUser.h"
 #import "ECTwitterTimeline.h"
 
-#import <ECFoundation/NSString+ECCore.h>
+#import <CoreLocation/CoreLocation.h>
+
 
 #import "RegexKitLite.h"
 

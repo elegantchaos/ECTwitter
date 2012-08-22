@@ -15,9 +15,6 @@
 #import "ECTwitterAuthentication.h"
 #import "MGTwitterEngine.h"
 
-#import <ECFoundation/ECMacros.h>
-#import <ECFoundation/ECErrorReporter.h>
-
 // --------------------------------------------------------------------------
 // Private Methods
 // --------------------------------------------------------------------------

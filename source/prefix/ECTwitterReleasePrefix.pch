@@ -6,5 +6,5 @@
 // --------------------------------------------------------------------------
 
 #import "ECTwitterSharedPrefix.pch"
-#import <ECFoundation/ECCoreReleasePrefix.pch>
+
 

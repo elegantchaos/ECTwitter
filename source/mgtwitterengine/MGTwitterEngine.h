@@ -9,29 +9,18 @@
 #import "MGTwitterEngineDelegate.h"
 #import "OAToken.h"
 
-#import <ECFoundation/ECProperties.h>
-
 @class ECTwitterAuthentication;
 
 @interface MGTwitterEngine : NSObject
 {
     __weak NSObject <MGTwitterEngineDelegate>*  mDelegate;
     NSMutableDictionary*                        mConnections;   // MGTwitterHTTPURLConnection objects
-	
-    ECPropertyVariable(secure, BOOL);
-    ECPropertyVariable(authentication, ECTwitterAuthentication*);
-    ECPropertyVariable(apiDomain, NSString*);
-    ECPropertyVariable(searchDomain, NSString*);
-    ECPropertyVariable(clientName, NSString*);
-    ECPropertyVariable(clientVersion, NSString*);
-    ECPropertyVariable(clientURL, NSString*);
-    ECPropertyVariable(clientToken, NSString*);
 }
 
-ECPropertyAssigned(secure, BOOL);
-ECPropertyRetained(authentication, ECTwitterAuthentication*);
-ECPropertyRetained(apiDomain, NSString*);
-ECPropertyRetained(searchDomain, NSString*);
+@property (assign, nonatomic) BOOL secure;
+@property (strong, nonatomic) ECTwitterAuthentication* authentication;
+@property (strong, nonatomic) NSString* apiDomain;
+@property (strong, nonatomic) NSString* searchDomain;
 
 #pragma mark Class management
 

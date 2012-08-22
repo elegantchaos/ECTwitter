@@ -16,7 +16,7 @@
 #import "ECTwitterTimeline.h"
 #import "ECTwitterUserMentionsTimeline.h"
 
-#import <ECFoundation/ECMacros.h>
+
 
 // --------------------------------------------------------------------------
 // Private Methods

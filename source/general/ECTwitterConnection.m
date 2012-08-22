@@ -9,7 +9,7 @@
 
 #import "ECTwitterConnection.h"
 
-#import <ECFoundation/NSString+ECCore.h>
+
 
 
 

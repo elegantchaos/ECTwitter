@@ -12,16 +12,14 @@
 #import "ECTwitterParser.h"
 #import "ECTwitterAuthentication.h"
 
-#import <ECFoundation/NSDictionary+ECCore.h>
-
 
 #pragma mark - Private Interface
 
 @interface MGTwitterEngine()
 
-ECPropertyRetained(clientName, NSString*);
-ECPropertyRetained(clientVersion, NSString*);
-ECPropertyRetained(clientURL, NSString*);
+@property (strong, nonatomic) NSString* clientName;
+@property (strong, nonatomic) NSString* clientVersion;
+@property (strong, nonatomic) NSString* clientURL;
 
 - (NSString*)queryStringWithBase:(NSString*)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed;
 - (NSString*)encodeString:(NSString*)string;
@@ -38,13 +36,13 @@ ECPropertyRetained(clientURL, NSString*);
 
 #pragma mark - Properties
 
-ECPropertySynthesize(authentication);
-ECPropertySynthesize(clientName);
-ECPropertySynthesize(clientVersion);
-ECPropertySynthesize(clientURL);
-ECPropertySynthesize(secure);
-ECPropertySynthesize(apiDomain);
-ECPropertySynthesize(searchDomain);
+@synthesize authentication = _authentication;
+@synthesize clientName = _clientName;
+@synthesize clientVersion = _clientVersion;
+@synthesize clientURL = _clientURL;
+@synthesize secure = _secure;
+@synthesize apiDomain = _apiDomain;
+@synthesize searchDomain = _searchDomain;
 
 #pragma mark - Debug Channels
 
@@ -92,12 +90,12 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 {
     mDelegate = nil;
  
-    ECPropertyDealloc(authentication);
-    ECPropertyDealloc(apiDomain);
-    ECPropertyDealloc(clientName);
-    ECPropertyDealloc(clientVersion);
-    ECPropertyDealloc(clientURL);
-    ECPropertyDealloc(searchDomain);
+    [_authentication release];
+    [_apiDomain release];
+    [_clientName release];
+    [_clientVersion release];
+    [_clientURL release];
+    [_searchDomain release];
     
     [[mConnections allValues] makeObjectsPerformSelector:@selector(cancel)];
     [mConnections release];
