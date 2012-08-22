@@ -1,10 +1,9 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 21/05/2010
-//
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
+//  This source code is distributed under the terms of Elegant Chaos's
+//  liberal license: http://www.elegantchaos.com/license/liberal
 // --------------------------------------------------------------------------
 
-#import "ECTwitterSharedPrefix.pch"
+#import <ECConfig/ECConfigRelease.pch>
 
-
+#import "ECTwitterShared.pch"
