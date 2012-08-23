@@ -16,6 +16,19 @@
 		228B569015E69F8900EB8B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
 		228B569115E69F8A00EB8B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
 		228B569215E69F8A00EB8B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
+		228B569815E6A81A00EB8B54 /* ECConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA015E67F3D00861F75 /* ECConfig.framework */; };
+		228B569915E6A81A00EB8B54 /* ECCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA115E67F3D00861F75 /* ECCore.framework */; };
+		228B569A15E6A81A00EB8B54 /* ECLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA215E67F3D00861F75 /* ECLogging.framework */; };
+		228B569B15E6A81A00EB8B54 /* ECOAuthConsumer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA315E67F3D00861F75 /* ECOAuthConsumer.framework */; };
+		228B569C15E6A81A00EB8B54 /* ECRegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA415E67F3D00861F75 /* ECRegexKitLite.framework */; };
+		228B569D15E6A81A00EB8B54 /* ECUnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA515E67F3D00861F75 /* ECUnitTests.framework */; };
+		228B56A015E6A84400EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
+		228B56A215E6A96B00EB8B54 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56A115E6A96B00EB8B54 /* UIKit.framework */; };
+		228B56A415E6A97A00EB8B54 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56A315E6A97A00EB8B54 /* QuartzCore.framework */; };
+		228B56A615E6A98800EB8B54 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56A515E6A98800EB8B54 /* CoreGraphics.framework */; };
+		228B56A815E6A9E600EB8B54 /* ECTwitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* ECTwitter.framework */; };
+		228B56AA15E6A9FF00EB8B54 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56A915E6A9FF00EB8B54 /* CoreLocation.framework */; };
+		228B56AC15E6AA0D00EB8B54 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56AB15E6AA0D00EB8B54 /* libicucore.dylib */; };
 		2290468F12E87585006D8278 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290468E12E87585006D8278 /* CoreLocation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		22BA9D7A15E678CE00861F75 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9D7915E678CE00861F75 /* SenTestingKit.framework */; };
 		22BA9D8E15E678F100861F75 /* ECTwitterEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */; };
@@ -143,6 +156,11 @@
 		228B567B15E69F5900EB8B54 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		228B567D15E69F5900EB8B54 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		228B567F15E69F5900EB8B54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		228B56A115E6A96B00EB8B54 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		228B56A315E6A97A00EB8B54 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		228B56A515E6A98800EB8B54 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		228B56A915E6A9FF00EB8B54 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreLocation.framework; sourceTree = DEVELOPER_DIR; };
+		228B56AB15E6AA0D00EB8B54 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/lib/libicucore.dylib; sourceTree = DEVELOPER_DIR; };
 		2290468E12E87585006D8278 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = /System/Library/Frameworks/CoreLocation.framework; sourceTree = "<absolute>"; };
 		22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECTwitterEngineTests.m; sourceTree = "<group>"; };
 		22BA9D7815E678CD00861F75 /* ECTwitterMacTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECTwitterMacTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -216,9 +234,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				228B56AC15E6AA0D00EB8B54 /* libicucore.dylib in Frameworks */,
+				228B56AA15E6A9FF00EB8B54 /* CoreLocation.framework in Frameworks */,
+				228B56A615E6A98800EB8B54 /* CoreGraphics.framework in Frameworks */,
+				228B56A415E6A97A00EB8B54 /* QuartzCore.framework in Frameworks */,
+				228B56A215E6A96B00EB8B54 /* UIKit.framework in Frameworks */,
+				228B569815E6A81A00EB8B54 /* ECConfig.framework in Frameworks */,
+				228B569915E6A81A00EB8B54 /* ECCore.framework in Frameworks */,
+				228B569A15E6A81A00EB8B54 /* ECLogging.framework in Frameworks */,
+				228B569B15E6A81A00EB8B54 /* ECOAuthConsumer.framework in Frameworks */,
+				228B569C15E6A81A00EB8B54 /* ECRegexKitLite.framework in Frameworks */,
+				228B569D15E6A81A00EB8B54 /* ECUnitTests.framework in Frameworks */,
 				228B567C15E69F5900EB8B54 /* SenTestingKit.framework in Frameworks */,
 				228B567E15E69F5900EB8B54 /* UIKit.framework in Frameworks */,
 				228B568015E69F5900EB8B54 /* Foundation.framework in Frameworks */,
+				228B56A815E6A9E600EB8B54 /* ECTwitter.framework in Frameworks */,
+				228B56A015E6A84400EB8B54 /* YAJL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,6 +350,11 @@
 		223CBAE11205C5930008A641 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				228B56AB15E6AA0D00EB8B54 /* libicucore.dylib */,
+				228B56A915E6A9FF00EB8B54 /* CoreLocation.framework */,
+				228B56A515E6A98800EB8B54 /* CoreGraphics.framework */,
+				228B56A315E6A97A00EB8B54 /* QuartzCore.framework */,
+				228B56A115E6A96B00EB8B54 /* UIKit.framework */,
 				223CBAE61205C6380008A641 /* Foundation.framework */,
 			);
 			name = iOS;
@@ -670,7 +706,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"${SOURCE_ROOT}/../yajl-objc/Project-IOS\"\nmake\nln -shf \"${SOURCE_ROOT}/../yajl-objc/Project-IOS/build/Framework/YAJLiOS.framework\" \"${BUILT_PRODUCTS_DIR}/YAJL.framework\"\n";
+			shellScript = "cd \"${SOURCE_ROOT}/../yajl-objc/Project-IOS\"\nmake\nln -shf \"YAJLiOS\" \"build/Framework/YAJLiOS.framework/YAJL\"\nln -shf \"${SOURCE_ROOT}/../yajl-objc/Project-IOS/build/Framework/YAJLiOS.framework\" \"${BUILT_PRODUCTS_DIR}/YAJL.framework\"\n";
 			showEnvVarsInLog = 0;
 		};
 		22BA9D7615E678CD00861F75 /* ShellScript */ = {
@@ -829,6 +865,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22F08C6C15E56A34003E8456 /* IOSUnitTestDebug.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Caches/DerivedData/ECTwitterIntegration-glwemstufuxkgubkcegslkyvkzdr/Build/Products/Debug-iphonesimulator\"",
+				);
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
 			name = Debug;
@@ -837,6 +877,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22F08C6D15E56A34003E8456 /* IOSUnitTestRelease.xcconfig */;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"/Caches/DerivedData/ECTwitterIntegration-glwemstufuxkgubkcegslkyvkzdr/Build/Products/Debug-iphonesimulator\"",
+				);
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
 			name = Release;
@@ -861,10 +905,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22F08C6A15E56A34003E8456 /* IOSDebug.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug\"",
-				);
 			};
 			name = Debug;
 		};
@@ -872,10 +912,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22F08C6B15E56A34003E8456 /* IOSRelease.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug\"",
-				);
 			};
 			name = Release;
 		};

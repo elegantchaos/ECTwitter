@@ -37,7 +37,7 @@
 // --------------------------------------------------------------------------
 
 ECDefineDebugChannel(TwitterChannel);
-ECDefineLogChannel(ErrorChannel);
+ECDeclareLogChannel(ErrorChannel);
 
 // --------------------------------------------------------------------------
 // Constants

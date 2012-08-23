@@ -21,6 +21,9 @@
 
 - (NSString*)readSetting:(NSString*)name
 {
+    [[NSUserDefaults standardUserDefaults] setObject:@"test" forKey:@"test"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     NSString* key = [NSString stringWithFormat:@"com.elegantchaos.ectwitter.%@", name];
     NSString* result = [[NSUserDefaults standardUserDefaults] objectForKey:key];
     if (!key)
