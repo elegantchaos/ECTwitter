@@ -17,47 +17,45 @@
 		22F08CA815E56A34003E8456 /* MacUnitTestDebug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 22F08C7015E56A34003E8456 /* MacUnitTestDebug.xcconfig */; };
 		22F08CA915E56A34003E8456 /* MacUnitTestRelease.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 22F08C7115E56A34003E8456 /* MacUnitTestRelease.xcconfig */; };
 		22F08CAA15E56A35003E8456 /* Shared.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 22F08C7215E56A34003E8456 /* Shared.xcconfig */; };
-		22F08CAB15E56A35003E8456 /* ECTwitterAuthentication.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7415E56A34003E8456 /* ECTwitterAuthentication.h */; };
+		22F08CAB15E56A35003E8456 /* ECTwitterAuthentication.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7415E56A34003E8456 /* ECTwitterAuthentication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CAD15E56A35003E8456 /* ECTwitterAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C7515E56A34003E8456 /* ECTwitterAuthentication.m */; };
-		22F08CAF15E56A35003E8456 /* ECTwitterCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7615E56A34003E8456 /* ECTwitterCache.h */; };
+		22F08CAF15E56A35003E8456 /* ECTwitterCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7615E56A34003E8456 /* ECTwitterCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CB115E56A35003E8456 /* ECTwitterCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C7715E56A34003E8456 /* ECTwitterCache.m */; };
-		22F08CB315E56A35003E8456 /* ECTwitterCachedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7815E56A34003E8456 /* ECTwitterCachedObject.h */; };
+		22F08CB315E56A35003E8456 /* ECTwitterCachedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7815E56A34003E8456 /* ECTwitterCachedObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CB515E56A35003E8456 /* ECTwitterCachedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C7915E56A34003E8456 /* ECTwitterCachedObject.m */; };
-		22F08CB715E56A35003E8456 /* ECTwitterConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7A15E56A34003E8456 /* ECTwitterConnection.h */; };
+		22F08CB715E56A35003E8456 /* ECTwitterConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7A15E56A34003E8456 /* ECTwitterConnection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CB915E56A35003E8456 /* ECTwitterConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C7B15E56A34003E8456 /* ECTwitterConnection.m */; };
-		22F08CBB15E56A35003E8456 /* ECTwitterEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7C15E56A34003E8456 /* ECTwitterEngine.h */; };
+		22F08CBB15E56A35003E8456 /* ECTwitterEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7C15E56A34003E8456 /* ECTwitterEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CBD15E56A35003E8456 /* ECTwitterEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C7D15E56A34003E8456 /* ECTwitterEngine.m */; };
-		22F08CBF15E56A35003E8456 /* ECTwitterHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7E15E56A34003E8456 /* ECTwitterHandler.h */; };
+		22F08CBF15E56A35003E8456 /* ECTwitterHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7E15E56A34003E8456 /* ECTwitterHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CC115E56A35003E8456 /* ECTwitterHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C7F15E56A34003E8456 /* ECTwitterHandler.m */; };
-		22F08CC315E56A35003E8456 /* ECTwitterID.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8015E56A34003E8456 /* ECTwitterID.h */; };
+		22F08CC315E56A35003E8456 /* ECTwitterID.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8015E56A34003E8456 /* ECTwitterID.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CC515E56A35003E8456 /* ECTwitterID.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C8115E56A34003E8456 /* ECTwitterID.m */; };
-		22F08CC715E56A35003E8456 /* ECTwitterParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8215E56A34003E8456 /* ECTwitterParser.h */; };
+		22F08CC715E56A35003E8456 /* ECTwitterParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8215E56A34003E8456 /* ECTwitterParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CC915E56A35003E8456 /* ECTwitterParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C8315E56A34003E8456 /* ECTwitterParser.m */; };
-		22F08CCB15E56A35003E8456 /* ECTwitterPlace.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8415E56A34003E8456 /* ECTwitterPlace.h */; };
+		22F08CCB15E56A35003E8456 /* ECTwitterPlace.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8415E56A34003E8456 /* ECTwitterPlace.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CCD15E56A35003E8456 /* ECTwitterPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C8515E56A34003E8456 /* ECTwitterPlace.m */; };
-		22F08CCF15E56A35003E8456 /* ECTwitterSearchTimeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8615E56A34003E8456 /* ECTwitterSearchTimeline.h */; };
+		22F08CCF15E56A35003E8456 /* ECTwitterSearchTimeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8615E56A34003E8456 /* ECTwitterSearchTimeline.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CD115E56A35003E8456 /* ECTwitterSearchTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C8715E56A34003E8456 /* ECTwitterSearchTimeline.m */; };
-		22F08CD315E56A35003E8456 /* ECTwitterTimeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8815E56A34003E8456 /* ECTwitterTimeline.h */; };
+		22F08CD315E56A35003E8456 /* ECTwitterTimeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8815E56A34003E8456 /* ECTwitterTimeline.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CD515E56A35003E8456 /* ECTwitterTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C8915E56A34003E8456 /* ECTwitterTimeline.m */; };
-		22F08CD715E56A35003E8456 /* ECTwitterTweet.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8A15E56A34003E8456 /* ECTwitterTweet.h */; };
+		22F08CD715E56A35003E8456 /* ECTwitterTweet.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8A15E56A34003E8456 /* ECTwitterTweet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CD915E56A35003E8456 /* ECTwitterTweet.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C8B15E56A34003E8456 /* ECTwitterTweet.m */; };
-		22F08CDB15E56A35003E8456 /* ECTwitterUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8C15E56A34003E8456 /* ECTwitterUser.h */; };
+		22F08CDB15E56A35003E8456 /* ECTwitterUser.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8C15E56A34003E8456 /* ECTwitterUser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CDD15E56A35003E8456 /* ECTwitterUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C8D15E56A34003E8456 /* ECTwitterUser.m */; };
-		22F08CDF15E56A35003E8456 /* ECTwitterUserList.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8E15E56A34003E8456 /* ECTwitterUserList.h */; };
+		22F08CDF15E56A35003E8456 /* ECTwitterUserList.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C8E15E56A34003E8456 /* ECTwitterUserList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CE115E56A35003E8456 /* ECTwitterUserList.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C8F15E56A34003E8456 /* ECTwitterUserList.m */; };
-		22F08CE315E56A35003E8456 /* ECTwitterUserMentionsTimeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9015E56A34003E8456 /* ECTwitterUserMentionsTimeline.h */; };
+		22F08CE315E56A35003E8456 /* ECTwitterUserMentionsTimeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9015E56A34003E8456 /* ECTwitterUserMentionsTimeline.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CE515E56A35003E8456 /* ECTwitterUserMentionsTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C9115E56A34003E8456 /* ECTwitterUserMentionsTimeline.m */; };
-		22F08CE715E56A35003E8456 /* ECTwitterUserTimeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9215E56A34003E8456 /* ECTwitterUserTimeline.h */; };
+		22F08CE715E56A35003E8456 /* ECTwitterUserTimeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9215E56A34003E8456 /* ECTwitterUserTimeline.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CE915E56A35003E8456 /* ECTwitterUserTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C9315E56A34003E8456 /* ECTwitterUserTimeline.m */; };
-		22F08CEB15E56A35003E8456 /* MGTwitterEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9415E56A34003E8456 /* MGTwitterEngine.h */; };
+		22F08CEB15E56A35003E8456 /* MGTwitterEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9415E56A34003E8456 /* MGTwitterEngine.h */; settings = {ATTRIBUTES = (); }; };
 		22F08CED15E56A35003E8456 /* MGTwitterEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C9515E56A34003E8456 /* MGTwitterEngine.m */; };
-		22F08CEF15E56A35003E8456 /* MGTwitterEngineDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9615E56A34003E8456 /* MGTwitterEngineDelegate.h */; };
-		22F08CF115E56A35003E8456 /* ECTwitterDebug.pch in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9815E56A34003E8456 /* ECTwitterDebug.pch */; };
-		22F08CF315E56A35003E8456 /* ECTwitterRelease.pch in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9915E56A34003E8456 /* ECTwitterRelease.pch */; };
-		22F08CF515E56A35003E8456 /* ECTwitterShared.pch in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9A15E56A34003E8456 /* ECTwitterShared.pch */; };
+		22F08CEF15E56A35003E8456 /* MGTwitterEngineDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9615E56A34003E8456 /* MGTwitterEngineDelegate.h */; settings = {ATTRIBUTES = (); }; };
+		22F08CF115E56A35003E8456 /* ECTwitterDebug.pch in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9815E56A34003E8456 /* ECTwitterDebug.pch */; settings = {ATTRIBUTES = (Public, ); }; };
+		22F08CF315E56A35003E8456 /* ECTwitterRelease.pch in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9915E56A34003E8456 /* ECTwitterRelease.pch */; settings = {ATTRIBUTES = (Public, ); }; };
+		22F08CF515E56A35003E8456 /* ECTwitterShared.pch in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9A15E56A34003E8456 /* ECTwitterShared.pch */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08D0115E56ABE003E8456 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
-		22F08D0215E56ABE003E8456 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 22F08D0015E56ABE003E8456 /* Info.plist */; };
-		22F08E2015E62D04003E8456 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08E1E15E62D04003E8456 /* InfoPlist.strings */; };
 		22F08E2715E62DDF003E8456 /* ECTwitterAuthentication.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7415E56A34003E8456 /* ECTwitterAuthentication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08E2815E62DDF003E8456 /* ECTwitterAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C7515E56A34003E8456 /* ECTwitterAuthentication.m */; };
 		22F08E2915E62DDF003E8456 /* ECTwitterCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7615E56A34003E8456 /* ECTwitterCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -103,6 +101,8 @@
 		22F08E7115E63228003E8456 /* ECTwitterImage.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08E6E15E63228003E8456 /* ECTwitterImage.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08E7215E63228003E8456 /* ECTwitterImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08E6F15E63228003E8456 /* ECTwitterImage.m */; };
 		22F08E7315E63228003E8456 /* ECTwitterImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08E6F15E63228003E8456 /* ECTwitterImage.m */; };
+		22F08EAB15E64501003E8456 /* ECTwitter.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08EAA15E64501003E8456 /* ECTwitter.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		22F08EAC15E64501003E8456 /* ECTwitter.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08EAA15E64501003E8456 /* ECTwitter.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
@@ -165,17 +165,15 @@
 		22F08D0015E56ABE003E8456 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22F08E1815E62D04003E8456 /* ECTwitter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECTwitter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22F08E1915E62D04003E8456 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
-		22F08E1D15E62D04003E8456 /* ECTwitterIOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ECTwitterIOS-Info.plist"; sourceTree = "<group>"; };
-		22F08E1F15E62D04003E8456 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		22F08E2115E62D04003E8456 /* ECTwitterIOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ECTwitterIOS-Prefix.pch"; sourceTree = "<group>"; };
-		22F08E5B15E630AB003E8456 /* ECConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECConfig.framework; path = "../../../../../../../../../../../../Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECConfig.framework"; sourceTree = "<group>"; };
-		22F08E5C15E630AB003E8456 /* ECCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECCore.framework; path = "../../../../../../../../../../../../Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECCore.framework"; sourceTree = "<group>"; };
-		22F08E5D15E630AB003E8456 /* ECLogging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECLogging.framework; path = "../../../../../../../../../../../../Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECLogging.framework"; sourceTree = "<group>"; };
-		22F08E5E15E630AB003E8456 /* ECOAuthConsumer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECOAuthConsumer.framework; path = "../../../../../../../../../../../../Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECOAuthConsumer.framework"; sourceTree = "<group>"; };
-		22F08E5F15E630AB003E8456 /* ECRegexKitLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECRegexKitLite.framework; path = "../../../../../../../../../../../../Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECRegexKitLite.framework"; sourceTree = "<group>"; };
-		22F08E6015E630AB003E8456 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YAJL.framework; path = "../../../../../../../../../../../../Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/YAJL.framework"; sourceTree = "<group>"; };
+		22F08E5B15E630AB003E8456 /* ECConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECConfig.framework; path = "/Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECConfig.framework"; sourceTree = "<absolute>"; };
+		22F08E5C15E630AB003E8456 /* ECCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECCore.framework; path = "/Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECCore.framework"; sourceTree = "<absolute>"; };
+		22F08E5D15E630AB003E8456 /* ECLogging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECLogging.framework; path = "/Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECLogging.framework"; sourceTree = "<absolute>"; };
+		22F08E5E15E630AB003E8456 /* ECOAuthConsumer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECOAuthConsumer.framework; path = "/Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECOAuthConsumer.framework"; sourceTree = "<absolute>"; };
+		22F08E5F15E630AB003E8456 /* ECRegexKitLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ECRegexKitLite.framework; path = "/Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/ECRegexKitLite.framework"; sourceTree = "<absolute>"; };
+		22F08E6015E630AB003E8456 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = YAJL.framework; path = "/Caches/DerivedData/ECTwitterIntegration-drvozbmiokrqwqabrpydslxhhyqy/Build/Products/Debug/YAJL.framework"; sourceTree = "<absolute>"; };
 		22F08E6E15E63228003E8456 /* ECTwitterImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECTwitterImage.h; sourceTree = "<group>"; };
 		22F08E6F15E63228003E8456 /* ECTwitterImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECTwitterImage.m; sourceTree = "<group>"; };
+		22F08EAA15E64501003E8456 /* ECTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECTwitter.h; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* ECTwitter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ECTwitter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -217,15 +215,8 @@
 		0867D691FE84028FC02AAC07 /* ECFoundation */ = {
 			isa = PBXGroup;
 			children = (
-				22F08E5B15E630AB003E8456 /* ECConfig.framework */,
-				22F08E5C15E630AB003E8456 /* ECCore.framework */,
-				22F08E5D15E630AB003E8456 /* ECLogging.framework */,
-				22F08E5E15E630AB003E8456 /* ECOAuthConsumer.framework */,
-				22F08E5F15E630AB003E8456 /* ECRegexKitLite.framework */,
-				22F08E6015E630AB003E8456 /* YAJL.framework */,
 				22F08C6815E56A34003E8456 /* Source */,
 				22F08CFD15E56ABE003E8456 /* Resources */,
-				22F08E1B15E62D04003E8456 /* ECTwitterIOS */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
 				034768DFFF38A50411DB9C8B /* Products */,
 			);
@@ -235,6 +226,12 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				22F08E5B15E630AB003E8456 /* ECConfig.framework */,
+				22F08E5C15E630AB003E8456 /* ECCore.framework */,
+				22F08E5D15E630AB003E8456 /* ECLogging.framework */,
+				22F08E5E15E630AB003E8456 /* ECOAuthConsumer.framework */,
+				22F08E5F15E630AB003E8456 /* ECRegexKitLite.framework */,
+				22F08E6015E630AB003E8456 /* YAJL.framework */,
 				2290468E12E87585006D8278 /* CoreLocation.framework */,
 				223CBAE11205C5930008A641 /* iOS */,
 				1058C7B0FEA5585E11CA2CBB /* MacOS */,
@@ -290,6 +287,7 @@
 		22F08C7315E56A34003E8456 /* Generic */ = {
 			isa = PBXGroup;
 			children = (
+				22F08EAA15E64501003E8456 /* ECTwitter.h */,
 				22F08C7415E56A34003E8456 /* ECTwitterAuthentication.h */,
 				22F08C7515E56A34003E8456 /* ECTwitterAuthentication.m */,
 				22F08C7615E56A34003E8456 /* ECTwitterCache.h */,
@@ -384,24 +382,6 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
-		22F08E1B15E62D04003E8456 /* ECTwitterIOS */ = {
-			isa = PBXGroup;
-			children = (
-				22F08E1C15E62D04003E8456 /* Supporting Files */,
-			);
-			path = ECTwitterIOS;
-			sourceTree = "<group>";
-		};
-		22F08E1C15E62D04003E8456 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				22F08E1D15E62D04003E8456 /* ECTwitterIOS-Info.plist */,
-				22F08E1E15E62D04003E8456 /* InfoPlist.strings */,
-				22F08E2115E62D04003E8456 /* ECTwitterIOS-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -428,6 +408,7 @@
 				22F08E4715E62DDF003E8456 /* MGTwitterEngine.h in Headers */,
 				22F08E4915E62DDF003E8456 /* MGTwitterEngineDelegate.h in Headers */,
 				22F08E7115E63228003E8456 /* ECTwitterImage.h in Headers */,
+				22F08EAC15E64501003E8456 /* ECTwitter.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,12 +432,13 @@
 				22F08CDF15E56A35003E8456 /* ECTwitterUserList.h in Headers */,
 				22F08CE315E56A35003E8456 /* ECTwitterUserMentionsTimeline.h in Headers */,
 				22F08CE715E56A35003E8456 /* ECTwitterUserTimeline.h in Headers */,
-				22F08CEB15E56A35003E8456 /* MGTwitterEngine.h in Headers */,
-				22F08CEF15E56A35003E8456 /* MGTwitterEngineDelegate.h in Headers */,
 				22F08CF115E56A35003E8456 /* ECTwitterDebug.pch in Headers */,
 				22F08CF315E56A35003E8456 /* ECTwitterRelease.pch in Headers */,
 				22F08CF515E56A35003E8456 /* ECTwitterShared.pch in Headers */,
 				22F08E7015E63228003E8456 /* ECTwitterImage.h in Headers */,
+				22F08EAB15E64501003E8456 /* ECTwitter.h in Headers */,
+				22F08CEB15E56A35003E8456 /* MGTwitterEngine.h in Headers */,
+				22F08CEF15E56A35003E8456 /* MGTwitterEngineDelegate.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -533,7 +515,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22F08E2015E62D04003E8456 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -551,7 +532,6 @@
 				22F08CA915E56A34003E8456 /* MacUnitTestRelease.xcconfig in Resources */,
 				22F08CAA15E56A35003E8456 /* Shared.xcconfig in Resources */,
 				22F08D0115E56ABE003E8456 /* InfoPlist.strings in Resources */,
-				22F08D0215E56ABE003E8456 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,14 +612,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				22F08CFF15E56ABE003E8456 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		22F08E1E15E62D04003E8456 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				22F08E1F15E62D04003E8456 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -731,6 +703,7 @@
 				22F08E2315E62D04003E8456 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

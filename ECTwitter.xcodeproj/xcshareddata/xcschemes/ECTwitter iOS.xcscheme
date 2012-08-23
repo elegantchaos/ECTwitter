@@ -17,7 +17,7 @@
                BlueprintIdentifier = "221CB5AF15DAA4C4004C6398"
                BuildableName = "ECConfig.framework"
                BlueprintName = "ECConfigIOS"
-               ReferencedContainer = "container:../ECConfig/ECConfig.xcodeproj">
+               ReferencedContainer = "container:../../Frameworks/ECConfig/ECConfig.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,7 +31,7 @@
                BlueprintIdentifier = "2251BA1115DBCC4A00F2FE40"
                BuildableName = "ECLogging.framework"
                BlueprintName = "ECLoggingIOS"
-               ReferencedContainer = "container:../ECLogging/ECLogging.xcodeproj">
+               ReferencedContainer = "container:../../Frameworks/ECLogging/ECLogging.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -45,7 +45,7 @@
                BlueprintIdentifier = "2260A2FC15DFD7320057C9DA"
                BuildableName = "ECCore.framework"
                BlueprintName = "ECCoreIOS"
-               ReferencedContainer = "container:../ECCore/ECCore.xcodeproj">
+               ReferencedContainer = "container:../../Frameworks/ECCore/ECCore.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -73,7 +73,7 @@
                BlueprintIdentifier = "2251BA1115DBCC4A00F2FE40"
                BuildableName = "ECRegexKitLite.framework"
                BlueprintName = "ECRegexKitLiteIOS"
-               ReferencedContainer = "container:../ECRegExKitLite/ECRegexKitLite.xcodeproj">
+               ReferencedContainer = "container:../ECRegexKitLite/ECRegexKitLite.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -85,7 +85,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "22F08E1715E62D04003E8456"
-               BuildableName = "ECTwitterIOS.bundle"
+               BuildableName = "ECTwitter.framework"
                BlueprintName = "ECTwitterIOS"
                ReferencedContainer = "container:ECTwitter.xcodeproj">
             </BuildableReference>

@@ -61,11 +61,12 @@ ECDefineLogChannel(ErrorChannel);
 //! Initialise the engine.
 // --------------------------------------------------------------------------
 
-- (id) initWithAuthetication:(ECTwitterAuthentication *)authenticationIn
+- (id)initWithAuthetication:(ECTwitterAuthentication *)authenticationIn clientName:(NSString*)clientName version:(NSString*)clientVersion url:(NSURL*)clientURL
 {
 	if ((self = [super init]) != nil)
 	{
 		MGTwitterEngine* newEngine = [[MGTwitterEngine alloc] initWithDelegate:self];
+        [newEngine setClientName:clientName version:clientVersion URL:[clientURL absoluteString]];
         self.authentication = authenticationIn;
         authentication.engine = self;
 		self.engine = newEngine;

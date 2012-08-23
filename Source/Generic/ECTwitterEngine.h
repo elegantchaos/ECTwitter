@@ -36,7 +36,7 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithAuthetication:(ECTwitterAuthentication*)authentication;
+- (id) initWithAuthetication:(ECTwitterAuthentication *)authenticationIn clientName:(NSString*)clientName version:(NSString*)clientVersion url:(NSURL*)clientURL;
 
 - (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector;
 - (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra;
