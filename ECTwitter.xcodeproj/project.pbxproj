@@ -51,7 +51,7 @@
 		22F08CE915E56A35003E8456 /* ECTwitterUserTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C9315E56A34003E8456 /* ECTwitterUserTimeline.m */; };
 		22F08CEB15E56A35003E8456 /* MGTwitterEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9415E56A34003E8456 /* MGTwitterEngine.h */; settings = {ATTRIBUTES = (); }; };
 		22F08CED15E56A35003E8456 /* MGTwitterEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C9515E56A34003E8456 /* MGTwitterEngine.m */; };
-		22F08CEF15E56A35003E8456 /* MGTwitterEngineDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9615E56A34003E8456 /* MGTwitterEngineDelegate.h */; settings = {ATTRIBUTES = (); }; };
+		22F08CEF15E56A35003E8456 /* MGTwitterEngineDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9615E56A34003E8456 /* MGTwitterEngineDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CF115E56A35003E8456 /* ECTwitterDebug.pch in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9815E56A34003E8456 /* ECTwitterDebug.pch */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CF315E56A35003E8456 /* ECTwitterRelease.pch in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9915E56A34003E8456 /* ECTwitterRelease.pch */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CF515E56A35003E8456 /* ECTwitterShared.pch in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9A15E56A34003E8456 /* ECTwitterShared.pch */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -88,7 +88,7 @@
 		22F08E4415E62DDF003E8456 /* ECTwitterUserMentionsTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C9115E56A34003E8456 /* ECTwitterUserMentionsTimeline.m */; };
 		22F08E4515E62DDF003E8456 /* ECTwitterUserTimeline.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9215E56A34003E8456 /* ECTwitterUserTimeline.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08E4615E62DDF003E8456 /* ECTwitterUserTimeline.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C9315E56A34003E8456 /* ECTwitterUserTimeline.m */; };
-		22F08E4715E62DDF003E8456 /* MGTwitterEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9415E56A34003E8456 /* MGTwitterEngine.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		22F08E4715E62DDF003E8456 /* MGTwitterEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9415E56A34003E8456 /* MGTwitterEngine.h */; settings = {ATTRIBUTES = (); }; };
 		22F08E4815E62DDF003E8456 /* MGTwitterEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C9515E56A34003E8456 /* MGTwitterEngine.m */; };
 		22F08E4915E62DDF003E8456 /* MGTwitterEngineDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C9615E56A34003E8456 /* MGTwitterEngineDelegate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08E6715E630C9003E8456 /* ECConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22F08E5B15E630AB003E8456 /* ECConfig.framework */; };
