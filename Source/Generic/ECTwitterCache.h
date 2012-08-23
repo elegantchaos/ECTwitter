@@ -28,22 +28,22 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id)				initWithEngine: (ECTwitterEngine*) engine;
+- (id)				initWithEngine:(ECTwitterEngine*)engine;
 
-- (ECTwitterUser*)	addOrRefreshUserWithInfo: (NSDictionary*) info;
-- (ECTwitterTweet*) addOrRefreshTweetWithInfo: (NSDictionary*) info;
+- (ECTwitterUser*)	addOrRefreshUserWithInfo:(NSDictionary*)info;
+- (ECTwitterTweet*)addOrRefreshTweetWithInfo:(NSDictionary*)info;
 
-- (ECTwitterTweet*)	tweetWithID: (ECTwitterID*) tweetID;
+- (ECTwitterTweet*)	tweetWithID:(ECTwitterID*)tweetID;
 - (ECTwitterUser*)userWithID:(ECTwitterID*)userID;
 - (ECTwitterUser*)userWithID:(ECTwitterID*)userID requestIfMissing:(BOOL)requestIfMissing;
-- (ECTwitterImage*)		imageWithID: (ECTwitterID*) imageID URL: (NSURL*) url;
+- (ECTwitterImage*)		imageWithID:(ECTwitterID*)imageID URL:(NSURL*)url;
 
-- (void)			setFavouritedStateForTweet: (ECTwitterTweet*) tweet to: (BOOL) state;
+- (void)			setFavouritedStateForTweet:(ECTwitterTweet*)tweet to:(BOOL) state;
 
 - (void)			save;
 - (void)			load;
 
-+ (ECTwitterCache*) decodingCache;
++ (ECTwitterCache*)decodingCache;
 
 // --------------------------------------------------------------------------
 // Notifications

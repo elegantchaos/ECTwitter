@@ -27,7 +27,7 @@
 
 - (MGTwitterEngine *)initWithDelegate:(NSObject*)delegate;
 - (void)setClientName:(NSString*)name version:(NSString*)version URL:(NSString*)url;
-- (NSString*) request:(NSString*)path parameters:(NSDictionary*)params method:(NSString*)method;
+- (NSString*)request:(NSString*)path parameters:(NSDictionary*)params method:(NSString*)method;
 
 // Connection methods
 - (NSUInteger)numberOfConnections;

@@ -147,7 +147,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 //! Add a tweet to our timeline.
 // --------------------------------------------------------------------------
 
-- (void) addTweet: (ECTwitterTweet*) tweet
+- (void) addTweet:(ECTwitterTweet*)tweet
 {
 	NSMutableArray* array = self.tweets;
 	if (!array)
@@ -178,7 +178,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 //! Return a new, sorted version of this timeline.
 // --------------------------------------------------------------------------
 
-- (ECTwitterTimeline*)	sortedWithSelector: (SEL) selector
+- (ECTwitterTimeline*)	sortedWithSelector:(SEL) selector
 {
 	ECTwitterTimeline* timeline = [[ECTwitterTimeline alloc] init];
 	timeline.newestTweet = self.newestTweet;
@@ -196,7 +196,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 //! We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
-- (void) timelineHandler: (ECTwitterHandler*) handler
+- (void) timelineHandler:(ECTwitterHandler*)handler
 {
 	if (handler.status == StatusResults)
 	{

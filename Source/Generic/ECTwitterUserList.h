@@ -21,7 +21,7 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (void)				addUser: (ECTwitterUser*) user;
-- (ECTwitterUserList*)	sortedWithSelector: (SEL) selector;
+- (void)				addUser:(ECTwitterUser*)user;
+- (ECTwitterUserList*)	sortedWithSelector:(SEL) selector;
 
 @end

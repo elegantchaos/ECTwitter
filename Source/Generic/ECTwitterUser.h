@@ -35,11 +35,11 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id)				initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
+- (id)				initWithInfo:(NSDictionary*)info inCache:(ECTwitterCache*)cache;
 - (id)              initWithCoder:(NSCoder*)coder;
-- (id)				initWithID: (ECTwitterID*) tweetID inCache: (ECTwitterCache*) cache;
+- (id)				initWithID:(ECTwitterID*)tweetID inCache:(ECTwitterCache*)cache;
 
-- (void)			refreshWithInfo: (NSDictionary*) info;
+- (void)			refreshWithInfo:(NSDictionary*)info;
 
 - (BOOL)			gotData;
 

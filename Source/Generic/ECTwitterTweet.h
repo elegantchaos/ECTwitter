@@ -30,23 +30,23 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id)				initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache;
-- (id)				initWithID: (ECTwitterID*) tweetID inCache: (ECTwitterCache*) cache;
+- (id)				initWithInfo:(NSDictionary*)info inCache:(ECTwitterCache*)cache;
+- (id)				initWithID:(ECTwitterID*)tweetID inCache:(ECTwitterCache*)cache;
 - (id)              initWithCoder:(NSCoder*)coder;
 
 - (BOOL)			gotData;
 
-- (void)			refreshWithInfo: (NSDictionary*) info;
+- (void)			refreshWithInfo:(NSDictionary*)info;
 
 - (NSString*)		description;
 - (BOOL)			gotLocation;
-//- (NSString*) locationText;
+//- (NSString*)locationText;
 - (CLLocation*)		location;
 - (NSDate*)			created;
 - (ECTwitterUser*)	author;
 - (ECTwitterID*)	authorID;
 - (BOOL)			isFavourited;
-- (BOOL)			mentionsUser: (ECTwitterUser*) user;
+- (BOOL)			mentionsUser:(ECTwitterUser*)user;
 
 - (NSString*)		inReplyToTwitterName;
 - (ECTwitterID*)	inReplyToMessageID;
@@ -55,9 +55,9 @@
 - (NSString*)		sourceName;
 - (NSURL*)			sourceURL;
 
-- (NSComparisonResult) compareByDateAscending: (ECTwitterTweet*) other;
-- (NSComparisonResult) compareByDateDescending: (ECTwitterTweet*) other;
-- (NSComparisonResult) compareByViewsDateDescending: (ECTwitterTweet*) other;
+- (NSComparisonResult) compareByDateAscending:(ECTwitterTweet*)other;
+- (NSComparisonResult) compareByDateDescending:(ECTwitterTweet*)other;
+- (NSComparisonResult) compareByViewsDateDescending:(ECTwitterTweet*)other;
 
 @end
 

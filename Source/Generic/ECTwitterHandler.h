@@ -38,10 +38,11 @@ typedef enum
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithEngine: (ECTwitterEngine*) engine target: (id) target selector: (SEL) selector;
-- (void) invokeWithStatus: (ECTwitterStatus) status;
-- (void) invokeWithResult: (id) result;
+- (id)initWithEngine:(ECTwitterEngine*)engine target:(id)target selector:(SEL)selector;
+- (id)initWithEngine:(ECTwitterEngine*)engine handler:(void (^)(ECTwitterHandler*))handler;
+- (void)invokeWithStatus:(ECTwitterStatus) status;
+- (void)invokeWithResult:(id)result;
 
-- (NSString*) errorString;
+- (NSString*)errorString;
 
 @end

@@ -76,7 +76,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 //! Return debug description of the item.
 // --------------------------------------------------------------------------
 
-- (NSString*) description
+- (NSString*)description
 {
 	return [self.data description];
 }
@@ -85,7 +85,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 //! Return the proper name of the user.
 // --------------------------------------------------------------------------
 
-- (NSString*) name
+- (NSString*)name
 {
 	return [self.data objectForKey: @"name"];
 }
@@ -94,7 +94,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 //! Return the twitter name of the user.
 // --------------------------------------------------------------------------
 
-- (NSString*) type
+- (NSString*)type
 {
 	return [self.data objectForKey: @"place_type"];
 }

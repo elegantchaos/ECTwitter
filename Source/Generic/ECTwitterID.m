@@ -47,7 +47,7 @@
     return [self idFromString:string];
 }
 
-+ (ECTwitterID*) idFromDictionary:(NSDictionary *)dictionary
++ (ECTwitterID*)idFromDictionary:(NSDictionary *)dictionary
 {
     return [self idFromKey:@"id_str" dictionary:dictionary];
 }
@@ -97,7 +97,7 @@
 //! Return debug description of the item.
 // --------------------------------------------------------------------------
 
-- (NSString*) description
+- (NSString*)description
 {
 	return self.string;
 }

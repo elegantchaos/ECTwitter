@@ -19,9 +19,9 @@
 
 @interface ECTwitterUser()
 - (void)makeTimelines;
-- (void)friendsHandler: (ECTwitterHandler*) handler;
-- (void)followersHandler: (ECTwitterHandler*) handler;
-- (void)followerIDsHandler: (ECTwitterHandler*) handler;
+- (void)friendsHandler:(ECTwitterHandler*)handler;
+- (void)followersHandler:(ECTwitterHandler*)handler;
+- (void)followerIDsHandler:(ECTwitterHandler*)handler;
 @end
 
 
@@ -46,7 +46,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Set up with data properties.
 // --------------------------------------------------------------------------
 
-- (id) initWithInfo: (NSDictionary*) dictionary inCache: (ECTwitterCache*) cache
+- (id) initWithInfo:(NSDictionary*)dictionary inCache:(ECTwitterCache*)cache
 {
 	if ((self = [super initWithCache:cache]) != nil)
 	{
@@ -163,7 +163,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Update with new info
 // --------------------------------------------------------------------------
 
-- (void) refreshWithInfo: (NSDictionary*) info
+- (void) refreshWithInfo:(NSDictionary*)info
 {
 	self.data = info;
 }
@@ -181,7 +181,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Return debug description of the item.
 // --------------------------------------------------------------------------
 
-- (NSString*) description
+- (NSString*)description
 {
 	return [NSString stringWithFormat: @"<TwitterUser: %@ %@ posts:%ld timeline:%ld mentions:%ld>", self.twitterName, self.twitterID, (long) [self.posts count], (long) [self.timeline count], (long) [self.mentions count]];
 }
@@ -190,7 +190,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Return the proper name of the user.
 // --------------------------------------------------------------------------
 
-- (NSString*) name
+- (NSString*)name
 {
 	return [self.data objectForKey: @"name"];
 }
@@ -199,7 +199,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Return the twitter name of the user.
 // --------------------------------------------------------------------------
 
-- (NSString*) twitterName
+- (NSString*)twitterName
 {
 	return [self.data objectForKey: @"screen_name"];
 }
@@ -208,7 +208,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Add a friend to our friends list.
 // --------------------------------------------------------------------------
 
-- (void) addFriend: (ECTwitterUser*) user
+- (void) addFriend:(ECTwitterUser*)user
 {
 	ECTwitterUserList* list = self.friends;
 	if (!list)
@@ -225,7 +225,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Add a tweet to our posts list.
 // --------------------------------------------------------------------------
 
-- (void) addFollower: (ECTwitterUser*) user
+- (void) addFollower:(ECTwitterUser*)user
 {
 	ECTwitterUserList* list = self.followers;
 	if (!list)
@@ -295,7 +295,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
-- (void) friendsHandler: (ECTwitterHandler*) handler
+- (void) friendsHandler:(ECTwitterHandler*)handler
 {
 	if (handler.status == StatusResults)
 	{
@@ -327,7 +327,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
-- (void) followersHandler: (ECTwitterHandler*) handler
+- (void) followersHandler:(ECTwitterHandler*)handler
 {
 	if (handler.status == StatusResults)
 	{
@@ -358,7 +358,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
-- (void) followerIDsHandler: (ECTwitterHandler*) handler
+- (void) followerIDsHandler:(ECTwitterHandler*)handler
 {
 	if (handler.status == StatusResults)
 	{
@@ -394,7 +394,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Return the user name in the form "Full Name (@twitterName)"
 // --------------------------------------------------------------------------
 
-- (NSString*) longDisplayName
+- (NSString*)longDisplayName
 {
 	return [NSString stringWithFormat: @"%@ (@%@)", [self name], [self twitterName]];
 }
@@ -404,7 +404,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! (called "bio" to avoid clash with the standard NSObject description method).
 // --------------------------------------------------------------------------
 
-- (NSString*) bio
+- (NSString*)bio
 {
 	return [self.data objectForKey: @"description"];
 }
@@ -413,7 +413,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Return an image for the user.
 // --------------------------------------------------------------------------
 
-- (ECTwitterImage*) image
+- (ECTwitterImage*)image
 {
 	ECTwitterImage* image = self.cachedImage;
 	if (!image)

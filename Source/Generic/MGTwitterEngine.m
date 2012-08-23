@@ -67,7 +67,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 - (MGTwitterEngine *)initWithDelegate:(NSObject *)newDelegate
 {
     if ((self = [super init])) {
-        mDelegate = (NSObject <MGTwitterEngineDelegate>*) newDelegate; // deliberately weak reference
+        mDelegate = (NSObject <MGTwitterEngineDelegate>*)newDelegate; // deliberately weak reference
         mConnections = [[NSMutableDictionary alloc] initWithCapacity:0];
         self.clientName = @"ECTwitter";
         self.clientVersion = @"1.0";
@@ -243,7 +243,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 //! Make a request.
 // --------------------------------------------------------------------------
 
-- (NSString*) request:(NSString*)twitterPath parameters:(NSDictionary *)params method:(NSString*)method
+- (NSString*)request:(NSString*)twitterPath parameters:(NSDictionary *)params method:(NSString*)method
 {
 	NSString* path = [NSString stringWithFormat:@"%@.%@", twitterPath, kAPIFormat];
     NSMutableURLRequest* request = [self requestWithMethod:method path:path parameters:params];
@@ -401,7 +401,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 			[mDelegate connectionFinished:connectionIdentifier];
     }
     
-        ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine: (%ld) [%@]:\r%@", 
+        ECDebug(MGTwitterEngineChannel, @"MGTwitterEngine:(%ld) [%@]:\r%@", 
               (long)[resp statusCode], 
               [NSHTTPURLResponse localizedStringForStatusCode:[((NSHTTPURLResponse *)response) statusCode]], 
               [((NSHTTPURLResponse *)response) allHeaderFields]);

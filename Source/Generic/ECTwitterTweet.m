@@ -34,7 +34,7 @@ ECDefineDebugChannel(TweetChannel);
 //! Set up with data properties.
 // --------------------------------------------------------------------------
 
-- (id) initWithInfo: (NSDictionary*) info inCache: (ECTwitterCache*) cache
+- (id) initWithInfo:(NSDictionary*)info inCache:(ECTwitterCache*)cache
 {
 	if ((self = [super initWithCache: cache]) != nil)
 	{
@@ -143,19 +143,19 @@ ECDefineDebugChannel(TweetChannel);
 	[super dealloc];
 }
 
-- (NSString*) description
+- (NSString*)description
 {
     NSString* truncated = [self.text truncateToLength:20];
     NSString* date = [NSDateFormatter localizedStringFromDate:self.created dateStyle:NSDateFormatterShortStyle timeStyle:NSDateFormatterShortStyle];
 	return [NSString stringWithFormat: @"%@: '%@' %@ views:%ld #%@", self.author.twitterName, truncated, date, (long) self.viewed, self.twitterID];
 }
 
-- (NSString*) text
+- (NSString*)text
 {
 	return [self.data objectForKey: @"text"];
 }
 
-//- (NSString*) source
+//- (NSString*)source
 //{
 //	return [self.user objectForKey: @"source"];
 //}
@@ -171,21 +171,21 @@ ECDefineDebugChannel(TweetChannel);
 	return [value boolValue];
 }
 
-//- (NSString*) locationText
+//- (NSString*)locationText
 //{
 //	NSString* text = [self.user objectForKey: @"location"];
 //	
 //	return text;
 //}
 
-- (CLLocation*) location
+- (CLLocation*)location
 {
 	CLLocation* result = nil;
 	
 	id value = [self.data objectForKey: @"geo"];
 	if (value && (value != [NSNull null]))
 	{
-		value = [(NSDictionary*) value objectForKey: @"coordinates"];
+		value = [(NSDictionary*)value objectForKey: @"coordinates"];
 	}
 	else
 	{
@@ -213,7 +213,7 @@ ECDefineDebugChannel(TweetChannel);
 	return result;
 }
 
-- (NSDate*) created
+- (NSDate*)created
 {
 	NSDate* date;
 	id value = [self.data objectForKey: @"created_at"];
@@ -238,7 +238,7 @@ ECDefineDebugChannel(TweetChannel);
 	return date;
 }
 
-- (ECTwitterUser*) author
+- (ECTwitterUser*)author
 {
 	ECTwitterUser* author = self.cachedAuthor;
 	
@@ -251,17 +251,17 @@ ECDefineDebugChannel(TweetChannel);
 	return author;
 }
 
-- (NSComparisonResult) compareByDateAscending: (ECTwitterTweet*) other
+- (NSComparisonResult) compareByDateAscending:(ECTwitterTweet*)other
 {
 	return [self.created compare: other.created];
 }
 
-- (NSComparisonResult) compareByDateDescending: (ECTwitterTweet*) other
+- (NSComparisonResult) compareByDateDescending:(ECTwitterTweet*)other
 {
 	return [other.created compare: self.created];
 }
 
-- (NSComparisonResult) compareByViewsDateDescending: (ECTwitterTweet*) other
+- (NSComparisonResult) compareByViewsDateDescending:(ECTwitterTweet*)other
 {
 	if (self.viewed < other.viewed)
 	{
@@ -279,12 +279,12 @@ ECDefineDebugChannel(TweetChannel);
 
 }
 
-- (NSString*) inReplyToTwitterName
+- (NSString*)inReplyToTwitterName
 {
 	return [self.data objectForKey: @"in_reply_to_screen_name"];
 }
 
-- (ECTwitterID*) inReplyToMessageID
+- (ECTwitterID*)inReplyToMessageID
 {
 	ECTwitterID* result = nil;
 	NSString* string = [self.data objectForKey: @"in_reply_to_status_id_str"];
@@ -296,7 +296,7 @@ ECDefineDebugChannel(TweetChannel);
 	return result;
 }
 
-- (ECTwitterID*) inReplyToAuthorID
+- (ECTwitterID*)inReplyToAuthorID
 {
 	ECTwitterID* result = nil;
 	NSString* string = [self.data objectForKey: @"in_reply_to_user_id_str"];
@@ -310,7 +310,7 @@ ECDefineDebugChannel(TweetChannel);
 
 static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 
-- (NSString*) sourceName
+- (NSString*)sourceName
 {
 	NSString* source = [self.data objectForKey: @"source"];
 	NSArray* captures = [source captureComponentsMatchedByRegex: kSourceExpression];
@@ -325,7 +325,7 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 
 // --------------------------------------------------------------------------
 
-- (NSURL*) sourceURL
+- (NSURL*)sourceURL
 {
 	NSString* source = [self.data objectForKey: @"source"];
 	NSArray* captures = [source captureComponentsMatchedByRegex: kSourceExpression];

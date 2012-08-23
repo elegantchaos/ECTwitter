@@ -136,7 +136,7 @@
 //! Return a new, sorted version of this timeline.
 // --------------------------------------------------------------------------
 
-- (ECTwitterUserList*)	sortedWithSelector: (SEL) selector
+- (ECTwitterUserList*)	sortedWithSelector:(SEL) selector
 {
 	ECTwitterUserList* userList = [[ECTwitterUserList alloc] init];
     NSMutableArray* usersCopy = [self.users mutableCopy];

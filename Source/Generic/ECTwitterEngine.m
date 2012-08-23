@@ -108,7 +108,7 @@ ECDefineLogChannel(ErrorChannel);
 //! Remember a request id and associate it with a handler.
 // --------------------------------------------------------------------------
 
-- (void) setHandler: (ECTwitterHandler*) handler forRequest: (NSString*) request
+- (void) setHandler:(ECTwitterHandler*)handler forRequest:(NSString*)request
 {
 	[self.requests setObject: handler forKey: request];
 }
@@ -117,7 +117,7 @@ ECDefineLogChannel(ErrorChannel);
 //! Return the handler for a request id.
 // --------------------------------------------------------------------------
 
-- (ECTwitterHandler*) handlerForRequest: (NSString*) request
+- (ECTwitterHandler*)handlerForRequest:(NSString*)request
 {
 	return [self.requests objectForKey: request];
 }
@@ -126,7 +126,7 @@ ECDefineLogChannel(ErrorChannel);
 //! Clear a request from our list.
 // --------------------------------------------------------------------------
 
-- (void) doneRequest: (NSString*) request
+- (void) doneRequest:(NSString*)request
 {
 	ECTwitterHandler* handler = [self.requests objectForKey: request];
 	handler.operation = nil;
@@ -198,7 +198,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector
+- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector
 {
 	[self callMethod: method httpMethod: nil parameters: parameters target: target selector: selector extra: nil];
 }
@@ -208,7 +208,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callGetMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra
+- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
 {
 	[self callMethod: method httpMethod: nil parameters: parameters target: target selector: selector extra: extra];
 }
@@ -218,7 +218,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector
+- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector
 {
 	[self callMethod: method httpMethod: @"POST" parameters: parameters target: target selector: selector extra: nil];
 }
@@ -228,7 +228,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callPostMethod: (NSString*) method parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra
+- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
 {
 	[self callMethod: method httpMethod: @"POST" parameters: parameters target: target selector: selector extra: extra];
 }
@@ -238,7 +238,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callMethod: (NSString*) method httpMethod: (NSString*) httpMethod parameters: (NSDictionary*) parameters target: (id) target selector: (SEL) selector extra: (NSObject*) extra
+- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
 {
 	if (parameters == nil)
 	{

@@ -33,10 +33,12 @@ extern NSString *const TwitterAuthenticationFailed;
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithKey: (NSString*) key secret: (NSString*) secret;
-- (BOOL) isAuthenticated;
-- (BOOL) authenticateForUser: (NSString*) user;
-- (void) authenticateForUser: (NSString*) user password: (NSString*) password target: (id) target selector: (SEL) selector;
-- (NSMutableURLRequest*) requestForURL:(NSURL*)url;
+- (id) initWithKey:(NSString*)key secret:(NSString*)secret;
+- (BOOL)isAuthenticated;
+- (BOOL)authenticateForUser:(NSString*)user;
+- (void)authenticateForUser:(NSString*)user password:(NSString*)password target:(id) target selector:(SEL)selector;
+- (void)authenticateForUser:(NSString*)user password:(NSString*)password handler:(void (^)(ECTwitterHandler* handler))handler;
+
+- (NSMutableURLRequest*)requestForURL:(NSURL*)url;
 
 @end

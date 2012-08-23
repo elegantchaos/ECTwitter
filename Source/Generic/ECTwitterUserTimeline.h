@@ -27,7 +27,7 @@
 - (id)init;
 - (id)initWithCoder:(NSCoder*)coder;
 - (void)encodeWithCoder:(NSCoder*)coder;
-- (void)addTweet: (ECTwitterTweet*) tweet;
+- (void)addTweet:(ECTwitterTweet*)tweet;
 - (void)refresh;
 - (void)trackPosts;
 - (void)trackHome;

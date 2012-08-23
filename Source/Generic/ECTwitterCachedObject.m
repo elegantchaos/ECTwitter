@@ -50,7 +50,7 @@
 //! Set up the object.
 // --------------------------------------------------------------------------
 
-- (id) initWithCache: (ECTwitterCache*) cache
+- (id) initWithCache:(ECTwitterCache*)cache
 {
 	if ((self = [super init]) != nil)
 	{

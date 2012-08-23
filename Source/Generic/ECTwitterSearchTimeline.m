@@ -108,7 +108,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
     [self.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(searchHandler:)];
 }
 
-- (void) searchHandler: (ECTwitterHandler*) handler
+- (void) searchHandler:(ECTwitterHandler*)handler
 {
 	if (handler.status == StatusResults)
 	{

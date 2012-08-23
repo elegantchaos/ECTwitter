@@ -101,7 +101,7 @@ static ECTwitterCache* gDecodingCache = nil;
     [super dealloc];
 }
 
-- (ECTwitterTweet*) tweetWithID: (ECTwitterID*) tweetID
+- (ECTwitterTweet*)tweetWithID:(ECTwitterID*)tweetID
 {
 	ECTwitterTweet* tweet = [self.tweets objectForKey: tweetID.string];
 	if (!tweet)
@@ -113,7 +113,7 @@ static ECTwitterCache* gDecodingCache = nil;
 	return tweet;
 }
 
-- (ECTwitterUser*) userWithID: (ECTwitterID*) userID
+- (ECTwitterUser*)userWithID:(ECTwitterID*)userID
 {
     return [self userWithID:userID requestIfMissing:YES];
 }
@@ -141,7 +141,7 @@ static ECTwitterCache* gDecodingCache = nil;
 	return user;
 }
 
-- (ECTwitterTweet*) addOrRefreshTweetWithInfo: (NSDictionary*) info
+- (ECTwitterTweet*)addOrRefreshTweetWithInfo:(NSDictionary*)info
 {
 	ECTwitterID* tweetID = [ECTwitterID idFromDictionary: info];
 	ECTwitterTweet* tweet = [self.tweets objectForKey: tweetID.string];
@@ -168,7 +168,7 @@ static ECTwitterCache* gDecodingCache = nil;
 	return tweet;
 }
 
-- (ECTwitterUser*) addOrRefreshUserWithInfo: (NSDictionary*) info
+- (ECTwitterUser*)addOrRefreshUserWithInfo:(NSDictionary*)info
 {
 	ECTwitterID* userID = [ECTwitterID idFromDictionary: info];
 	ECTwitterUser* user = [self.users objectForKey: userID.string];
@@ -193,7 +193,7 @@ static ECTwitterCache* gDecodingCache = nil;
 //! Request info about a given user id
 // --------------------------------------------------------------------------
 
-- (void) requestUserByID: (ECTwitterID*) userID
+- (void) requestUserByID:(ECTwitterID*)userID
 {
 	ECDebug(TwitterCacheChannel, @"requesting user info");
     ECAssertNonNil(userID.string);
@@ -209,7 +209,7 @@ static ECTwitterCache* gDecodingCache = nil;
 //! Modify the favourited state of a tweet.
 // --------------------------------------------------------------------------
 
-- (void) setFavouritedStateForTweet: (ECTwitterTweet*) tweet to: (BOOL) state
+- (void) setFavouritedStateForTweet:(ECTwitterTweet*)tweet to:(BOOL) state
 {
 	ECDebug(TwitterCacheChannel, @"making favourite: %@", tweet);
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -225,7 +225,7 @@ static ECTwitterCache* gDecodingCache = nil;
 //! We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
-- (void) userInfoHandler: (ECTwitterHandler*) handler
+- (void) userInfoHandler:(ECTwitterHandler*)handler
 {
 	if (handler.status == StatusResults)
 	{
@@ -248,7 +248,7 @@ static ECTwitterCache* gDecodingCache = nil;
 //! Handle confirmation that we've made a favourite
 // --------------------------------------------------------------------------
 
-- (void) makeFavouriteHandler: (ECTwitterHandler*) handler
+- (void) makeFavouriteHandler:(ECTwitterHandler*)handler
 {
 	if (handler.status == StatusResults)
 	{
@@ -270,7 +270,7 @@ static ECTwitterCache* gDecodingCache = nil;
 //! The cached version may be refreshed if it is old.
 // --------------------------------------------------------------------------
 
-- (ECTwitterImage*) imageWithID: (ECTwitterID*) imageID URL: (NSURL*) url
+- (ECTwitterImage*)imageWithID:(ECTwitterID*)imageID URL:(NSURL*)url
 {
 	ECTwitterImage* image = [[ECTwitterImage alloc] initWithContentsOfURL: url];
 	
@@ -418,7 +418,7 @@ static ECTwitterCache* gDecodingCache = nil;
 //! Return the path to the main cache file.
 // --------------------------------------------------------------------------
 
-- (NSURL*) mainCacheFile
+- (NSURL*)mainCacheFile
 {
     NSURL* root = [self baseCacheFolder];
     NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine Cache V5.cache"];
@@ -430,7 +430,7 @@ static ECTwitterCache* gDecodingCache = nil;
 //! Return the path to the image cache folder.
 // --------------------------------------------------------------------------
 
-- (NSURL*) imageCacheFolder
+- (NSURL*)imageCacheFolder
 {
     NSURL* url = [[self baseCacheFolder] URLByAppendingPathComponent:@"Images"];
 

@@ -57,6 +57,25 @@
 }
 
 // --------------------------------------------------------------------------
+//! Initialise a handler to call a block.
+// --------------------------------------------------------------------------
+
+- (id) initWithEngine:(ECTwitterEngine*)engineIn handler:(void (^)(ECTwitterHandler *))handler
+{
+	if ((self = [super init]) != nil)
+	{
+        NSOperation* newOperation = [NSBlockOperation blockOperationWithBlock:^{
+            handler(self);
+        }];
+		self.operation = newOperation;
+		self.engine = engineIn;
+		[newOperation release];
+	}
+
+	return self;
+}
+
+// --------------------------------------------------------------------------
 //! Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
@@ -102,7 +121,7 @@
 //! Return an error string.
 // --------------------------------------------------------------------------
 
-- (NSString*) errorString
+- (NSString*)errorString
 {
 	return [self.error localizedDescription];
 }

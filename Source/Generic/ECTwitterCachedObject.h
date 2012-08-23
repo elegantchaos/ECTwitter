@@ -20,7 +20,7 @@
 // Public Properties
 // --------------------------------------------------------------------------
 
-- (id) initWithCache: (ECTwitterCache*) cache;
+- (id) initWithCache:(ECTwitterCache*)cache;
 
 // --------------------------------------------------------------------------
 // Public Methods

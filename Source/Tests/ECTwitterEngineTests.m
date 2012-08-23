@@ -59,18 +59,16 @@
     BOOL authenticatedAlready = [engine.authentication authenticateForUser:user];
     if (!authenticatedAlready)
     {
-        [engine.authentication authenticateForUser:user password:password  target:self selector:@selector(authenticationHandler:)];
+        [engine.authentication authenticateForUser:user password:password  handler:^(ECTwitterHandler*handler) {
+            [self timeToExitRunLoop];
+        }];
+
         [self runUntilTimeToExit];
         BOOL authenticatedNow = [engine.authentication authenticateForUser:user];
         ECTestAssertTrue(authenticatedNow);
     }
 
     [engine release];
-}
-
-- (void)authenticationHandler:(ECTwitterHandler*)handler
-{
-    [self timeToExitRunLoop];
 }
 
 @end

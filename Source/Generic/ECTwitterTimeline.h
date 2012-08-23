@@ -44,9 +44,9 @@ typedef enum
 - (id)initWithCoder:(NSCoder*)coder;
 - (void)encodeWithCoder:(NSCoder*)coder;
 - (void)refresh;
-- (void) addTweet: (ECTwitterTweet*) tweet;
-- (ECTwitterTimeline*)sortedWithSelector: (SEL) selector;
-- (void)timelineHandler: (ECTwitterHandler*) handler;
+- (void) addTweet:(ECTwitterTweet*)tweet;
+- (ECTwitterTimeline*)sortedWithSelector:(SEL) selector;
+- (void)timelineHandler:(ECTwitterHandler*)handler;
 - (void)fetchTweetsForUser:(ECTwitterUser*)user method:(FetchMethod)method type:(FetchType)type;
 - (NSUInteger)count;
 - (void)removeMissingTweets;

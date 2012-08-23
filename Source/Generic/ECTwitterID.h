@@ -23,6 +23,6 @@
 + (ECTwitterID*)idFromDictionary:(NSDictionary*)dictionary;
 + (ECTwitterID*)idFromString:(NSString*)string;
 
-- (id) initWithString: (NSString*) string;
+- (id) initWithString:(NSString*)string;
 
 @end

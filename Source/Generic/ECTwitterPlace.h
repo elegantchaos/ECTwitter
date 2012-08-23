@@ -20,9 +20,9 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithPlaceInfo: (NSDictionary*) dictionary;
-- (NSString*) description;
-- (NSString*) name;
-- (NSString*) type;
+- (id) initWithPlaceInfo:(NSDictionary*)dictionary;
+- (NSString*)description;
+- (NSString*)name;
+- (NSString*)type;
 
 @end
