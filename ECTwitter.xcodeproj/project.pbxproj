@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		228B562915E6935200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
 		228B562B15E6937200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
+		228B567C15E69F5900EB8B54 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B567B15E69F5900EB8B54 /* SenTestingKit.framework */; };
+		228B567E15E69F5900EB8B54 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B567D15E69F5900EB8B54 /* UIKit.framework */; };
+		228B568015E69F5900EB8B54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B567F15E69F5900EB8B54 /* Foundation.framework */; };
+		228B568F15E69F8000EB8B54 /* ECTwitterEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */; };
+		228B569015E69F8900EB8B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
+		228B569115E69F8A00EB8B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
+		228B569215E69F8A00EB8B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
 		2290468F12E87585006D8278 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290468E12E87585006D8278 /* CoreLocation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		22BA9D7A15E678CE00861F75 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9D7915E678CE00861F75 /* SenTestingKit.framework */; };
 		22BA9D8E15E678F100861F75 /* ECTwitterEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */; };
@@ -122,6 +129,10 @@
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		223CBAE61205C6380008A641 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		228B562815E6935200EB8B54 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		228B567A15E69F5900EB8B54 /* .bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = .bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		228B567B15E69F5900EB8B54 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		228B567D15E69F5900EB8B54 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		228B567F15E69F5900EB8B54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		2290468E12E87585006D8278 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = /System/Library/Frameworks/CoreLocation.framework; sourceTree = "<absolute>"; };
 		22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECTwitterEngineTests.m; sourceTree = "<group>"; };
 		22BA9D7815E678CD00861F75 /* ECTwitterMacTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECTwitterMacTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,6 +202,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		228B567615E69F5900EB8B54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				228B567C15E69F5900EB8B54 /* SenTestingKit.framework in Frameworks */,
+				228B567E15E69F5900EB8B54 /* UIKit.framework in Frameworks */,
+				228B568015E69F5900EB8B54 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22BA9D7415E678CD00861F75 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -239,6 +260,7 @@
 				8DC2EF5B0486A6940098B216 /* ECTwitter.framework */,
 				22F08E1815E62D04003E8456 /* ECTwitter.framework */,
 				22BA9D7815E678CD00861F75 /* ECTwitterMacTests.octest */,
+				228B567A15E69F5900EB8B54 /* .bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -267,6 +289,9 @@
 				223CBAE11205C5930008A641 /* iOS */,
 				1058C7B0FEA5585E11CA2CBB /* MacOS */,
 				22F08E1915E62D04003E8456 /* CoreFoundation.framework */,
+				228B567B15E69F5900EB8B54 /* SenTestingKit.framework */,
+				228B567D15E69F5900EB8B54 /* UIKit.framework */,
+				228B567F15E69F5900EB8B54 /* Foundation.framework */,
 				22BA9D7D15E678CE00861F75 /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -461,6 +486,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		228B567915E69F5900EB8B54 /* ECTwitterIOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 228B568D15E69F5900EB8B54 /* Build configuration list for PBXNativeTarget "ECTwitterIOS Tests" */;
+			buildPhases = (
+				228B567515E69F5900EB8B54 /* Sources */,
+				228B567615E69F5900EB8B54 /* Frameworks */,
+				228B567715E69F5900EB8B54 /* Resources */,
+				228B567815E69F5900EB8B54 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ECTwitterIOS Tests";
+			productName = "IOS Testing";
+			productReference = 228B567A15E69F5900EB8B54 /* .bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 		22BA9D7715E678CD00861F75 /* ECTwitterMacTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22BA9D8B15E678CE00861F75 /* Build configuration list for PBXNativeTarget "ECTwitterMacTests" */;
@@ -541,15 +584,25 @@
 				8DC2EF4F0486A6940098B216 /* ECTwitterMac */,
 				22F08E1715E62D04003E8456 /* ECTwitterIOS */,
 				22BA9D7715E678CD00861F75 /* ECTwitterMacTests */,
+				228B567915E69F5900EB8B54 /* ECTwitterIOS Tests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		228B567715E69F5900EB8B54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				228B569215E69F8A00EB8B54 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22BA9D7515E678CD00861F75 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				228B569115E69F8A00EB8B54 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -557,6 +610,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				228B569015E69F8900EB8B54 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,6 +634,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		228B567815E69F5900EB8B54 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
 		22BA9D7615E678CD00861F75 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -610,6 +677,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		228B567515E69F5900EB8B54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				228B568F15E69F8000EB8B54 /* ECTwitterEngineTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22BA9D7315E678CD00861F75 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -716,14 +791,24 @@
 			};
 			name = Release;
 		};
+		228B568B15E69F5900EB8B54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Resources/Tests.plist;
+			};
+			name = Debug;
+		};
+		228B568C15E69F5900EB8B54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = Resources/Tests.plist;
+			};
+			name = Release;
+		};
 		22BA9D8C15E678CE00861F75 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22F08C7015E56A34003E8456 /* MacUnitTestDebug.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Caches/DerivedData/ECTwitterIntegration-glwemstufuxkgubkcegslkyvkzdr/Build/Products/Debug\"",
-				);
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
 			name = Debug;
@@ -732,10 +817,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22F08C7115E56A34003E8456 /* MacUnitTestRelease.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Caches/DerivedData/ECTwitterIntegration-glwemstufuxkgubkcegslkyvkzdr/Build/Products/Debug\"",
-				);
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
 			name = Release;
@@ -782,6 +863,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		228B568D15E69F5900EB8B54 /* Build configuration list for PBXNativeTarget "ECTwitterIOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				228B568B15E69F5900EB8B54 /* Debug */,
+				228B568C15E69F5900EB8B54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		22BA9D8B15E678CE00861F75 /* Build configuration list for PBXNativeTarget "ECTwitterMacTests" */ = {
 			isa = XCConfigurationList;

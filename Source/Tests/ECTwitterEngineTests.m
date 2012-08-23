@@ -91,7 +91,7 @@
 
         notAuthenticated = (handler.status == StatusFailed);
         NSString* errorString = [handler errorString];
-        NSLog(@"authentication failed, as expected, with error %@", errorString);
+        NSLog(@"authentication rejected, as expected, with error %@", errorString);
 
         [self timeToExitRunLoop];
     }];

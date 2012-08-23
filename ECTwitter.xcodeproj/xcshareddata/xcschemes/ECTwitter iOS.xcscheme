@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "0450"
-   version = "1.3">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "NO"
       buildImplicitDependencies = "NO">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "cd &quot;${SOURCE_ROOT}/../yajl-objc/Project-IOS&quot;&#10;make&#10;cp -R build/Framework/YAJLiOS.framework &quot;${BUILT_PRODUCTS_DIR}/YAJL.framework&quot;&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "22F08E1715E62D04003E8456"
+                     BuildableName = "ECTwitter.framework"
+                     BlueprintName = "ECTwitterIOS"
+                     ReferencedContainer = "container:ECTwitter.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -17,35 +35,7 @@
                BlueprintIdentifier = "221CB5AF15DAA4C4004C6398"
                BuildableName = "ECConfig.framework"
                BlueprintName = "ECConfigIOS"
-               ReferencedContainer = "container:../../Frameworks/ECConfig/ECConfig.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2251BA1115DBCC4A00F2FE40"
-               BuildableName = "ECLogging.framework"
-               BlueprintName = "ECLoggingIOS"
-               ReferencedContainer = "container:../../Frameworks/ECLogging/ECLogging.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2260A2FC15DFD7320057C9DA"
-               BuildableName = "ECCore.framework"
-               BlueprintName = "ECCoreIOS"
-               ReferencedContainer = "container:../../Frameworks/ECCore/ECCore.xcodeproj">
+               ReferencedContainer = "container:../ECConfig/ECConfig.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -73,7 +63,49 @@
                BlueprintIdentifier = "2251BA1115DBCC4A00F2FE40"
                BuildableName = "ECRegexKitLite.framework"
                BlueprintName = "ECRegexKitLiteIOS"
-               ReferencedContainer = "container:../ECRegexKitLite/ECRegexKitLite.xcodeproj">
+               ReferencedContainer = "container:../ECRegExKitLite/ECRegexKitLite.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2251BA1115DBCC4A00F2FE40"
+               BuildableName = "ECLogging.framework"
+               BlueprintName = "ECLoggingIOS"
+               ReferencedContainer = "container:../ECLogging/ECLogging.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2260A2FC15DFD7320057C9DA"
+               BuildableName = "ECCore.framework"
+               BlueprintName = "ECCoreIOS"
+               ReferencedContainer = "container:../ECCore/ECCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "227A47B915DA5FA000281601"
+               BuildableName = "ECUnitTests.framework"
+               BlueprintName = "ECUnitTestsIOS"
+               ReferencedContainer = "container:../ECUnitTests/ECUnitTests.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -98,6 +130,16 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "228B567915E69F5900EB8B54"
+               BuildableName = ".bundle"
+               BlueprintName = "ECTwitterIOS Tests"
+               ReferencedContainer = "container:ECTwitter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
