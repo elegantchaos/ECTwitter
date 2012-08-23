@@ -255,12 +255,12 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		22BA9D7115E6782400861F75 /* Zoinks */ = {
+		22BA9D7115E6782400861F75 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */,
 			);
-			path = Zoinks;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		22F08C6815E56A34003E8456 /* Source */ = {
@@ -269,7 +269,7 @@
 				22F08C6915E56A34003E8456 /* Configuration */,
 				22F08C7315E56A34003E8456 /* Generic */,
 				22F08C9715E56A34003E8456 /* Prefix */,
-				22BA9D7115E6782400861F75 /* Zoinks */,
+				22BA9D7115E6782400861F75 /* Tests */,
 			);
 			path = Source;
 			sourceTree = "<group>";
