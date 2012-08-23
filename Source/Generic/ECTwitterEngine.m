@@ -25,6 +25,7 @@
 - (ECTwitterHandler*)handlerForRequest:(NSString*)request;
 - (void)doneRequest:(NSString*)request;
 - (void)callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id)target selector:(SEL)selector extra:(NSObject*)extra;
+- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler;
 
 @end
 
@@ -230,7 +231,55 @@ ECDefineLogChannel(ErrorChannel);
 
 - (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
 {
-	[self callMethod: method httpMethod: @"POST" parameters: parameters target: target selector: selector extra: extra];
+	[self callMethod: method httpMethod:@"POST" parameters: parameters target: target selector: selector extra: extra];
+}
+
+- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters handler:(void (^)(ECTwitterHandler* handler))handler
+{
+    [self callMethod:method httpMethod:nil parameters:parameters extra:nil handler:handler];
+}
+
+- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters handler:(void (^)(ECTwitterHandler* handler))handler
+{
+    [self callMethod:method httpMethod:@"POST" parameters:parameters extra:nil handler:handler];
+}
+
+- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler
+{
+    [self callMethod:method httpMethod:nil parameters:parameters extra:extra handler:handler];
+}
+
+- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler
+{
+    [self callMethod:method httpMethod:@"POST" parameters:parameters extra:extra handler:handler];
+}
+
+
+// --------------------------------------------------------------------------
+//! Call a twitter method.
+//! When it's done, the engine will call back to the specified target/selector.
+// --------------------------------------------------------------------------
+
+- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler
+{
+	ECTwitterHandler* internalHandler = [[ECTwitterHandler alloc] initWithEngine:self handler:handler];
+	internalHandler.extra = extra;
+    [self callMethod:method httpMethod:httpMethod parameters:parameters internalHandler:internalHandler];
+    [internalHandler release];
+}
+
+
+// --------------------------------------------------------------------------
+//! Call a twitter method.
+//! When it's done, the engine will call back to the specified target/selector.
+// --------------------------------------------------------------------------
+
+- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
+{
+	ECTwitterHandler* internalHandler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
+	internalHandler.extra = extra;
+    [self callMethod:method httpMethod:httpMethod parameters:parameters internalHandler:internalHandler];
+    [internalHandler release];
 }
 
 // --------------------------------------------------------------------------
@@ -238,7 +287,7 @@ ECDefineLogChannel(ErrorChannel);
 //! When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
-- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
+- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters internalHandler:(ECTwitterHandler*)internalHandler
 {
 	if (parameters == nil)
 	{
@@ -246,10 +295,7 @@ ECDefineLogChannel(ErrorChannel);
 	}
 	
     NSString* request = [self.engine request:method parameters:parameters method:httpMethod];
-	ECTwitterHandler* handler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
-	handler.extra = extra;
-	[self setHandler: handler forRequest:request];
-    [handler release];
+	[self setHandler:internalHandler forRequest:request];
 }
 
 // --------------------------------------------------------------------------

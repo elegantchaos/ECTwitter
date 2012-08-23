@@ -44,6 +44,12 @@
 - (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector;
 - (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra;
 
+- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters handler:(void (^)(ECTwitterHandler* handler))handler;
+- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler;
+
+- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters handler:(void (^)(ECTwitterHandler* handler))handler;
+- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler;
+
 - (void)registerError:(NSError*)error inContext:(NSObject*)context;
 
 

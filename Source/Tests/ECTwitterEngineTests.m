@@ -99,4 +99,22 @@
     [self runUntilTimeToExit];
 }
 
+- (void)testUserInfo
+{
+    NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"samdeane", @"screen_name", nil];
+    [self.engine callGetMethod: @"users/show" parameters: parameters handler:^(ECTwitterHandler *handler) {
+
+        if (handler.status == StatusResults)
+        {
+            NSDictionary* userData = handler.result;
+            ECTestAssertStringIsEqual([userData objectForKey:@"id_str"], @"61523");
+        }
+
+        [self timeToExitRunLoop];
+
+    }];
+
+    [self runUntilTimeToExit];
+
+}
 @end
