@@ -14,9 +14,79 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "22FBFE6611DD0D9400578A66"
-               BuildableName = "ECTwitter.a"
-               BlueprintName = "ECTwitter iOS"
+               BlueprintIdentifier = "221CB5AF15DAA4C4004C6398"
+               BuildableName = "ECConfig.framework"
+               BlueprintName = "ECConfigIOS"
+               ReferencedContainer = "container:../ECConfig/ECConfig.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2251BA1115DBCC4A00F2FE40"
+               BuildableName = "ECLogging.framework"
+               BlueprintName = "ECLoggingIOS"
+               ReferencedContainer = "container:../ECLogging/ECLogging.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2260A2FC15DFD7320057C9DA"
+               BuildableName = "ECCore.framework"
+               BlueprintName = "ECCoreIOS"
+               ReferencedContainer = "container:../ECCore/ECCore.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2251BA1115DBCC4A00F2FE40"
+               BuildableName = "ECOAuthConsumer.framework"
+               BlueprintName = "ECOAuthConsumerIOS"
+               ReferencedContainer = "container:../ECOAuthConsumer/ECOAuthConsumer.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2251BA1115DBCC4A00F2FE40"
+               BuildableName = "ECRegexKitLite.framework"
+               BlueprintName = "ECRegexKitLiteIOS"
+               ReferencedContainer = "container:../ECRegExKitLite/ECRegexKitLite.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "22F08E1715E62D04003E8456"
+               BuildableName = "ECTwitterIOS.bundle"
+               BlueprintName = "ECTwitterIOS"
                ReferencedContainer = "container:ECTwitter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>

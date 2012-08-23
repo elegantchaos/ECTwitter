@@ -72,7 +72,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8DC2EF4F0486A6940098B216"
                BuildableName = "ECTwitter.framework"
-               BlueprintName = "ECTwitter Mac"
+               BlueprintName = "ECTwitterMac"
                ReferencedContainer = "container:ECTwitter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
