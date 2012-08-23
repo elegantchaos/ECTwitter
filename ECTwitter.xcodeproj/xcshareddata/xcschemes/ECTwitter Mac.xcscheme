@@ -104,6 +104,20 @@
                ReferencedContainer = "container:ECTwitter.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "22BEA1BE15DA55920036A04F"
+               BuildableName = "ECUnitTests.framework"
+               BlueprintName = "ECUnitTestsMac"
+               ReferencedContainer = "container:../ECUnitTests/ECUnitTests.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
