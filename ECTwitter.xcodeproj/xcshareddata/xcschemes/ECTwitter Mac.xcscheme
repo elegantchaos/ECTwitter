@@ -112,6 +112,16 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       buildConfiguration = "Debug">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "22BA9D7715E678CD00861F75"
+               BuildableName = "ECTwitterMacTests.octest"
+               BlueprintName = "ECTwitterMacTests"
+               ReferencedContainer = "container:ECTwitter.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
