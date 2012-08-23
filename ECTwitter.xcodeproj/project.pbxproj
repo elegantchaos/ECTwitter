@@ -124,12 +124,22 @@
 		8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		228B569515E6A40F00EB8B54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22F08E1715E62D04003E8456;
+			remoteInfo = ECTwitterIOS;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		223CBAE61205C6380008A641 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		228B562815E6935200EB8B54 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		228B567A15E69F5900EB8B54 /* .bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = .bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		228B567A15E69F5900EB8B54 /* ECTwitterIOS Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ECTwitterIOS Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		228B567B15E69F5900EB8B54 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		228B567D15E69F5900EB8B54 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		228B567F15E69F5900EB8B54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -260,7 +270,7 @@
 				8DC2EF5B0486A6940098B216 /* ECTwitter.framework */,
 				22F08E1815E62D04003E8456 /* ECTwitter.framework */,
 				22BA9D7815E678CD00861F75 /* ECTwitterMacTests.octest */,
-				228B567A15E69F5900EB8B54 /* .bundle */,
+				228B567A15E69F5900EB8B54 /* ECTwitterIOS Tests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -498,10 +508,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				228B569615E6A40F00EB8B54 /* PBXTargetDependency */,
 			);
 			name = "ECTwitterIOS Tests";
 			productName = "IOS Testing";
-			productReference = 228B567A15E69F5900EB8B54 /* .bundle */;
+			productReference = 228B567A15E69F5900EB8B54 /* ECTwitterIOS Tests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 		22BA9D7715E678CD00861F75 /* ECTwitterMacTests */ = {
@@ -526,6 +537,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22F08E2415E62D04003E8456 /* Build configuration list for PBXNativeTarget "ECTwitterIOS" */;
 			buildPhases = (
+				228B569315E6A37900EB8B54 /* ShellScript */,
 				22F08E1415E62D04003E8456 /* Sources */,
 				22F08E2615E62DD5003E8456 /* Headers */,
 				22F08E1515E62D04003E8456 /* Frameworks */,
@@ -647,6 +659,20 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		228B569315E6A37900EB8B54 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"${SOURCE_ROOT}/../yajl-objc/Project-IOS\"\nmake\nln -shf \"${SOURCE_ROOT}/../yajl-objc/Project-IOS/build/Framework/YAJLiOS.framework\" \"${BUILT_PRODUCTS_DIR}/YAJL.framework\"\n";
+			showEnvVarsInLog = 0;
+		};
 		22BA9D7615E678CD00861F75 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -745,6 +771,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		228B569615E6A40F00EB8B54 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22F08E1715E62D04003E8456 /* ECTwitterIOS */;
+			targetProxy = 228B569515E6A40F00EB8B54 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		22F08CFE15E56ABE003E8456 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -793,6 +827,7 @@
 		};
 		228B568B15E69F5900EB8B54 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 22F08C6C15E56A34003E8456 /* IOSUnitTestDebug.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
@@ -800,6 +835,7 @@
 		};
 		228B568C15E69F5900EB8B54 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 22F08C6D15E56A34003E8456 /* IOSUnitTestRelease.xcconfig */;
 			buildSettings = {
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
