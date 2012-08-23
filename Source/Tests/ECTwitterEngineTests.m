@@ -9,7 +9,10 @@
 
 @interface ECTwitterEngineTests : ECTestCase
 
-@property (assign, nonatomic) BOOL authenticated;
+@property (strong, nonatomic) NSString* user;
+@property (strong, nonatomic) NSString* password;
+@property (strong, nonatomic) ECTwitterAuthentication* authentication;
+@property (strong, nonatomic) ECTwitterEngine* engine;
 
 @end
 
@@ -27,7 +30,8 @@
 
     return result;
 }
-- (void)testSetup
+
+- (void)setUp
 {
     NSString* name = @"ECTwitter Unit Tests";
     NSString* version = @"1.0";
@@ -35,40 +39,64 @@
 
     NSString* key = [self readSetting:@"key"];
     NSString* secret = [self readSetting:@"secret"];
-    NSString* user = [self readSetting:@"user"];
-    NSString* password = [self readSetting:@"password"];
+    self.user = [self readSetting:@"user"];
+    self.password = [self readSetting:@"password"];
 
     ECTestAssertNotNil(key);
     ECTestAssertNotNil(secret);
-    ECTestAssertNotNil(user);
-    ECTestAssertNotNil(password);
+    ECTestAssertNotNil(self.user);
+    ECTestAssertNotNil(self.password);
 
-    ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] initWithKey:key secret:secret];
-    ECTestAssertNotNil(authentication);
+    self.authentication = [[ECTwitterAuthentication alloc] initWithKey:key secret:secret];
+    ECTestAssertNotNil(self.authentication);
 
-    ECTwitterEngine* engine = [[ECTwitterEngine alloc] initWithAuthetication:authentication clientName:name version:version url:url];
-    ECTestAssertNotNil(engine);
+    self.engine = [[ECTwitterEngine alloc] initWithAuthetication:self.authentication clientName:name version:version url:url];
+    ECTestAssertNotNil(self.engine);
 
-    [authentication release];
-
-	ECTwitterCache* cache = [[ECTwitterCache alloc] initWithEngine: engine];
+    ECTwitterCache* cache = [[ECTwitterCache alloc] initWithEngine:self.engine];
     ECTestAssertNotNil(cache);
     [cache load];
     [cache release];
+}
 
-    BOOL authenticatedAlready = [engine.authentication authenticateForUser:user];
+- (void)tearDown
+{
+    self.authentication = nil;
+    self.engine = nil;
+}
+
+- (void)testAuthentication
+{
+    BOOL authenticatedAlready = [self.authentication authenticateForUser:self.user];
     if (!authenticatedAlready)
     {
-        [engine.authentication authenticateForUser:user password:password  handler:^(ECTwitterHandler*handler) {
+        [self.authentication authenticateForUser:self.user password:self.password  handler:^(ECTwitterHandler*handler) {
             [self timeToExitRunLoop];
         }];
 
         [self runUntilTimeToExit];
-        BOOL authenticatedNow = [engine.authentication authenticateForUser:user];
+        BOOL authenticatedNow = [self.authentication authenticateForUser:self.user];
         ECTestAssertTrue(authenticatedNow);
     }
+}
 
-    [engine release];
+- (void)testAuthenticationFailure
+{
+    BOOL authenticatedAlready = [self.authentication authenticateForUser:@"samdeane"];
+    ECTestAssertFalse(authenticatedAlready);
+
+    __block BOOL notAuthenticated;
+
+    [self.authentication authenticateForUser:@"samdeane" password:@"notmypassword"  handler:^(ECTwitterHandler*handler) {
+
+        notAuthenticated = (handler.status == StatusFailed);
+        NSString* errorString = [handler errorString];
+        NSLog(@"authentication failed, as expected, with error %@", errorString);
+
+        [self timeToExitRunLoop];
+    }];
+
+    [self runUntilTimeToExit];
 }
 
 @end

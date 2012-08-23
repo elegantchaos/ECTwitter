@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		228B562915E6935200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
+		228B562B15E6937200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
 		2290468F12E87585006D8278 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290468E12E87585006D8278 /* CoreLocation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		22BA9D7A15E678CE00861F75 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9D7915E678CE00861F75 /* SenTestingKit.framework */; };
 		22BA9D8E15E678F100861F75 /* ECTwitterEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */; };
@@ -119,6 +121,7 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		223CBAE61205C6380008A641 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		228B562815E6935200EB8B54 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2290468E12E87585006D8278 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = /System/Library/Frameworks/CoreLocation.framework; sourceTree = "<absolute>"; };
 		22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECTwitterEngineTests.m; sourceTree = "<group>"; };
 		22BA9D7815E678CD00861F75 /* ECTwitterMacTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECTwitterMacTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -192,6 +195,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				228B562915E6935200EB8B54 /* YAJL.framework in Frameworks */,
 				22BA9DA615E67F3D00861F75 /* ECConfig.framework in Frameworks */,
 				22BA9DA715E67F3D00861F75 /* ECCore.framework in Frameworks */,
 				22BA9DA815E67F3D00861F75 /* ECLogging.framework in Frameworks */,
@@ -222,6 +226,7 @@
 				22BA9DDC15E6925E00861F75 /* ECLogging.framework in Frameworks */,
 				22BA9DDD15E6926100861F75 /* ECOAuthConsumer.framework in Frameworks */,
 				22BA9DDE15E6926400861F75 /* ECRegexKitLite.framework in Frameworks */,
+				228B562B15E6937200EB8B54 /* YAJL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,6 +257,7 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				228B562815E6935200EB8B54 /* YAJL.framework */,
 				22BA9DA015E67F3D00861F75 /* ECConfig.framework */,
 				22BA9DA115E67F3D00861F75 /* ECCore.framework */,
 				22BA9DA215E67F3D00861F75 /* ECLogging.framework */,

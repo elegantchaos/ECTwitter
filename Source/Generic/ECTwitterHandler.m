@@ -25,12 +25,12 @@
 // Properties
 // ==============================================
 
-@synthesize engine;
-@synthesize error;
-@synthesize extra;
-@synthesize operation;
-@synthesize result;
-@synthesize status;
+@synthesize engine = _engine;
+@synthesize error = _error;
+@synthesize extra = _extra;
+@synthesize operation = _operation;
+@synthesize result = _result;
+@synthesize status = _status;
 
 // ==============================================
 // Lifecycle
@@ -69,7 +69,6 @@
         }];
 		self.operation = newOperation;
 		self.engine = engineIn;
-		[newOperation release];
 	}
 
 	return self;
@@ -81,11 +80,11 @@
 
 - (void) dealloc
 {
-	[operation release];
-	[engine release];
-	[result release];
-	[extra release];
-	[error release];
+	[_operation release];
+	[_engine release];
+	[_result release];
+	[_extra release];
+	[_error release];
 
 	[super dealloc];
 }
