@@ -10,6 +10,7 @@
 #import "ECTwitterCachedObject.h"
 
 @class ECTwitterID;
+@class ECTwitterImage;
 @class ECTwitterUserTimeline;
 @class ECTwitterUserMentionsTimeline;
 @class ECTwitterTweet;
@@ -21,7 +22,7 @@
 // Public Properties
 // --------------------------------------------------------------------------
 
-@property (nonatomic, retain) NSImage* cachedImage;
+@property (nonatomic, retain) ECTwitterImage* cachedImage;
 @property (nonatomic, retain) NSDictionary* data;
 @property (nonatomic, retain) ECTwitterUserList* followers;
 @property (nonatomic, retain) ECTwitterUserList* friends;
@@ -49,7 +50,7 @@
 
 - (NSString*)		bio;
 
-- (NSImage*)		image;
+- (ECTwitterImage*)		image;
 
 - (void)			addFriend:(ECTwitterUser*)user;
 - (void)			addFollower:(ECTwitterUser*)user;

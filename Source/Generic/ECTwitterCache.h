@@ -7,6 +7,7 @@
 //  liberal license: http://www.elegantchaos.com/license/liberal
 // --------------------------------------------------------------------------
 
+@class ECTwitterImage;
 @class ECTwitterTweet;
 @class ECTwitterUser;
 @class ECTwitterEngine;
@@ -35,7 +36,7 @@
 - (ECTwitterTweet*)	tweetWithID: (ECTwitterID*) tweetID;
 - (ECTwitterUser*)userWithID:(ECTwitterID*)userID;
 - (ECTwitterUser*)userWithID:(ECTwitterID*)userID requestIfMissing:(BOOL)requestIfMissing;
-- (NSImage*)		imageWithID: (ECTwitterID*) imageID URL: (NSURL*) url;
+- (ECTwitterImage*)		imageWithID: (ECTwitterID*) imageID URL: (NSURL*) url;
 
 - (void)			setFavouritedStateForTweet: (ECTwitterTweet*) tweet to: (BOOL) state;
 

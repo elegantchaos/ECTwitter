@@ -413,9 +413,9 @@ ECDefineDebugChannel(TwitterUserChannel);
 //! Return an image for the user.
 // --------------------------------------------------------------------------
 
-- (NSImage*) image
+- (ECTwitterImage*) image
 {
-	NSImage* image = self.cachedImage;
+	ECTwitterImage* image = self.cachedImage;
 	if (!image)
 	{
 		NSURL* url = [NSURL URLWithString:[self.data objectForKey: @"profile_image_url"]];

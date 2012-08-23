@@ -28,6 +28,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2251B9FE15DBCC3E00F2FE40"
+               BuildableName = "ECLogging.framework"
+               BlueprintName = "ECLoggingMac"
+               ReferencedContainer = "container:../ECLogging/ECLogging.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "2260A2E815DFD7290057C9DA"
                BuildableName = "ECCore.framework"
                BlueprintName = "ECCoreMac"
@@ -43,9 +57,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2251B9FE15DBCC3E00F2FE40"
-               BuildableName = "ECLogging.framework"
-               BlueprintName = "ECLoggingMac"
-               ReferencedContainer = "container:../ECLogging/ECLogging.xcodeproj">
+               BuildableName = "ECRegexKitLite.framework"
+               BlueprintName = "ECRegexKitLiteMac"
+               ReferencedContainer = "container:../ECRegExKitLite/ECRegexKitLite.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -60,6 +74,20 @@
                BuildableName = "ECOAuthConsumer.framework"
                BlueprintName = "ECOAuthConsumerMac"
                ReferencedContainer = "container:../ECOAuthConsumer/ECOAuthConsumer.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8DC2EF4F0486A6940098B216"
+               BuildableName = "YAJL.framework"
+               BlueprintName = "YAJL"
+               ReferencedContainer = "container:../yajl-objc/Project/YAJL.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry

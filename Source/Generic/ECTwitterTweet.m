@@ -14,9 +14,7 @@
 #import "ECTwitterTimeline.h"
 
 #import <CoreLocation/CoreLocation.h>
-
-
-#import "RegexKitLite.h"
+#import <ECRegExKitLite/ECRegExKitLite.h>
 
 @implementation ECTwitterTweet
 

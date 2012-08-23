@@ -15,7 +15,7 @@
 #import "ECTwitterID.h"
 #import "ECTwitterTimeline.h"
 #import "ECTwitterUserMentionsTimeline.h"
-
+#import "ECTwitterImage.h"
 
 
 // --------------------------------------------------------------------------
@@ -270,9 +270,9 @@ static ECTwitterCache* gDecodingCache = nil;
 //! The cached version may be refreshed if it is old.
 // --------------------------------------------------------------------------
 
-- (NSImage*) imageWithID: (ECTwitterID*) imageID URL: (NSURL*) url
+- (ECTwitterImage*) imageWithID: (ECTwitterID*) imageID URL: (NSURL*) url
 {
-	NSImage* image = [[NSImage alloc] initWithContentsOfURL: url];
+	ECTwitterImage* image = [[ECTwitterImage alloc] initWithContentsOfURL: url];
 	
 	return [image autorelease];
 }
