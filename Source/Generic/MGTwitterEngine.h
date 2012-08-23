@@ -7,7 +7,8 @@
 //
 
 #import "MGTwitterEngineDelegate.h"
-#import "OAToken.h"
+
+#import <ECOAuthConsumer/ECOAuthConsumer.h>
 
 @class ECTwitterAuthentication;
 

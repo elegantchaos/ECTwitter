@@ -10,9 +10,9 @@
 #import "ECTwitterAuthentication.h"
 #import "ECTwitterHandler.h"
 #import "ECTwitterEngine.h"
-#import "OAToken.h"
-#import "OAConsumer.h"
-#import "OAMutableURLRequest.h"
+
+#import <ECOAuthConsumer/ECOAuthConsumer.h>
+
 #import "ECTwitterConnection.h"
 #import "MGTwitterEngine.h"
 

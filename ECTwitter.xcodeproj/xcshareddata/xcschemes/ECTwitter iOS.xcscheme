@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "22FBFE6611DD0D9400578A66"
-               BuildableName = "libECTwitter.a"
+               BuildableName = "ECTwitter.a"
                BlueprintName = "ECTwitter iOS"
                ReferencedContainer = "container:ECTwitter.xcodeproj">
             </BuildableReference>
