@@ -29,6 +29,8 @@
 		228B56A815E6A9E600EB8B54 /* ECTwitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* ECTwitter.framework */; };
 		228B56AA15E6A9FF00EB8B54 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56A915E6A9FF00EB8B54 /* CoreLocation.framework */; };
 		228B56AC15E6AA0D00EB8B54 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56AB15E6AA0D00EB8B54 /* libicucore.dylib */; };
+		228B56AE15E7934400EB8B54 /* ECTwitterCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 228B56AD15E7934400EB8B54 /* ECTwitterCacheTests.m */; };
+		228B56AF15E7934400EB8B54 /* ECTwitterCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 228B56AD15E7934400EB8B54 /* ECTwitterCacheTests.m */; };
 		2290468F12E87585006D8278 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290468E12E87585006D8278 /* CoreLocation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		22BA9D7A15E678CE00861F75 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9D7915E678CE00861F75 /* SenTestingKit.framework */; };
 		22BA9D8E15E678F100861F75 /* ECTwitterEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */; };
@@ -161,6 +163,7 @@
 		228B56A515E6A98800EB8B54 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		228B56A915E6A9FF00EB8B54 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreLocation.framework; sourceTree = DEVELOPER_DIR; };
 		228B56AB15E6AA0D00EB8B54 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/usr/lib/libicucore.dylib; sourceTree = DEVELOPER_DIR; };
+		228B56AD15E7934400EB8B54 /* ECTwitterCacheTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECTwitterCacheTests.m; sourceTree = "<group>"; };
 		2290468E12E87585006D8278 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = /System/Library/Frameworks/CoreLocation.framework; sourceTree = "<absolute>"; };
 		22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECTwitterEngineTests.m; sourceTree = "<group>"; };
 		22BA9D7815E678CD00861F75 /* ECTwitterMacTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECTwitterMacTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -363,6 +366,7 @@
 		22BA9D7115E6782400861F75 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				228B56AD15E7934400EB8B54 /* ECTwitterCacheTests.m */,
 				22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */,
 			);
 			path = Tests;
@@ -744,6 +748,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				228B568F15E69F8000EB8B54 /* ECTwitterEngineTests.m in Sources */,
+				228B56AF15E7934400EB8B54 /* ECTwitterCacheTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -752,6 +757,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				22BA9D8E15E678F100861F75 /* ECTwitterEngineTests.m in Sources */,
+				228B56AE15E7934400EB8B54 /* ECTwitterCacheTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
