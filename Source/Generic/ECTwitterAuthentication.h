@@ -31,6 +31,7 @@ extern NSString *const TwitterAuthenticationFailed;
 // Public Methods
 // --------------------------------------------------------------------------
 
+- (id)initWithEngine:(ECTwitterEngine*)engine;
 - (BOOL)isAuthenticated;
 - (void)authenticateForUser:(NSString*)user password:(NSString*)password handler:(void (^)(ECTwitterHandler* handler))handler;
 

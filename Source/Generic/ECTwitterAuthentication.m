@@ -58,13 +58,23 @@ ECDefineDebugChannel(AuthenticationChannel);
 /// Initialise the engine.
 // --------------------------------------------------------------------------
 
-- (void)dealloc 
+- (id)initWithEngine:(ECTwitterEngine*)engine
 {
-    [_connection dealloc];
-    [_engine dealloc];
-    [_handler dealloc];
-    [_token dealloc];
-    [_user dealloc];
+    if ((self = [super init]) != nil)
+    {
+        self.engine = engine;
+    }
+
+    return self;
+}
+
+- (void)dealloc
+{
+    [_connection release];
+    [_engine release];
+    [_handler release];
+    [_token release];
+    [_user release];
     
     [super dealloc];
 }
@@ -167,7 +177,6 @@ ECDefineDebugChannel(AuthenticationChannel);
     {
         h.error = error;
         [h invokeWithStatus:StatusFailed];
-        h.operation = nil;
         self.handler = nil;
     }
     

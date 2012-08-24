@@ -53,23 +53,23 @@
     ECTestAssertNotNil(self.user);
     ECTestAssertNotNil(self.password);
 
-    self.engine = [[ECTwitterEngine alloc] initWithConsumerKey:key consumerSecret:secret clientName:name version:version url:url];
+    self.engine = [[[ECTwitterEngine alloc] initWithConsumerKey:key consumerSecret:secret clientName:name version:version url:url] autorelease];
     ECTestAssertNotNil(self.engine);
 }
 
 - (void)tearDown
 {
-    self.authentication = nil;
-    self.engine = nil;
+ self.engine = nil;
+ self.authentication = nil;
 }
 
 - (void)authenticate
 {
-    ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] init];
+    ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] initWithEngine:self.engine];
     [authentication authenticateForUser:self.user password:self.password handler:^(ECTwitterHandler*handler) {
         self.gotAuthentication = YES;
         [self timeToExitRunLoop];
-        ECTestAssertTrue(handler.status == StatusSucceeded);
+        ECTestAssertIntegerIsEqual(handler.status, StatusResults);
         }];
 
     if (!self.gotAuthentication)
@@ -91,11 +91,20 @@
 
 - (void)testAuthenticationFailure
 {
-    ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] init];
+    ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] initWithEngine:self.engine];
     [authentication authenticateForUser:@"samdeane" password:@"not my password"  handler:^(ECTwitterHandler*handler) {
-        ECTestAssertTrue(handler.status == StatusFailed);
+        self.gotAuthentication = YES;
+        [self timeToExitRunLoop];
+        ECTestAssertIntegerIsEqual(handler.status, StatusFailed);
         NSLog(@"authentication error %@", [handler errorString]);
     }];
+
+    if (!self.gotAuthentication)
+    {
+        [self runUntilTimeToExit];
+    }
+
+    [authentication release];
 }
 
 - (void)testUserInfo
