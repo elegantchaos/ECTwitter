@@ -69,6 +69,19 @@
     self.cache = nil;
 }
 
+- (void)authenticate
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userAuthenticated:) name:ECTwitterUserAuthenticated object:self.user];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userAuthenticated:) name:ECTwitterUserAuthenticationFailed object:self.user];
+
+    [self.cache authenticateUserWithName:self.user password:self.password];
+
+    if (!self.gotAuthentication)
+    {
+        [self runUntilTimeToExit];
+    }
+}
+
 - (void)userAuthenticated:(NSNotification*)notification
 {
     self.gotAuthentication = YES;
@@ -93,24 +106,16 @@
     ECTestAssertNil(user);
 }
 
-
 - (void)testAuthentication
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userAuthenticated:) name:ECTwitterUserAuthenticated object:self.user];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userAuthenticated:) name:ECTwitterUserAuthenticationFailed object:self.user];
-
     ECTwitterUser* user = [self.cache authenticatedUserWithName:self.user];
     ECTestAssertNil(user);
 
-    [self.cache authenticateUserWithName:self.user password:self.password];
-
-    if (!self.gotAuthentication)
-    {
-        [self runUntilTimeToExit];
-    }
+    [self authenticate];
 
     user = [self.cache authenticatedUserWithName:self.user];
     ECTestAssertNotNil(user);
+    ECTestAssertStringIsEqual(user.twitterID.string, @"776194513");
     ECTestAssertStringIsEqual(user.twitterName, self.user);
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -135,23 +140,48 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#if 0
-- (void)testCachedUser
+- (void)testAuthenticatedUserInfo
 {
+    // user update may come in whilst we're authenticating, and before we have a user object, so listen for updates on any user
+    // (normally, for efficiency, we want to listen only for the update for a given user)
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userUpdated:) name:ECTwitterUserUpdated object:nil];
 
+    [self authenticate];
+
+    if (!self.gotUserUpdate)
+    {
+        [self runUntilTimeToExit];
+    }
+
+    ECTwitterUser* user = [self.cache authenticatedUserWithName:self.user];
+    ECTestAssertTrue(user.gotData);
+    ECTestAssertStringIsEqual(user.twitterID.string, @"776194513");
+    ECTestAssertStringIsEqual(user.twitterName, self.user);
+    ECTestAssertStringIsEqual(user.name, @"ECT Unit Tests");
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)testOtherUserInfo
+{
+    [self authenticate];
+
     ECTwitterID* userID = [ECTwitterID idFromString:@"61523"];
-    ECTwitterUser* user = [cache userWithID:userID];
+    ECTwitterUser* user = [self.cache userWithID:userID];
     ECTestAssertNotNil(user);
     ECTestAssertFalse(user.gotData);
 
-    [self runUntilTimeToExit];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userUpdated:) name:ECTwitterUserUpdated object:user];
+
+    if (!self.gotUserUpdate)
+    {
+        [self runUntilTimeToExit];
+    }
 
     ECTestAssertTrue(user.gotData);
     ECTestAssertStringIsEqual(user.name, @"Sam Deane");
     ECTestAssertStringIsEqual(user.twitterName, @"samdeane");
 
-    [cache release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -159,18 +189,19 @@
 {
     [self authenticate];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userUpdated:) name:ECTwitterUserUpdated object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(timelineUpdated:) name:ECTwitterTimelineUpdated object:nil];
-    ECTwitterCache* cache = [[ECTwitterCache alloc] initWithEngine:self.engine];
-    ECTestAssertNotNil(cache);
+    self.cache.engine.authentication = [self.cache authenticatedUserWithName:self.user].authentication;
 
     ECTwitterID* userID = [ECTwitterID idFromString:@"61523"];
-    ECTwitterUser* user = [cache userWithID:userID];
+    ECTwitterUser* user = [self.cache userWithID:userID];
     ECTestAssertNotNil(user);
     ECTestAssertFalse(user.gotData);
+
     ECTwitterTimeline* timeline = user.timeline;
     ECTestAssertIsEmpty(timeline);
     [timeline refresh];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userUpdated:) name:ECTwitterUserUpdated object:user];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(timelineUpdated:) name:ECTwitterTimelineUpdated object:timeline];
 
     while (!(self.gotUserUpdate && self.gotTimelineUpdate))
     {
@@ -180,12 +211,8 @@
     ECTestAssertTrue(user.gotData);
     ECTestAssertNotEmpty(timeline);
 
-    [cache release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-#endif
-
 
 
 @end
