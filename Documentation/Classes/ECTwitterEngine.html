@@ -99,7 +99,12 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p>Higher level wrapper for MGTwitterEngine.</p>
+						<p>Simple Twitter Engine
+This engine exposes fairly raw access to the twitter api, but
+manages the process of sending requests, and parsing results.
+For each twitter call that you make, you supply a block (or target &amp; selector)
+which the engine calls back when the call succeeds or fails.
+Authentication is dealy with via the @ECAuthentication helper class.</p>
 					</div>
 					
 					
