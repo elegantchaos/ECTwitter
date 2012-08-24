@@ -69,7 +69,12 @@
     [authentication authenticateForUser:self.user password:self.password handler:^(ECTwitterHandler*handler) {
         self.gotAuthentication = YES;
         [self timeToExitRunLoop];
+
         ECTestAssertIntegerIsEqual(handler.status, StatusResults);
+
+        NSDictionary* info = handler.result;
+
+        ECTestAssertStringIsEqual([info objectForKey:@"user_id"], @"776194513");
         }];
 
     if (!self.gotAuthentication)

@@ -23,7 +23,7 @@
 @interface ECTwitterAuthentication()
 
 - (void)requestXAuthAccessTokenForUsername:(NSString *)username password:(NSString *)password;
-- (void)invokeHandlerForToken:(OAToken*)token;
+- (void)invokeHandlerForResults:(NSDictionary*)results;
 - (void)invokeHandlerForError;
 @end
 
@@ -139,12 +139,11 @@ ECDefineDebugChannel(AuthenticationChannel);
 
 #pragma mark - Handler routines
 
-- (void)invokeHandlerForToken:(OAToken*)tokenIn
+- (void)invokeHandlerForResults:(NSDictionary*)results
 {
-    self.token = tokenIn;
     if (self.handler)
     {
-        [self.handler invokeWithResult:tokenIn];
+        [self.handler invokeWithResult:results];
         self.handler = nil;
     }
 
@@ -240,9 +239,20 @@ ECDefineDebugChannel(AuthenticationChannel);
     else
     {
         NSString* body = [[NSString alloc] initWithData:[self.connection data] encoding:NSUTF8StringEncoding];
-        OAToken* newToken = [[OAToken alloc] initWithHTTPResponseBody:body];
-        [self invokeHandlerForToken:newToken];
-        [newToken release];
+        OAToken* token = [[OAToken alloc] initWithHTTPResponseBody:body];
+        NSMutableDictionary* results = [NSMutableDictionary dictionary];
+        [results setObject:token forKey:@"token"];
+        for (NSString* pair in [body componentsSeparatedByString:@"&"])
+        {
+            NSArray* keyValue = [pair componentsSeparatedByString:@"="];
+            if ([keyValue count] > 1)
+            {
+                [results setObject:[keyValue objectAtIndex:1] forKey:[keyValue objectAtIndex:0]];
+            }
+        }
+        self.token = token;
+        [self invokeHandlerForResults:results];
+        [token release];
         [body release];
     }
 
