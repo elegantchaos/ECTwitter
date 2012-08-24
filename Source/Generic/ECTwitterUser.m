@@ -178,7 +178,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (BOOL) gotData
 {
-	return (self.data != nil);
+	return (self.data != nil) && ([self.data objectForKey:@"name"] != nil);
 }
 
 // --------------------------------------------------------------------------

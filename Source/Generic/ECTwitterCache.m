@@ -68,6 +68,7 @@ ECDefineDebugChannel(TwitterCacheChannel);
 // ==============================================
 
 NSString *const ECTwitterUserAuthenticated = @"UserAuthenticated";
+NSString *const ECTwitterUserAuthenticationFailed = @"UserAuthenticationFailed";
 NSString *const ECTwitterUserUpdated = @"UserUpdated";
 NSString *const ECTwitterTweetUpdated = @"TweetUpdated";
 NSString *const ECTwitterTimelineUpdated = @"TimelineUpdated";
@@ -509,7 +510,7 @@ NSString *const AuthenticatedTokenKey = @"token";
             OAToken* token = [NSKeyedUnarchiver unarchiveObjectWithData:savedToken];
             if ([token isValid])
             {
-                ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] init];
+                ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] initWithEngine:self.engine];
                 authentication.token = token;
                 authentication.user = userName;
 
@@ -520,7 +521,10 @@ NSString *const AuthenticatedTokenKey = @"token";
             }
         }
     }
+
+    return result;
 }
+
 
 - (void)authenticateUserWithName:(NSString*)name password:(NSString*)password
 {
@@ -531,28 +535,18 @@ NSString *const AuthenticatedTokenKey = @"token";
     }
     else
     {
-        ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] init];
-        [authentication authenticateForUser:name password:password  handler:^(ECTwitterHandler*handler) {
-            ECTwitterUser* user = [self.usersByName objectForKey:name];
-            if (!user)
+        ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] initWithEngine:self.engine];
+        [authentication authenticateForUser:name password:password handler:^(ECTwitterHandler*handler) {
+            if (handler.status == StatusResults)
             {
-                // need to grab user info to resolve the user name into an id
-                NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:name, @"screen_name", nil];
-                [self.engine callGetMethod: @"users/show" parameters: parameters handler:^(ECTwitterHandler *handler) {
-
-                    if (handler.status == StatusResults)
-                    {
-                        NSDictionary* userData = handler.result;
-                        ECTwitterUser* user = [self addOrRefreshUserWithInfo:userData];
-                        [self finishAuthentication:authentication forUser:user name:name];
-                    }
-                    
-                    
-                }];
+                NSDictionary* info = handler.result;
+                ECTwitterID* userID = [ECTwitterID idFromKey:@"user_id" dictionary:info];
+                ECTwitterUser* user = [self userWithID:userID requestIfMissing:YES];
+                [self finishAuthentication:authentication forUser:user name:name];
             }
             else
             {
-                [self finishAuthentication:authentication forUser:user name:name];
+                [[NSNotificationCenter defaultCenter] postNotificationName:ECTwitterUserAuthenticationFailed object:name];
             }
         }];
     }
@@ -561,6 +555,11 @@ NSString *const AuthenticatedTokenKey = @"token";
 - (void)finishAuthentication:(ECTwitterAuthentication*)authentication forUser:(ECTwitterUser*)user name:(NSString*)name
 {
     user.authentication = authentication;
+    if (!user.twitterName)
+    {
+        [user refreshWithInfo:[NSDictionary dictionaryWithObject:name forKey:@"screen_name"]];
+    }
+
     NSString* userID = user.twitterID.string;
     NSData* userToken = [NSKeyedArchiver archivedDataWithRootObject:authentication.token];
     NSDictionary* authenticationInfo = [NSDictionary dictionaryWithObjectsAndKeys:

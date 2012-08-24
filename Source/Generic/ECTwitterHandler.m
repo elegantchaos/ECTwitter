@@ -129,4 +129,16 @@
 	return [self.error localizedDescription];
 }
 
+- (NSString*)description
+{
+    if (self.status == StatusFailed)
+    {
+        return [NSString stringWithFormat:@"<ECTwitterHandler error:%@>", self.errorString];
+    }
+    else
+    {
+        return [NSString stringWithFormat:@"<ECTwitterHandler result:%@>", self.result];
+    }
+}
+
 @end

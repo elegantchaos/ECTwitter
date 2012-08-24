@@ -14,8 +14,6 @@
 @property (strong, nonatomic) ECTwitterAuthentication* authentication;
 @property (strong, nonatomic) ECTwitterEngine* engine;
 @property (assign, atomic) BOOL gotAuthentication;
-@property (assign, atomic) BOOL gotUserUpdate;
-@property (assign, atomic) BOOL gotTimelineUpdate;
 
 @end
 
@@ -130,70 +128,5 @@
     [self runUntilTimeToExit];
 
 }
-
-#if 0
-- (void)userUpdated:(NSNotification*)notification
-{
-    self.gotUserUpdate = YES;
-    [self timeToExitRunLoop];
-}
-
-- (void)timelineUpdated:(NSNotification*)notification
-{
-    self.gotTimelineUpdate = YES;
-    [self timeToExitRunLoop];
-}
-
-- (void)testCachedUser
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userUpdated:) name:ECTwitterUserUpdated object:nil];
-    ECTwitterCache* cache = [[ECTwitterCache alloc] initWithEngine:self.engine];
-    ECTestAssertNotNil(cache);
-
-    ECTwitterID* userID = [ECTwitterID idFromString:@"61523"];
-    ECTwitterUser* user = [cache userWithID:userID];
-    ECTestAssertNotNil(user);
-    ECTestAssertFalse(user.gotData);
-
-    [self runUntilTimeToExit];
-
-    ECTestAssertTrue(user.gotData);
-    ECTestAssertStringIsEqual(user.name, @"Sam Deane");
-    ECTestAssertStringIsEqual(user.twitterName, @"samdeane");
-
-    [cache release];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)testTimeline
-{
-    [self authenticate];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userUpdated:) name:ECTwitterUserUpdated object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(timelineUpdated:) name:ECTwitterTimelineUpdated object:nil];
-    ECTwitterCache* cache = [[ECTwitterCache alloc] initWithEngine:self.engine];
-    ECTestAssertNotNil(cache);
-
-    ECTwitterID* userID = [ECTwitterID idFromString:@"61523"];
-    ECTwitterUser* user = [cache userWithID:userID];
-    ECTestAssertNotNil(user);
-    ECTestAssertFalse(user.gotData);
-    ECTwitterTimeline* timeline = user.timeline;
-    ECTestAssertIsEmpty(timeline);
-    [timeline refresh];
-    
-    while (!(self.gotUserUpdate && self.gotTimelineUpdate))
-    {
-        [self runUntilTimeToExit];
-    }
-
-    ECTestAssertTrue(user.gotData);
-    ECTestAssertNotEmpty(timeline);
-
-    [cache release];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-#endif
 
 @end
