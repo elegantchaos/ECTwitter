@@ -44,6 +44,7 @@
 
 - (ECTwitterUser*)authenticatedUserWithName:(NSString*)name;
 - (void)authenticateUserWithName:(NSString*)name password:(NSString*)password;
+- (void)setDefaultAuthenticatedUser:(ECTwitterUser*)user;
 
 - (void)setFavouritedStateForTweet:(ECTwitterTweet*)tweet to:(BOOL) state;
 

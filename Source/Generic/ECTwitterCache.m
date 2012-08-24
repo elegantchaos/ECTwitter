@@ -497,6 +497,12 @@ NSString *const AuthenticatedTokenKey = @"token";
 	return url;
 }
 
+- (void)setDefaultAuthenticatedUser:(ECTwitterUser*)user
+{
+    ECAssertNonNil(user.authentication);
+    self.engine.authentication = user.authentication;
+}
+
 - (ECTwitterUser*)authenticatedUserWithName:(NSString*)userName
 {
     ECTwitterUser* result = nil;

@@ -189,7 +189,8 @@
 {
     [self authenticate];
 
-    self.cache.engine.authentication = [self.cache authenticatedUserWithName:self.user].authentication;
+    ECTwitterUser* authenticatedUser = [self.cache authenticatedUserWithName:self.user];
+    [self.cache setDefaultAuthenticatedUser:authenticatedUser];
 
     ECTwitterID* userID = [ECTwitterID idFromString:@"61523"];
     ECTwitterUser* user = [self.cache userWithID:userID];
