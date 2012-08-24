@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 07/04/2011
+/// @author Sam Deane
+/// @date 07/04/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -61,7 +61,7 @@ NSString *const kPrefix = @"";
 // --------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------
-//! Initialise the engine.
+/// Initialise the engine.
 // --------------------------------------------------------------------------
 
 - (id) initWithKey:(NSString*)key secret:(NSString*)secret
@@ -88,7 +88,7 @@ NSString *const kPrefix = @"";
     [super dealloc];
 }
 // --------------------------------------------------------------------------
-//! Has the engine been authenticated?
+/// Has the engine been authenticated?
 // --------------------------------------------------------------------------
 
 - (BOOL) isAuthenticated
@@ -97,10 +97,10 @@ NSString *const kPrefix = @"";
 }
 
 // --------------------------------------------------------------------------
-//! Authenticate.
-//! Look to see if we've got an existing token stored
-//! for the user. If we have, we use it and return YES, 
-//! if not we return NO.
+/// Authenticate.
+/// Look to see if we've got an existing token stored
+/// for the user. If we have, we use it and return YES, 
+/// if not we return NO.
 // --------------------------------------------------------------------------
 
 - (BOOL) authenticateForUser:(NSString*)user
@@ -116,7 +116,7 @@ NSString *const kPrefix = @"";
 	{
 		self.username = user;
 		self.token = savedToken;
-        self.engine.engine.authentication = self;
+        self.engine.authentication = self;
 	}
     
 	[savedToken release];
@@ -126,11 +126,11 @@ NSString *const kPrefix = @"";
 
 
 // --------------------------------------------------------------------------
-//! Authenticate.
-//! We look first to see if we've got an existing token stored
-//! for the user. If we have, we just use it, if not we request
-//! a new one.
-//! Calling with nil for the user will clear any saved token.
+/// Authenticate.
+/// We look first to see if we've got an existing token stored
+/// for the user. If we have, we just use it, if not we request
+/// a new one.
+/// Calling with nil for the user will clear any saved token.
 // --------------------------------------------------------------------------
 
 
@@ -214,7 +214,7 @@ NSString *const kPrefix = @"";
 {
     self.token = tokenIn;
     [self.token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
-    self.engine.engine.authentication = self;
+    self.engine.authentication = self;
 
     if (self.handler)
     {
@@ -257,7 +257,7 @@ NSString *const kPrefix = @"";
     }
     
     [self.engine registerError:error inContext:@"authentication error"];
-    self.engine.engine.authentication = nil;
+    self.engine.authentication = nil;
 }
 
 #pragma mark - Connection Delegate Methods

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 07/04/2011
+/// @author Sam Deane
+/// @date 07/04/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -21,13 +21,13 @@ extern NSString *const TwitterAuthenticationFailed;
 // Public Properties
 // --------------------------------------------------------------------------
 
-@property (nonatomic, retain) ECTwitterConnection* connection;
-@property (nonatomic, retain) NSString* consumerKey;
-@property (nonatomic, retain) NSString* consumerSecret;
-@property (nonatomic, retain) ECTwitterEngine* engine;
-@property (nonatomic, retain) ECTwitterHandler* handler;
-@property (nonatomic, retain) OAToken* token;
-@property (nonatomic, retain) NSString* username;
+@property (strong, nonatomic) ECTwitterConnection* connection;
+@property (strong, nonatomic) NSString* consumerKey;
+@property (strong, nonatomic) NSString* consumerSecret;
+@property (strong, nonatomic) ECTwitterEngine* engine;
+@property (strong, nonatomic) ECTwitterHandler* handler;
+@property (strong, nonatomic) OAToken* token;
+@property (strong, nonatomic) NSString* username;
 
 // --------------------------------------------------------------------------
 // Public Methods

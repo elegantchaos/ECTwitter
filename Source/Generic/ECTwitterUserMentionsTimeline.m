@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 24/01/2011
+/// @author Sam Deane
+/// @date 24/01/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -55,7 +55,7 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
 
 
 // --------------------------------------------------------------------------
-//! Set up from a coder.
+/// Set up from a coder.
 // --------------------------------------------------------------------------
 
 - (id)initWithCoder:(NSCoder*)coder
@@ -71,7 +71,7 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Clean up and release retained objects.
+/// Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
@@ -82,7 +82,7 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Save the timeline to a file.
+/// Save the timeline to a file.
 // --------------------------------------------------------------------------
 
 - (void)encodeWithCoder:(NSCoder*)coder
@@ -92,7 +92,7 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Refresh this timeline, by refreshing the associated user's main timeline.
+/// Refresh this timeline, by refreshing the associated user's main timeline.
 // --------------------------------------------------------------------------
 
 - (void)refresh
@@ -102,7 +102,7 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return debug description.
+/// Return debug description.
 // --------------------------------------------------------------------------
 
 - (NSString*)description

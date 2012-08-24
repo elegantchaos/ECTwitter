@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 13/09/2010
+/// @author Sam Deane
+/// @date 13/09/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -59,7 +59,7 @@ ECDeclareLogChannel(ErrorChannel);
 #pragma mark Lifecycle
 
 // --------------------------------------------------------------------------
-//! Initialise the engine.
+/// Initialise the engine.
 // --------------------------------------------------------------------------
 
 - (id)initWithAuthetication:(ECTwitterAuthentication *)authenticationIn clientName:(NSString*)clientName version:(NSString*)clientVersion url:(NSURL*)clientURL
@@ -84,7 +84,7 @@ ECDeclareLogChannel(ErrorChannel);
 
 
 // --------------------------------------------------------------------------
-//! Clean up and release references.
+/// Clean up and release references.
 // --------------------------------------------------------------------------
 
 - (void) dealloc 
@@ -106,7 +106,7 @@ ECDeclareLogChannel(ErrorChannel);
 #pragma mark Request Handling
 
 // --------------------------------------------------------------------------
-//! Remember a request id and associate it with a handler.
+/// Remember a request id and associate it with a handler.
 // --------------------------------------------------------------------------
 
 - (void) setHandler:(ECTwitterHandler*)handler forRequest:(NSString*)request
@@ -115,7 +115,7 @@ ECDeclareLogChannel(ErrorChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return the handler for a request id.
+/// Return the handler for a request id.
 // --------------------------------------------------------------------------
 
 - (ECTwitterHandler*)handlerForRequest:(NSString*)request
@@ -124,7 +124,7 @@ ECDeclareLogChannel(ErrorChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Clear a request from our list.
+/// Clear a request from our list.
 // --------------------------------------------------------------------------
 
 - (void) doneRequest:(NSString*)request
@@ -142,7 +142,7 @@ ECDeclareLogChannel(ErrorChannel);
 #pragma mark MGTwitterEngineDelegate Methods
 
 // --------------------------------------------------------------------------
-//! Handle succeeded message.
+/// Handle succeeded message.
 // --------------------------------------------------------------------------
 
 - (void)requestSucceeded:(NSString *)request
@@ -154,7 +154,7 @@ ECDeclareLogChannel(ErrorChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Handle failed message.
+/// Handle failed message.
 // --------------------------------------------------------------------------
 
 - (void)requestFailed:(NSString*)request withError:(NSError*)error
@@ -171,7 +171,7 @@ ECDeclareLogChannel(ErrorChannel);
 
 
 // --------------------------------------------------------------------------
-//! Handle receiving generic results.
+/// Handle receiving generic results.
 // --------------------------------------------------------------------------
 
 - (void)genericResultsReceived:(NSArray*)results forRequest:(NSString *)request
@@ -195,8 +195,8 @@ ECDeclareLogChannel(ErrorChannel);
 #pragma mark Twitter Method Calling
 
 // --------------------------------------------------------------------------
-//! Call a twitter method. 
-//! When it's done, the engine will call back to the specified target/selector.
+/// Call a twitter method. 
+/// When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
 - (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector
@@ -205,8 +205,8 @@ ECDeclareLogChannel(ErrorChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Call a twitter method. 
-//! When it's done, the engine will call back to the specified target/selector.
+/// Call a twitter method. 
+/// When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
 - (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
@@ -215,8 +215,8 @@ ECDeclareLogChannel(ErrorChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Call a twitter method. 
-//! When it's done, the engine will call back to the specified target/selector.
+/// Call a twitter method. 
+/// When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
 - (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector
@@ -225,8 +225,8 @@ ECDeclareLogChannel(ErrorChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Call a twitter method. 
-//! When it's done, the engine will call back to the specified target/selector.
+/// Call a twitter method. 
+/// When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
 - (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
@@ -256,8 +256,8 @@ ECDeclareLogChannel(ErrorChannel);
 
 
 // --------------------------------------------------------------------------
-//! Call a twitter method.
-//! When it's done, the engine will call back to the specified target/selector.
+/// Call a twitter method.
+/// When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
 - (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler
@@ -270,8 +270,8 @@ ECDeclareLogChannel(ErrorChannel);
 
 
 // --------------------------------------------------------------------------
-//! Call a twitter method.
-//! When it's done, the engine will call back to the specified target/selector.
+/// Call a twitter method.
+/// When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
 - (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
@@ -283,8 +283,8 @@ ECDeclareLogChannel(ErrorChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Call a twitter method. 
-//! When it's done, the engine will call back to the specified target/selector.
+/// Call a twitter method. 
+/// When it's done, the engine will call back to the specified target/selector.
 // --------------------------------------------------------------------------
 
 - (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters internalHandler:(ECTwitterHandler*)internalHandler
@@ -294,12 +294,12 @@ ECDeclareLogChannel(ErrorChannel);
 		parameters = [NSDictionary dictionary];
 	}
 	
-    NSString* request = [self.engine request:method parameters:parameters method:httpMethod];
+    NSString* request = [self.engine request:method parameters:parameters method:httpMethod authentication:self.authentication];
 	[self setHandler:internalHandler forRequest:request];
 }
 
 // --------------------------------------------------------------------------
-//! Record/report an error.
+/// Record/report an error.
 // --------------------------------------------------------------------------
 
 - (void)registerError:(NSError*)error inContext:(NSObject*)context

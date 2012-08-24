@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 24/01/2011
+/// @author Sam Deane
+/// @date 24/01/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -56,7 +56,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 #pragma mark - Methods
 
 // --------------------------------------------------------------------------
-//! Set up the object.
+/// Set up the object.
 // --------------------------------------------------------------------------
 
 - (id) init
@@ -70,7 +70,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Set up from a coder.
+/// Set up from a coder.
 // --------------------------------------------------------------------------
 
 - (id)initWithCoder:(NSCoder*)coder
@@ -87,7 +87,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Clean up and release retained objects.
+/// Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
@@ -98,7 +98,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Save the timeline to a file.
+/// Save the timeline to a file.
 // --------------------------------------------------------------------------
 
 - (void)encodeWithCoder:(NSCoder*)coder
@@ -119,9 +119,9 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Add a tweet to our timeline.
-//! If the tweet refers to our user, we also add it to that user's mentions
-//! timeline.
+/// Add a tweet to our timeline.
+/// If the tweet refers to our user, we also add it to that user's mentions
+/// timeline.
 // --------------------------------------------------------------------------
 
 - (void)addTweet:(ECTwitterTweet*)tweet
@@ -134,7 +134,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Refresh this timeline.
+/// Refresh this timeline.
 // --------------------------------------------------------------------------
 
 - (void)refresh
@@ -144,9 +144,9 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Handle confirmation that we've authenticated ok as a given user.
-//! We do the normal thing, but also post an update for the mentions list
-//! if it has changed.
+/// Handle confirmation that we've authenticated ok as a given user.
+/// We do the normal thing, but also post an update for the mentions list
+/// if it has changed.
 // --------------------------------------------------------------------------
 
 - (void) timelineHandler:(ECTwitterHandler*)handler
@@ -163,7 +163,7 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return debug description.
+/// Return debug description.
 // --------------------------------------------------------------------------
 
 - (NSString*)description

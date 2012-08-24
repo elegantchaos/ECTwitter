@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 24/11/2010
+/// @author Sam Deane
+/// @date 24/11/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -94,7 +94,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Return debug description of the item.
+/// Return debug description of the item.
 // --------------------------------------------------------------------------
 
 - (NSString*)description

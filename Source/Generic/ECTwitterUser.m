@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 05/08/2010
+/// @author Sam Deane
+/// @date 05/08/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -8,6 +8,8 @@
 // --------------------------------------------------------------------------
 
 #import "ECTwitterUser.h"
+
+#import "ECTwitterAuthentication.h"
 #import "ECTwitterID.h"
 #import "ECTwitterTweet.h"
 #import "ECTwitterCache.h"
@@ -33,17 +35,18 @@ ECDefineDebugChannel(TwitterUserChannel);
 // Properties
 // --------------------------------------------------------------------------
 
-@synthesize cachedImage;
-@synthesize data;
-@synthesize followers;
-@synthesize friends;
-@synthesize mentions;
-@synthesize posts;
-@synthesize timeline;
-@synthesize twitterID;
+@synthesize authentication = _authentication;
+@synthesize cachedImage = _cachedImage;
+@synthesize data = _data;
+@synthesize followers = _followers;
+@synthesize friends = _friends;
+@synthesize mentions = _mentions;
+@synthesize posts = _posts;
+@synthesize timeline = _timeline;
+@synthesize twitterID = _twitterID;
 
 // --------------------------------------------------------------------------
-//! Set up with data properties.
+/// Set up with data properties.
 // --------------------------------------------------------------------------
 
 - (id) initWithInfo:(NSDictionary*)dictionary inCache:(ECTwitterCache*)cache
@@ -60,7 +63,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 
 // --------------------------------------------------------------------------
-//! Set up from a coder.
+/// Set up from a coder.
 // --------------------------------------------------------------------------
 
 - (id)initWithCoder:(NSCoder*)coder
@@ -103,7 +106,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Set up with just an ID.
+/// Set up with just an ID.
 // --------------------------------------------------------------------------
 
 - (id)initWithID:(ECTwitterID*)idIn inCache:(ECTwitterCache*)cache
@@ -118,25 +121,26 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Release references.
+/// Release references.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
 {
-	[cachedImage release];
-	[data release];
-	[followers release];
-	[friends release];
-	[mentions release];
-	[posts release];
-	[timeline release];
-	[twitterID release];
+    [_authentication release];
+	[_cachedImage release];
+	[_data release];
+	[_followers release];
+	[_friends release];
+	[_mentions release];
+	[_posts release];
+	[_timeline release];
+	[_twitterID release];
 	
 	[super dealloc];
 }
 
 // --------------------------------------------------------------------------
-//! Make the main timeline associated with this user.
+/// Make the main timeline associated with this user.
 // --------------------------------------------------------------------------
 
 - (void)makeTimelines
@@ -160,7 +164,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Update with new info
+/// Update with new info
 // --------------------------------------------------------------------------
 
 - (void) refreshWithInfo:(NSDictionary*)info
@@ -169,7 +173,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Have we had our data filled in?
+/// Have we had our data filled in?
 // --------------------------------------------------------------------------
 
 - (BOOL) gotData
@@ -178,7 +182,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return debug description of the item.
+/// Return debug description of the item.
 // --------------------------------------------------------------------------
 
 - (NSString*)description
@@ -187,7 +191,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return the proper name of the user.
+/// Return the proper name of the user.
 // --------------------------------------------------------------------------
 
 - (NSString*)name
@@ -196,7 +200,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return the twitter name of the user.
+/// Return the twitter name of the user.
 // --------------------------------------------------------------------------
 
 - (NSString*)twitterName
@@ -205,7 +209,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Add a friend to our friends list.
+/// Add a friend to our friends list.
 // --------------------------------------------------------------------------
 
 - (void) addFriend:(ECTwitterUser*)user
@@ -222,7 +226,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Add a tweet to our posts list.
+/// Add a tweet to our posts list.
 // --------------------------------------------------------------------------
 
 - (void) addFollower:(ECTwitterUser*)user
@@ -239,7 +243,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Request user posts - everything they've posted
+/// Request user posts - everything they've posted
 // --------------------------------------------------------------------------
 
 - (void) requestFollowerIDs
@@ -256,7 +260,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Request user posts - everything they've posted
+/// Request user posts - everything they've posted
 // --------------------------------------------------------------------------
 
 - (void) requestFollowers
@@ -273,7 +277,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Request user posts - everything they've posted
+/// Request user posts - everything they've posted
 // --------------------------------------------------------------------------
 
 - (void) requestFriends
@@ -291,8 +295,8 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 
 // --------------------------------------------------------------------------
-//! Handle confirmation that we've authenticated ok as a given user.
-//! We fire off a request for the list of friends for the user.
+/// Handle confirmation that we've authenticated ok as a given user.
+/// We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
 - (void) friendsHandler:(ECTwitterHandler*)handler
@@ -323,8 +327,8 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 
 // --------------------------------------------------------------------------
-//! Handle confirmation that we've authenticated ok as a given user.
-//! We fire off a request for the list of friends for the user.
+/// Handle confirmation that we've authenticated ok as a given user.
+/// We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
 - (void) followersHandler:(ECTwitterHandler*)handler
@@ -354,8 +358,8 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Handle confirmation that we've authenticated ok as a given user.
-//! We fire off a request for the list of friends for the user.
+/// Handle confirmation that we've authenticated ok as a given user.
+/// We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
 - (void) followerIDsHandler:(ECTwitterHandler*)handler
@@ -391,7 +395,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return the user name in the form "Full Name (@twitterName)"
+/// Return the user name in the form "Full Name (@twitterName)"
 // --------------------------------------------------------------------------
 
 - (NSString*)longDisplayName
@@ -400,8 +404,8 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return the user's "description" field
-//! (called "bio" to avoid clash with the standard NSObject description method).
+/// Return the user's "description" field
+/// (called "bio" to avoid clash with the standard NSObject description method).
 // --------------------------------------------------------------------------
 
 - (NSString*)bio
@@ -410,7 +414,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return an image for the user.
+/// Return an image for the user.
 // --------------------------------------------------------------------------
 
 - (ECTwitterImage*)image
@@ -427,7 +431,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Save the user to a file.
+/// Save the user to a file.
 // --------------------------------------------------------------------------
 
 - (void)encodeWithCoder:(NSCoder*)coder

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 05/04/2011
+/// @author Sam Deane
+/// @date 05/04/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -50,7 +50,7 @@
 #pragma mark Methods
 
 // --------------------------------------------------------------------------
-//! Set up the object.
+/// Set up the object.
 // --------------------------------------------------------------------------
 
 - (id) init
@@ -65,7 +65,7 @@
 
 
 // --------------------------------------------------------------------------
-//! Set up from a coder.
+/// Set up from a coder.
 // --------------------------------------------------------------------------
 
 - (id)initWithCoder:(NSCoder*)coder
@@ -87,7 +87,7 @@
 
 
 // --------------------------------------------------------------------------
-//! Clean up and release retained objects.
+/// Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
@@ -99,7 +99,7 @@
 
 
 // --------------------------------------------------------------------------
-//! Save the timeline to a file.
+/// Save the timeline to a file.
 // --------------------------------------------------------------------------
 
 - (void)encodeWithCoder:(NSCoder*)coder
@@ -113,7 +113,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Add a tweet to our timeline.
+/// Add a tweet to our timeline.
 // --------------------------------------------------------------------------
 
 - (void) addUser:(ECTwitterUser*)user
@@ -133,7 +133,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Return a new, sorted version of this timeline.
+/// Return a new, sorted version of this timeline.
 // --------------------------------------------------------------------------
 
 - (ECTwitterUserList*)	sortedWithSelector:(SEL) selector

@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 24/01/2011
+/// @author Sam Deane
+/// @date 24/01/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -62,7 +62,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
 #pragma mark - Methods
 
 // --------------------------------------------------------------------------
-//! Clean up and release retained objects.
+/// Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
@@ -74,7 +74,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Refresh this timeline.
+/// Refresh this timeline.
 // --------------------------------------------------------------------------
 
 - (void)refresh
@@ -84,7 +84,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Request user timeline - everything they've received
+/// Request user timeline - everything they've received
 // --------------------------------------------------------------------------
 
 - (void)fetchTweetsMatchingSearch:(NSString*)search
@@ -138,7 +138,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return debug description.
+/// Return debug description.
 // --------------------------------------------------------------------------
 
 - (NSString*)description

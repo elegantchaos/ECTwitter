@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 24/11/2010
+/// @author Sam Deane
+/// @date 24/11/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -190,7 +190,7 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
-//! Request info about a given user id
+/// Request info about a given user id
 // --------------------------------------------------------------------------
 
 - (void) requestUserByID:(ECTwitterID*)userID
@@ -206,7 +206,7 @@ static ECTwitterCache* gDecodingCache = nil;
 
 
 // --------------------------------------------------------------------------
-//! Modify the favourited state of a tweet.
+/// Modify the favourited state of a tweet.
 // --------------------------------------------------------------------------
 
 - (void) setFavouritedStateForTweet:(ECTwitterTweet*)tweet to:(BOOL) state
@@ -221,8 +221,8 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
-//! Handle confirmation that we've authenticated ok as a given user.
-//! We fire off a request for the list of friends for the user.
+/// Handle confirmation that we've authenticated ok as a given user.
+/// We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
 - (void) userInfoHandler:(ECTwitterHandler*)handler
@@ -245,7 +245,7 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
-//! Handle confirmation that we've made a favourite
+/// Handle confirmation that we've made a favourite
 // --------------------------------------------------------------------------
 
 - (void) makeFavouriteHandler:(ECTwitterHandler*)handler
@@ -265,9 +265,9 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
-//! Return image for object with a given ID, at a given URL.
-//! The image may be cached locally, or may be fetched. 
-//! The cached version may be refreshed if it is old.
+/// Return image for object with a given ID, at a given URL.
+/// The image may be cached locally, or may be fetched. 
+/// The cached version may be refreshed if it is old.
 // --------------------------------------------------------------------------
 
 - (ECTwitterImage*)imageWithID:(ECTwitterID*)imageID URL:(NSURL*)url
@@ -278,11 +278,11 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
-//! Restoring from the cache can leave us with some tweets that have no data
-//! because references to them were in timelines that were restored, even though
-//! the timelines themselves weren't.
-//!
-//! This method cleans up all the timelines and removes these tweets.
+/// Restoring from the cache can leave us with some tweets that have no data
+/// because references to them were in timelines that were restored, even though
+/// the timelines themselves weren't.
+///
+/// This method cleans up all the timelines and removes these tweets.
 // --------------------------------------------------------------------------
 
 - (void)removeMissingTweets
@@ -308,7 +308,7 @@ static ECTwitterCache* gDecodingCache = nil;
 
 }
 // --------------------------------------------------------------------------
-//! Save current users and tweets to a local cache.
+/// Save current users and tweets to a local cache.
 // --------------------------------------------------------------------------
 
 - (void) save
@@ -359,7 +359,7 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
-//! Load users and tweets from a local cache.
+/// Load users and tweets from a local cache.
 // --------------------------------------------------------------------------
 
 - (void) load
@@ -391,8 +391,8 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
-//! Return the current decoding cache - used to provide some context
-//! when decoding cached objects.
+/// Return the current decoding cache - used to provide some context
+/// when decoding cached objects.
 // --------------------------------------------------------------------------
 
 + (ECTwitterCache*)decodingCache
@@ -401,7 +401,7 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
-//! Return the base cached folder for the app.
+/// Return the base cached folder for the app.
 // --------------------------------------------------------------------------
 
 - (NSURL*)baseCacheFolder
@@ -415,7 +415,7 @@ static ECTwitterCache* gDecodingCache = nil;
 
 
 // --------------------------------------------------------------------------
-//! Return the path to the main cache file.
+/// Return the path to the main cache file.
 // --------------------------------------------------------------------------
 
 - (NSURL*)mainCacheFile
@@ -427,7 +427,7 @@ static ECTwitterCache* gDecodingCache = nil;
 }
 
 // --------------------------------------------------------------------------
-//! Return the path to the image cache folder.
+/// Return the path to the image cache folder.
 // --------------------------------------------------------------------------
 
 - (NSURL*)imageCacheFolder

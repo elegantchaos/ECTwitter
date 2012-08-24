@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 24/01/2011
+/// @author Sam Deane
+/// @date 24/01/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -32,9 +32,9 @@ typedef enum
 // Public Properties
 // --------------------------------------------------------------------------
 
-@property (nonatomic, retain) NSMutableArray* tweets;
-@property (nonatomic, retain) ECTwitterTweet* oldestTweet;
-@property (nonatomic, retain) ECTwitterTweet* newestTweet;
+@property (strong, nonatomic) NSMutableArray* tweets;
+@property (strong, nonatomic) ECTwitterTweet* oldestTweet;
+@property (strong, nonatomic) ECTwitterTweet* newestTweet;
 
 // --------------------------------------------------------------------------
 // Public Methods

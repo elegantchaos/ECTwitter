@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 05/08/2010
+/// @author Sam Deane
+/// @date 05/08/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -20,10 +20,10 @@
 // --------------------------------------------------------------------------
 
 @property (nonatomic, readonly) NSString* text;
-@property (nonatomic, retain) NSDictionary* data;
-@property (nonatomic, retain) ECTwitterID* twitterID;
-@property (nonatomic, retain) ECTwitterID* authorID;
-@property (nonatomic, retain) ECTwitterUser* cachedAuthor;
+@property (strong, nonatomic) NSDictionary* data;
+@property (strong, nonatomic) ECTwitterID* twitterID;
+@property (strong, nonatomic) ECTwitterID* authorID;
+@property (strong, nonatomic) ECTwitterUser* cachedAuthor;
 @property (nonatomic, assign) NSUInteger viewed;
 
 // --------------------------------------------------------------------------

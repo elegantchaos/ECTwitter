@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 05/08/2010
+/// @author Sam Deane
+/// @date 05/08/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -31,7 +31,7 @@ ECDefineDebugChannel(TweetChannel);
 @synthesize viewed;
 
 // --------------------------------------------------------------------------
-//! Set up with data properties.
+/// Set up with data properties.
 // --------------------------------------------------------------------------
 
 - (id) initWithInfo:(NSDictionary*)info inCache:(ECTwitterCache*)cache
@@ -46,7 +46,7 @@ ECDefineDebugChannel(TweetChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Set up with just an ID
+/// Set up with just an ID
 // --------------------------------------------------------------------------
 
 - (id) initWithID:(ECTwitterID*)idIn inCache:(ECTwitterCache*)cache
@@ -60,7 +60,7 @@ ECDefineDebugChannel(TweetChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Set up from a coder.
+/// Set up from a coder.
 // --------------------------------------------------------------------------
 
 - (id)initWithCoder:(NSCoder*)coder
@@ -97,7 +97,7 @@ ECDefineDebugChannel(TweetChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Update the tweet data.
+/// Update the tweet data.
 // --------------------------------------------------------------------------
 
 - (void) refreshWithInfo:(NSDictionary *)info
@@ -121,7 +121,7 @@ ECDefineDebugChannel(TweetChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Have we had our data filled in?
+/// Have we had our data filled in?
 // --------------------------------------------------------------------------
 
 - (BOOL) gotData
@@ -130,7 +130,7 @@ ECDefineDebugChannel(TweetChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Release references.
+/// Release references.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
@@ -348,7 +348,7 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 }
 
 // --------------------------------------------------------------------------
-//! Save the tweet to a file.
+/// Save the tweet to a file.
 // --------------------------------------------------------------------------
 
 - (void)encodeWithCoder:(NSCoder*)coder

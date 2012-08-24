@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 18/11/2010
+/// @author Sam Deane
+/// @date 18/11/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -27,11 +27,11 @@ typedef enum
 // Public Properties
 // --------------------------------------------------------------------------
 
-@property (nonatomic, retain) ECTwitterEngine* engine;
-@property (nonatomic, retain) NSError* error;
-@property (nonatomic, retain) id extra;
-@property (nonatomic, retain) NSOperation* operation;
-@property (nonatomic, retain) id result;
+@property (strong, nonatomic) ECTwitterEngine* engine;
+@property (strong, nonatomic) NSError* error;
+@property (strong, nonatomic) id extra;
+@property (strong, nonatomic) NSOperation* operation;
+@property (strong, nonatomic) id result;
 @property (nonatomic, assign) ECTwitterStatus status;
 
 // --------------------------------------------------------------------------

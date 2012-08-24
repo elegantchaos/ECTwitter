@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 14/12/2010
+/// @author Sam Deane
+/// @date 14/12/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -47,7 +47,7 @@
 #pragma mark Methods
 
 // --------------------------------------------------------------------------
-//! Set up the object.
+/// Set up the object.
 // --------------------------------------------------------------------------
 
 - (id) initWithCache:(ECTwitterCache*)cache
@@ -61,7 +61,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Clean up and release retained objects.
+/// Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
@@ -70,7 +70,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Return our cache's engine.
+/// Return our cache's engine.
 // --------------------------------------------------------------------------
 
 - (ECTwitterEngine*)engine
@@ -79,7 +79,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Return our cache.
+/// Return our cache.
 // --------------------------------------------------------------------------
 
 - (ECTwitterCache*)cache

@@ -19,7 +19,6 @@
 }
 
 @property (assign, nonatomic) BOOL secure;
-@property (strong, nonatomic) ECTwitterAuthentication* authentication;
 @property (strong, nonatomic) NSString* apiDomain;
 @property (strong, nonatomic) NSString* searchDomain;
 
@@ -27,7 +26,7 @@
 
 - (MGTwitterEngine *)initWithDelegate:(NSObject*)delegate;
 - (void)setClientName:(NSString*)name version:(NSString*)version URL:(NSString*)url;
-- (NSString*)request:(NSString*)path parameters:(NSDictionary*)params method:(NSString*)method;
+- (NSString*)request:(NSString*)path parameters:(NSDictionary*)params method:(NSString*)method authentication:(ECTwitterAuthentication*)authentication;
 
 // Connection methods
 - (NSUInteger)numberOfConnections;

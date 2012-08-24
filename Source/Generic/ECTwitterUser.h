@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 05/08/2010
+/// @author Sam Deane
+/// @date 05/08/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -9,6 +9,7 @@
 
 #import "ECTwitterCachedObject.h"
 
+@class ECTwitterAuthentication;
 @class ECTwitterID;
 @class ECTwitterImage;
 @class ECTwitterUserTimeline;
@@ -22,14 +23,15 @@
 // Public Properties
 // --------------------------------------------------------------------------
 
-@property (nonatomic, retain) ECTwitterImage* cachedImage;
-@property (nonatomic, retain) NSDictionary* data;
-@property (nonatomic, retain) ECTwitterUserList* followers;
-@property (nonatomic, retain) ECTwitterUserList* friends;
-@property (nonatomic, retain) ECTwitterUserMentionsTimeline* mentions;
-@property (nonatomic, retain) ECTwitterUserTimeline* posts;
-@property (nonatomic, retain) ECTwitterUserTimeline* timeline;
-@property (nonatomic, retain) ECTwitterID* twitterID;
+@property (strong, nonatomic) ECTwitterImage* cachedImage;
+@property (strong, nonatomic) NSDictionary* data;
+@property (strong, nonatomic) ECTwitterUserList* followers;
+@property (strong, nonatomic) ECTwitterUserList* friends;
+@property (strong, nonatomic) ECTwitterUserMentionsTimeline* mentions;
+@property (strong, nonatomic) ECTwitterUserTimeline* posts;
+@property (strong, nonatomic) ECTwitterUserTimeline* timeline;
+@property (strong, nonatomic) ECTwitterID* twitterID;
+@property (strong, nonatomic) ECTwitterAuthentication* authentication;
 
 // --------------------------------------------------------------------------
 // Public Methods

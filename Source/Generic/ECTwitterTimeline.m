@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 24/01/2011
+/// @author Sam Deane
+/// @date 24/01/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -59,7 +59,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 #pragma mark Methods
 
 // --------------------------------------------------------------------------
-//! Set up the object.
+/// Set up the object.
 // --------------------------------------------------------------------------
 
 - (id) initWithCache:(ECTwitterCache *)cache
@@ -73,7 +73,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Set up from a coder.
+/// Set up from a coder.
 // --------------------------------------------------------------------------
 
 - (id)initWithCoder:(NSCoder*)coder
@@ -106,7 +106,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Clean up and release retained objects.
+/// Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
@@ -119,7 +119,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Save the timeline to a file.
+/// Save the timeline to a file.
 // --------------------------------------------------------------------------
 
 - (void)encodeWithCoder:(NSCoder*)coder
@@ -135,7 +135,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Refresh timeline.
+/// Refresh timeline.
 // --------------------------------------------------------------------------
 
 - (void)refresh
@@ -144,7 +144,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Add a tweet to our timeline.
+/// Add a tweet to our timeline.
 // --------------------------------------------------------------------------
 
 - (void) addTweet:(ECTwitterTweet*)tweet
@@ -175,7 +175,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return a new, sorted version of this timeline.
+/// Return a new, sorted version of this timeline.
 // --------------------------------------------------------------------------
 
 - (ECTwitterTimeline*)	sortedWithSelector:(SEL) selector
@@ -192,8 +192,8 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Handle confirmation that we've authenticated ok as a given user.
-//! We fire off a request for the list of friends for the user.
+/// Handle confirmation that we've authenticated ok as a given user.
+/// We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
 - (void) timelineHandler:(ECTwitterHandler*)handler
@@ -223,7 +223,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 
 
 // --------------------------------------------------------------------------
-//! Request user timeline - everything they've received
+/// Request user timeline - everything they've received
 // --------------------------------------------------------------------------
 
 - (void)fetchTweetsForUser:(ECTwitterUser*)user method:(FetchMethod)method type:(FetchType)type
@@ -274,7 +274,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return debug description.
+/// Return debug description.
 // --------------------------------------------------------------------------
 
 - (NSString*)description
@@ -283,7 +283,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return the number of tweets in this timeline.
+/// Return the number of tweets in this timeline.
 // --------------------------------------------------------------------------
 
 - (NSUInteger)count
@@ -292,7 +292,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Remove any tweets that we don't have data for from this list.
+/// Remove any tweets that we don't have data for from this list.
 // --------------------------------------------------------------------------
 
 - (void)removeMissingTweets

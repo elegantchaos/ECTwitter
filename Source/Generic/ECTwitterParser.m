@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 08/04/2011
+/// @author Sam Deane
+/// @date 08/04/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -13,12 +13,12 @@
 
 @interface ECTwitterParser()
 
-@property (nonatomic, retain) NSMutableDictionary* currentDictionary;
-@property (nonatomic, retain) NSMutableArray* currentArray;
-@property (nonatomic, retain) NSString* currentKey;
-@property (nonatomic, retain) NSString* identifier;
-@property (nonatomic, retain) NSMutableArray* parsedObjects;
-@property (nonatomic, retain) NSMutableArray* stack;
+@property (strong, nonatomic) NSMutableDictionary* currentDictionary;
+@property (strong, nonatomic) NSMutableArray* currentArray;
+@property (strong, nonatomic) NSString* currentKey;
+@property (strong, nonatomic) NSString* identifier;
+@property (strong, nonatomic) NSMutableArray* parsedObjects;
+@property (strong, nonatomic) NSMutableArray* stack;
 
 - (void)parseSimpleData:(NSData*)data;
 - (void)parseJSONData:(NSData*)data;
@@ -86,7 +86,7 @@ static yajl_callbacks callbacks = {
 #pragma mark - Lifecycle
 
 // --------------------------------------------------------------------------
-//! Setup parser.
+/// Setup parser.
 // --------------------------------------------------------------------------
 
 - (id)initWithDelegate:(id<MGTwitterEngineDelegate>)delegate options:(MGTwitterEngineDeliveryOptions)options
@@ -101,7 +101,7 @@ static yajl_callbacks callbacks = {
 }
 
 // --------------------------------------------------------------------------
-//! Cleanup.
+/// Cleanup.
 // --------------------------------------------------------------------------
 
 - (void)dealloc
@@ -120,7 +120,7 @@ static yajl_callbacks callbacks = {
 #pragma mark - Parsing
 
 // --------------------------------------------------------------------------
-//! Parse some data.
+/// Parse some data.
 // --------------------------------------------------------------------------
 
 - (void)parseData:(NSData*)data identifier:(NSString*)identifierIn
@@ -148,7 +148,7 @@ static yajl_callbacks callbacks = {
 }
 
 // --------------------------------------------------------------------------
-//! Parse simple stuff that isn't legal JSON.
+/// Parse simple stuff that isn't legal JSON.
 // --------------------------------------------------------------------------
 
 - (void)parseSimpleData:(NSData*)data
@@ -178,7 +178,7 @@ static yajl_callbacks callbacks = {
 }
 
 // --------------------------------------------------------------------------
-//! Parse proper JSON.
+/// Parse proper JSON.
 // --------------------------------------------------------------------------
 
 - (void)parseJSONData:(NSData*)data
@@ -215,8 +215,8 @@ static yajl_callbacks callbacks = {
 #pragma mark - Parsing Stack
 
 // --------------------------------------------------------------------------
-//! Push current collection onto the stack.
-//! Also saves the current key on the stack.
+/// Push current collection onto the stack.
+/// Also saves the current key on the stack.
 // --------------------------------------------------------------------------
 
 - (void)pushStack
@@ -236,8 +236,8 @@ static yajl_callbacks callbacks = {
 }
 
 // --------------------------------------------------------------------------
-//! Pop collection from the stack.
-//! Also restores the value of the current key at the point that the collection was pushed.
+/// Pop collection from the stack.
+/// Also restores the value of the current key at the point that the collection was pushed.
 // --------------------------------------------------------------------------
 
 - (void)popStack
@@ -271,7 +271,7 @@ static yajl_callbacks callbacks = {
 #pragma mark - Parser Support
 
 // --------------------------------------------------------------------------
-//! Add a value to the current collection.
+/// Add a value to the current collection.
 // --------------------------------------------------------------------------
 
 - (void)addValue:(id)value

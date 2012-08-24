@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 05/10/2010
+/// @author Sam Deane
+/// @date 05/10/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -34,7 +34,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 @synthesize containers;
 
 // --------------------------------------------------------------------------
-//! Set up with data properties.
+/// Set up with data properties.
 // --------------------------------------------------------------------------
 
 - (id)initWithPlaceInfo:(NSDictionary*)dictionary
@@ -61,7 +61,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Release references.
+/// Release references.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
@@ -73,7 +73,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return debug description of the item.
+/// Return debug description of the item.
 // --------------------------------------------------------------------------
 
 - (NSString*)description
@@ -82,7 +82,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return the proper name of the user.
+/// Return the proper name of the user.
 // --------------------------------------------------------------------------
 
 - (NSString*)name
@@ -91,7 +91,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 }
 
 // --------------------------------------------------------------------------
-//! Return the twitter name of the user.
+/// Return the twitter name of the user.
 // --------------------------------------------------------------------------
 
 - (NSString*)type

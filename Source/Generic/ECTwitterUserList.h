@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 05/04/2011
+/// @author Sam Deane
+/// @date 05/04/2011
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -15,7 +15,7 @@
 // Public Properties
 // --------------------------------------------------------------------------
 
-@property (nonatomic, retain) NSMutableArray* users;
+@property (strong, nonatomic) NSMutableArray* users;
 
 // --------------------------------------------------------------------------
 // Public Methods

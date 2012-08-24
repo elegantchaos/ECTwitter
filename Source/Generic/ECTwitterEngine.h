@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 13/09/2010
+/// @author Sam Deane
+/// @date 13/09/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -19,7 +19,7 @@
 @class ECTwitterAuthentication;
 
 // --------------------------------------------------------------------------
-//! Higher level wrapper for MGTwitterEngine.
+/// Higher level wrapper for MGTwitterEngine.
 // --------------------------------------------------------------------------
 
 @interface ECTwitterEngine : NSObject <MGTwitterEngineDelegate> 
@@ -28,9 +28,9 @@
 // Public Properties
 // --------------------------------------------------------------------------
 
-@property (nonatomic, retain) ECTwitterAuthentication* authentication;
-@property (nonatomic, retain) MGTwitterEngine* engine;
-@property (nonatomic, retain) NSMutableDictionary* requests;
+@property (strong, nonatomic) ECTwitterAuthentication* authentication;
+@property (strong, nonatomic) MGTwitterEngine* engine;
+@property (strong, nonatomic) NSMutableDictionary* requests;
 
 // --------------------------------------------------------------------------
 // Public Methods

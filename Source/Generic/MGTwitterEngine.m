@@ -24,7 +24,7 @@
 - (NSString*)queryStringWithBase:(NSString*)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed;
 - (NSString*)encodeString:(NSString*)string;
 - (NSString*)sendRequest:(NSURLRequest *)theRequest;
-- (NSMutableURLRequest *)requestWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary *)params;
+- (NSMutableURLRequest *)requestWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary *)params authentication:(ECTwitterAuthentication*)authentication;
 - (void)parseDataFromConnection:(ECTwitterConnection*)connection;
 - (BOOL) isValidDelegateForSelector:(SEL)selector;
 
@@ -36,7 +36,6 @@
 
 #pragma mark - Properties
 
-@synthesize authentication = _authentication;
 @synthesize clientName = _clientName;
 @synthesize clientVersion = _clientVersion;
 @synthesize clientURL = _clientURL;
@@ -61,7 +60,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 #pragma mark - Lifecycle
 
 // --------------------------------------------------------------------------
-//! Construct engine.
+/// Construct engine.
 // --------------------------------------------------------------------------
 
 - (MGTwitterEngine *)initWithDelegate:(NSObject *)newDelegate
@@ -83,14 +82,13 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Cleanup.
+/// Cleanup.
 // --------------------------------------------------------------------------
 
 - (void)dealloc
 {
     mDelegate = nil;
  
-    [_authentication release];
     [_apiDomain release];
     [_clientName release];
     [_clientVersion release];
@@ -107,7 +105,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 #pragma mark Configuration and Accessors
 
 // --------------------------------------------------------------------------
-//! Set up client details for reporting to twitter.
+/// Set up client details for reporting to twitter.
 // --------------------------------------------------------------------------
 
 - (void)setClientName:(NSString*)name version:(NSString*)version URL:(NSString*)url
@@ -120,7 +118,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 #pragma mark Connection methods
 
 // --------------------------------------------------------------------------
-//! Return number of active connections.
+/// Return number of active connections.
 // --------------------------------------------------------------------------
 
 - (NSUInteger)numberOfConnections
@@ -129,7 +127,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Return array of identifiers for active connections.
+/// Return array of identifiers for active connections.
 // --------------------------------------------------------------------------
 
 - (NSArray *)connectionIdentifiers
@@ -138,7 +136,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Close connection with a given identifier.
+/// Close connection with a given identifier.
 // --------------------------------------------------------------------------
 
 - (void)closeConnection:(NSString*)connectionIdentifier
@@ -153,7 +151,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Close all connections.
+/// Close all connections.
 // --------------------------------------------------------------------------
 
 - (void)closeAllConnections
@@ -166,7 +164,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 #pragma mark Utility methods
 
 // --------------------------------------------------------------------------
-//! Build query string.
+/// Build query string.
 // --------------------------------------------------------------------------
 
 - (NSString*)queryStringWithBase:(NSString*)base parameters:(NSDictionary *)params prefixed:(BOOL)prefixed
@@ -197,7 +195,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Encode string.
+/// Encode string.
 // --------------------------------------------------------------------------
 
 - (NSString*)encodeString:(NSString*)string
@@ -213,7 +211,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 #pragma mark Request sending methods
 
 // --------------------------------------------------------------------------
-//! Send request.
+/// Send request.
 // --------------------------------------------------------------------------
 
 -(NSString*)sendRequest:(NSURLRequest *)theRequest
@@ -240,13 +238,13 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 #pragma mark Request 
 
 // --------------------------------------------------------------------------
-//! Make a request.
+/// Make a request.
 // --------------------------------------------------------------------------
 
-- (NSString*)request:(NSString*)twitterPath parameters:(NSDictionary *)params method:(NSString*)method
+- (NSString*)request:(NSString*)twitterPath parameters:(NSDictionary *)params method:(NSString*)method authentication:(ECTwitterAuthentication*)authentication
 {
 	NSString* path = [NSString stringWithFormat:@"%@.%@", twitterPath, kAPIFormat];
-    NSMutableURLRequest* request = [self requestWithMethod:method path:path parameters:params];
+    NSMutableURLRequest* request = [self requestWithMethod:method path:path parameters:params authentication:authentication];
     
     // Set the request body if this is a POST request.
     BOOL isPOST = (method && [method isEqualToString:kPostMethod]);
@@ -261,10 +259,10 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Make a request.
+/// Make a request.
 // --------------------------------------------------------------------------
 
-- (NSMutableURLRequest *)requestWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary *)params 
+- (NSMutableURLRequest *)requestWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary *)params authentication:(ECTwitterAuthentication*)authentication
 {
 	NSString *contentType = [params objectForKey:@"Content-Type"];
 	if(contentType)
@@ -299,9 +297,9 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 
     // Construct an NSMutableURLRequest for the URL and set appropriate request method.
 	NSMutableURLRequest *theRequest = nil;
-    if(self.authentication)
+    if(authentication)
     {
-        theRequest = [self.authentication requestForURL:finalURL];
+        theRequest = [authentication requestForURL:finalURL];
 		[theRequest setCachePolicy:NSURLRequestReloadIgnoringCacheData ];
 		[theRequest setTimeoutInterval:kRequestTimeout];
 	}
@@ -328,7 +326,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 #pragma mark Parsing methods
 
 // --------------------------------------------------------------------------
-//! Parse received data.
+/// Parse received data.
 // --------------------------------------------------------------------------
 
 - (void)parseDataFromConnection:(ECTwitterConnection*)connection
@@ -349,7 +347,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 #pragma mark Delegate methods
 
 // --------------------------------------------------------------------------
-//! Does delegate support a method?
+/// Does delegate support a method?
 // --------------------------------------------------------------------------
 
 - (BOOL) isValidDelegateForSelector:(SEL)selector
@@ -361,7 +359,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 #pragma mark NSURLConnection delegate methods
 
 // --------------------------------------------------------------------------
-//! Respond to challenge.
+/// Respond to challenge.
 // --------------------------------------------------------------------------
 
 - (void)connection:(NSURLConnection *)connection didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge
@@ -370,7 +368,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Process response.
+/// Process response.
 // --------------------------------------------------------------------------
 
 - (void)connection:(ECTwitterConnection*)connection didReceiveResponse:(NSURLResponse *)response
@@ -408,7 +406,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Process data.
+/// Process data.
 // --------------------------------------------------------------------------
 
 - (void)connection:(ECTwitterConnection*)connection didReceiveData:(NSData *)data
@@ -418,7 +416,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Process failure.
+/// Process failure.
 // --------------------------------------------------------------------------
 
 - (void)connection:(ECTwitterConnection*)connection didFailWithError:(NSError *)error
@@ -438,7 +436,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 }
 
 // --------------------------------------------------------------------------
-//! Process successful completion.
+/// Process successful completion.
 // --------------------------------------------------------------------------
 
 - (void)connectionDidFinishLoading:(ECTwitterConnection*)connection

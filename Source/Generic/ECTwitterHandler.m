@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------
-//! @author Sam Deane
-//! @date 18/11/2010
+/// @author Sam Deane
+/// @date 18/11/2010
 //
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
@@ -40,7 +40,7 @@
 #pragma mark Lifecycle methods
 
 // --------------------------------------------------------------------------
-//! Initialise a handler to call a selector on a target.
+/// Initialise a handler to call a selector on a target.
 // --------------------------------------------------------------------------
 
 - (id) initWithEngine:(ECTwitterEngine*)engineIn target:(id)target selector:(SEL)selector
@@ -57,7 +57,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Initialise a handler to call a block.
+/// Initialise a handler to call a block.
 // --------------------------------------------------------------------------
 
 - (id) initWithEngine:(ECTwitterEngine*)engineIn handler:(void (^)(ECTwitterHandler *))handler
@@ -75,7 +75,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Clean up and release retained objects.
+/// Clean up and release retained objects.
 // --------------------------------------------------------------------------
 
 - (void) dealloc
@@ -97,7 +97,7 @@
 #pragma mark Invocation methods
 
 // --------------------------------------------------------------------------
-//! Invoke the handler with a given status.
+/// Invoke the handler with a given status.
 // --------------------------------------------------------------------------
 
 - (void) invokeWithStatus:(ECTwitterStatus)statusIn
@@ -107,7 +107,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Invoke the handler with a given result object.
+/// Invoke the handler with a given result object.
 // --------------------------------------------------------------------------
 
 - (void) invokeWithResult:(id)resultIn
@@ -117,7 +117,7 @@
 }
 
 // --------------------------------------------------------------------------
-//! Return an error string.
+/// Return an error string.
 // --------------------------------------------------------------------------
 
 - (NSString*)errorString
