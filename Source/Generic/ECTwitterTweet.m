@@ -70,7 +70,7 @@ ECDefineDebugChannel(TweetChannel);
     
     // is there already an instance with this id in the cache?
     ECTwitterCache* cache = [ECTwitterCache decodingCache];
-    ECTwitterTweet* existing = [cache.tweets objectForKey:tweetID.string];
+    ECTwitterTweet* existing = [cache existingTweetWithID:tweetID];
     if (existing)
     {
         // use the cached instance instead of this one
@@ -81,7 +81,7 @@ ECDefineDebugChannel(TweetChannel);
     {
         // put this object into the cache now so that restoring other objects below will pick it up
         self = [super initWithCache:cache];
-        [cache.tweets setObject:self forKey:tweetID.string];
+        [cache addTweet:self withID:tweetID];
     }
             
     ECAssertNonNil(self);

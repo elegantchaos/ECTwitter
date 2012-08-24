@@ -20,9 +20,6 @@
 // --------------------------------------------------------------------------
 
 @property (strong, nonatomic) ECTwitterEngine* engine;
-@property (strong, nonatomic) NSMutableDictionary* tweets;
-@property (strong, nonatomic) NSMutableDictionary* users;
-@property (strong, nonatomic) NSMutableDictionary* authenticated;
 
 // --------------------------------------------------------------------------
 // Public Methods
@@ -33,10 +30,20 @@
 - (ECTwitterUser*)addOrRefreshUserWithInfo:(NSDictionary*)info;
 - (ECTwitterTweet*)addOrRefreshTweetWithInfo:(NSDictionary*)info;
 
+
 - (ECTwitterTweet*)tweetWithID:(ECTwitterID*)tweetID;
 - (ECTwitterUser*)userWithID:(ECTwitterID*)userID;
 - (ECTwitterUser*)userWithID:(ECTwitterID*)userID requestIfMissing:(BOOL)requestIfMissing;
 - (ECTwitterImage*)imageWithID:(ECTwitterID*)imageID URL:(NSURL*)url;
+
+- (ECTwitterTweet*)existingTweetWithID:(ECTwitterID*)tweetID;
+- (ECTwitterUser*)existingUserWithID:(ECTwitterID*)userID;
+
+- (void)addTweet:(ECTwitterTweet*)tweet withID:(ECTwitterID*)tweetID;
+- (void)addUser:(ECTwitterUser*)user withID:(ECTwitterID*)userID;
+
+- (ECTwitterUser*)authenticatedUserWithName:(NSString*)name;
+- (void)authenticateUserWithName:(NSString*)name password:(NSString*)password;
 
 - (void)setFavouritedStateForTweet:(ECTwitterTweet*)tweet to:(BOOL) state;
 
@@ -50,6 +57,7 @@
 // --------------------------------------------------------------------------
 
 extern NSString *const ECTwitterUserUpdated;
+extern NSString *const ECTwitterUserAuthenticated;
 extern NSString *const ECTwitterTweetUpdated;
 extern NSString *const ECTwitterTimelineUpdated;
 

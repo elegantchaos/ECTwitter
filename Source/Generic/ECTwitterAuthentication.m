@@ -41,20 +41,14 @@ ECDefineDebugChannel(AuthenticationChannel);
 // --------------------------------------------------------------------------
 
 @synthesize connection = _connection;
-@synthesize consumerKey = _consumerKey;
-@synthesize consumerSecret = _consumerSecret;
 @synthesize engine = _engine;
 @synthesize handler = _handler;
 @synthesize token = _token;
-@synthesize username = _username;
+@synthesize user = _user;
 
 // --------------------------------------------------------------------------
 // Constants
 // --------------------------------------------------------------------------
-
-NSString *const kSavedUserKey = @"ECTwitterEngineUser";
-NSString *const kProvider = @"ECTwitterEngine";
-NSString *const kPrefix = @"";
 
 // --------------------------------------------------------------------------
 // Methods
@@ -64,26 +58,13 @@ NSString *const kPrefix = @"";
 /// Initialise the engine.
 // --------------------------------------------------------------------------
 
-- (id) initWithKey:(NSString*)key secret:(NSString*)secret
-{
-	if ((self = [super init]) != nil)
-	{
-        self.consumerKey = key;
-        self.consumerSecret = secret;
-	}
-	
-	return self;
-}
-
 - (void)dealloc 
 {
     [_connection dealloc];
-    [_consumerKey dealloc];
-    [_consumerSecret dealloc];
     [_engine dealloc];
     [_handler dealloc];
     [_token dealloc];
-    [_username dealloc];
+    [_user dealloc];
     
     [super dealloc];
 }
@@ -96,34 +77,6 @@ NSString *const kPrefix = @"";
 	return (self.token != nil) && [self.token isValid];
 }
 
-// --------------------------------------------------------------------------
-/// Authenticate.
-/// Look to see if we've got an existing token stored
-/// for the user. If we have, we use it and return YES, 
-/// if not we return NO.
-// --------------------------------------------------------------------------
-
-- (BOOL) authenticateForUser:(NSString*)user
-{
-	ECDebug(AuthenticationChannel, @"checking saved authentication for %@", user);
-	
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	NSString* savedUser = [defaults stringForKey: kSavedUserKey];
-	OAToken* savedToken = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName: kProvider prefix: kPrefix];
-	
-	BOOL result = (user && savedToken && [savedToken isValid] && ([savedUser isEqualToString: user]));
-	if (result)
-	{
-		self.username = user;
-		self.token = savedToken;
-        self.engine.authentication = self;
-	}
-    
-	[savedToken release];
-	
-	return result;
-}
-
 
 // --------------------------------------------------------------------------
 /// Authenticate.
@@ -134,53 +87,19 @@ NSString *const kPrefix = @"";
 // --------------------------------------------------------------------------
 
 
-- (void)authenticateForUser:(NSString*)user password:(NSString*)password handler:(void (^)(ECTwitterHandler* handler))handler
+- (void)authenticateForUser:(NSString*)user password:(NSString*)password handler:(ECTwitterHandlerBlock)handler
 {
 	ECTwitterHandler* newHandler = [[ECTwitterHandler alloc] initWithEngine:self.engine handler:handler];
-    [self authenticateForUser:user password:password internalHandler:newHandler];
+    self.user = user;
+    self.handler = newHandler;
+    self.token = nil;
+    [self requestXAuthAccessTokenForUsername:user password: password];
 	[newHandler release];
-}
-
-- (void) authenticateForUser:(NSString*)user password:(NSString*)password target:(id) target selector:(SEL) selector
-{
-	ECTwitterHandler* newHandler = [[ECTwitterHandler alloc] initWithEngine:self.engine target: target selector: selector];
-    [self authenticateForUser:user password:password internalHandler:newHandler];
-	[newHandler release];
-}
-
-- (void) authenticateForUser:(NSString*)user password:(NSString*)password internalHandler:(ECTwitterHandler*)handler
-    {
-	ECDebug(AuthenticationChannel, @"requesting authentication for %@ password %@", user, password);
-    
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
-	NSString* savedUser = [defaults stringForKey: kSavedUserKey];
-	OAToken* savedToken = [[OAToken alloc] initWithUserDefaultsUsingServiceProviderName: kProvider prefix: kPrefix];
-	
-    self.username = user;
-	if (user && savedToken && [savedToken isValid] && ([savedUser isEqualToString: user]))
-	{
-        [self invokeHandlerForToken:savedToken];
-	}
-	else
-	{
-		[defaults removeObjectForKey: kSavedUserKey];
-		[OAToken removeFromUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
-		self.token = nil;
-		
-		if (user && password)
-		{
-            self.handler = handler;
-			[defaults setValue: user forKey: kSavedUserKey];
-			[self requestXAuthAccessTokenForUsername:user password: password];
-		}
-	}
-	
-	[savedToken release];
 }
 
 - (void)requestXAuthAccessTokenForUsername:(NSString *)username password:(NSString *)password
 {
-	OAConsumer *consumer = [[(OAConsumer*)[OAConsumer alloc] initWithKey:[self consumerKey] secret:[self consumerSecret]] autorelease];
+	OAConsumer *consumer = [[(OAConsumer*)[OAConsumer alloc] initWithKey:self.engine.consumerKey secret:self.engine.consumerSecret] autorelease];
 	
 	OAMutableURLRequest *request = [[OAMutableURLRequest alloc] initWithURL:[NSURL URLWithString:@"https://api.twitter.com/oauth/access_token"]
 																   consumer:consumer
@@ -192,7 +111,7 @@ NSString *const kPrefix = @"";
 	
 	[request setParameters:[NSArray arrayWithObjects:
 							[OARequestParameter requestParameter:@"x_auth_mode" value:@"client_auth"],
-							[OARequestParameter requestParameter:@"x_auth_username" value:self.username],
+							[OARequestParameter requestParameter:@"x_auth_username" value:self.user],
 							[OARequestParameter requestParameter:@"x_auth_password" value:password],
 							nil]];		
 	
@@ -213,13 +132,9 @@ NSString *const kPrefix = @"";
 - (void)invokeHandlerForToken:(OAToken*)tokenIn
 {
     self.token = tokenIn;
-    [self.token storeInUserDefaultsWithServiceProviderName: kProvider prefix: kPrefix];
-    self.engine.authentication = self;
-
     if (self.handler)
     {
         [self.handler invokeWithResult:tokenIn];
-        self.handler.operation = nil;
         self.handler = nil;
     }
 
@@ -329,7 +244,7 @@ NSString *const kPrefix = @"";
 
 - (NSMutableURLRequest*)requestForURL:(NSURL*)url
 {
-    OAConsumer* consumer = [[OAConsumer alloc] initWithKey:self.consumerKey secret:self.consumerSecret];
+    OAConsumer* consumer = [[OAConsumer alloc] initWithKey:self.engine.consumerKey secret:self.engine.consumerSecret];
     NSMutableURLRequest* request = [[OAMutableURLRequest alloc] initWithURL:url consumer:consumer token:self.token realm:nil signatureProvider:nil];
     [consumer autorelease];
     

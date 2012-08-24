@@ -18,6 +18,9 @@ typedef enum
 	StatusFailed,
 } ECTwitterStatus;
 
+@class ECTwitterHandler;
+
+typedef void (^ECTwitterHandlerBlock)(ECTwitterHandler *);
 
 @class ECTwitterEngine;
 
@@ -39,7 +42,7 @@ typedef enum
 // --------------------------------------------------------------------------
 
 - (id)initWithEngine:(ECTwitterEngine*)engine target:(id)target selector:(SEL)selector;
-- (id)initWithEngine:(ECTwitterEngine*)engine handler:(void (^)(ECTwitterHandler*))handler;
+- (id)initWithEngine:(ECTwitterEngine*)engine handler:(ECTwitterHandlerBlock)handler;
 - (void)invokeWithStatus:(ECTwitterStatus) status;
 - (void)invokeWithResult:(id)result;
 

@@ -13,6 +13,7 @@
 @property (strong, nonatomic) NSString* password;
 @property (strong, nonatomic) ECTwitterAuthentication* authentication;
 @property (strong, nonatomic) ECTwitterEngine* engine;
+@property (assign, atomic) BOOL gotAuthentication;
 @property (assign, atomic) BOOL gotUserUpdate;
 @property (assign, atomic) BOOL gotTimelineUpdate;
 
@@ -52,16 +53,8 @@
     ECTestAssertNotNil(self.user);
     ECTestAssertNotNil(self.password);
 
-    self.authentication = [[ECTwitterAuthentication alloc] initWithKey:key secret:secret];
-    ECTestAssertNotNil(self.authentication);
-
-    self.engine = [[ECTwitterEngine alloc] initWithAuthetication:self.authentication clientName:name version:version url:url];
+    self.engine = [[ECTwitterEngine alloc] initWithConsumerKey:key consumerSecret:secret clientName:name version:version url:url];
     ECTestAssertNotNil(self.engine);
-
-    ECTwitterCache* cache = [[ECTwitterCache alloc] initWithEngine:self.engine];
-    ECTestAssertNotNil(cache);
-    [cache load];
-    [cache release];
 }
 
 - (void)tearDown
@@ -72,43 +65,37 @@
 
 - (void)authenticate
 {
-    BOOL authenticatedAlready = [self.authentication authenticateForUser:self.user];
-    if (!authenticatedAlready)
-    {
-        [self.authentication authenticateForUser:self.user password:self.password  handler:^(ECTwitterHandler*handler) {
-            [self timeToExitRunLoop];
+    ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] init];
+    [authentication authenticateForUser:self.user password:self.password handler:^(ECTwitterHandler*handler) {
+        self.gotAuthentication = YES;
+        [self timeToExitRunLoop];
+        ECTestAssertTrue(handler.status == StatusSucceeded);
         }];
 
+    if (!self.gotAuthentication)
+    {
         [self runUntilTimeToExit];
     }
+
+    self.authentication = authentication;
+    [authentication release];
 }
 
 - (void)testAuthentication
 {
     [self authenticate];
-    BOOL authenticatedNow = [self.authentication authenticateForUser:self.user];
+
+    BOOL authenticatedNow = [self.authentication isAuthenticated];
     ECTestAssertTrue(authenticatedNow);
 }
 
 - (void)testAuthenticationFailure
 {
-    BOOL authenticatedAlready = [self.authentication authenticateForUser:@"samdeane"];
-    ECTestAssertFalse(authenticatedAlready);
-
-    __block BOOL notAuthenticated = NO;
-
-    [self.authentication authenticateForUser:@"samdeane" password:@"notmypassword"  handler:^(ECTwitterHandler*handler) {
-
-        notAuthenticated = (handler.status == StatusFailed);
-        NSString* errorString = [handler errorString];
-        NSLog(@"authentication rejected, as expected, with error %@", errorString);
-
-        [self timeToExitRunLoop];
+    ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] init];
+    [authentication authenticateForUser:@"samdeane" password:@"not my password"  handler:^(ECTwitterHandler*handler) {
+        ECTestAssertTrue(handler.status == StatusFailed);
+        NSLog(@"authentication error %@", [handler errorString]);
     }];
-
-    [self runUntilTimeToExit];
-
-    ECTestAssertTrue(notAuthenticated);
 }
 
 - (void)testUserInfo
@@ -130,7 +117,7 @@
 
 }
 
-
+#if 0
 - (void)userUpdated:(NSNotification*)notification
 {
     self.gotUserUpdate = YES;
@@ -192,4 +179,7 @@
     [cache release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#endif
+
 @end

@@ -29,6 +29,8 @@
 // --------------------------------------------------------------------------
 
 @property (strong, nonatomic) ECTwitterAuthentication* authentication;
+@property (strong, nonatomic) NSString* consumerKey;
+@property (strong, nonatomic) NSString* consumerSecret;
 @property (strong, nonatomic) MGTwitterEngine* engine;
 @property (strong, nonatomic) NSMutableDictionary* requests;
 
@@ -36,7 +38,7 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithAuthetication:(ECTwitterAuthentication *)authenticationIn clientName:(NSString*)clientName version:(NSString*)clientVersion url:(NSURL*)clientURL;
+- (id) initWithConsumerKey:(NSString*)consumerKey consumerSecret:(NSString*)consumerSecret clientName:(NSString*)clientName version:(NSString*)clientVersion url:(NSURL*)clientURL;
 
 - (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector;
 - (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra;

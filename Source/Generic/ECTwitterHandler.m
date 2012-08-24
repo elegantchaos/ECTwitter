@@ -60,16 +60,19 @@
 /// Initialise a handler to call a block.
 // --------------------------------------------------------------------------
 
-- (id) initWithEngine:(ECTwitterEngine*)engineIn handler:(void (^)(ECTwitterHandler *))handler
+- (id) initWithEngine:(ECTwitterEngine*)engineIn handler:(ECTwitterHandlerBlock)handler
 {
+    ECTwitterHandlerBlock handlerCopy = [handler copy];
 	if ((self = [super init]) != nil)
 	{
         NSOperation* newOperation = [NSBlockOperation blockOperationWithBlock:^{
-            handler(self);
+            handlerCopy(self);
         }];
 		self.operation = newOperation;
 		self.engine = engineIn;
 	}
+
+    [handlerCopy release];
 
 	return self;
 }
@@ -103,7 +106,8 @@
 - (void) invokeWithStatus:(ECTwitterStatus)statusIn
 {
 	self.status = statusIn;
-	[[NSOperationQueue mainQueue] addOperation: self.operation];
+	[[NSOperationQueue mainQueue] addOperation:self.operation];
+    self.operation = nil;
 }
 
 // --------------------------------------------------------------------------

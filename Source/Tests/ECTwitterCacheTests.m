@@ -49,12 +49,6 @@
     ECTestAssertNotNil(secret);
     ECTestAssertNotNil(self.user);
     ECTestAssertNotNil(self.password);
-
-    self.authentication = [[ECTwitterAuthentication alloc] initWithKey:key secret:secret];
-    ECTestAssertNotNil(self.authentication);
-
-    self.engine = [[ECTwitterEngine alloc] initWithAuthetication:self.authentication clientName:name version:version url:url];
-    ECTestAssertNotNil(self.engine);
 }
 
 

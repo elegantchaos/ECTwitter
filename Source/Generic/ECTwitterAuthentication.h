@@ -22,21 +22,16 @@ extern NSString *const TwitterAuthenticationFailed;
 // --------------------------------------------------------------------------
 
 @property (strong, nonatomic) ECTwitterConnection* connection;
-@property (strong, nonatomic) NSString* consumerKey;
-@property (strong, nonatomic) NSString* consumerSecret;
 @property (strong, nonatomic) ECTwitterEngine* engine;
 @property (strong, nonatomic) ECTwitterHandler* handler;
 @property (strong, nonatomic) OAToken* token;
-@property (strong, nonatomic) NSString* username;
+@property (strong, nonatomic) NSString* user;
 
 // --------------------------------------------------------------------------
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id) initWithKey:(NSString*)key secret:(NSString*)secret;
 - (BOOL)isAuthenticated;
-- (BOOL)authenticateForUser:(NSString*)user;
-- (void)authenticateForUser:(NSString*)user password:(NSString*)password target:(id) target selector:(SEL)selector;
 - (void)authenticateForUser:(NSString*)user password:(NSString*)password handler:(void (^)(ECTwitterHandler* handler))handler;
 
 - (NSMutableURLRequest*)requestForURL:(NSURL*)url;

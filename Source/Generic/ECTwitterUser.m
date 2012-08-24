@@ -73,7 +73,7 @@ ECDefineDebugChannel(TwitterUserChannel);
     
     // is there already an instance with this id in the cache?
     ECTwitterCache* cache = [ECTwitterCache decodingCache];
-    ECTwitterUser* existing = [cache.users objectForKey:userID.string];
+    ECTwitterUser* existing = [cache existingUserWithID:userID];
     if (existing)
     {
         // use the cached instance instead of this one
@@ -84,7 +84,7 @@ ECDefineDebugChannel(TwitterUserChannel);
     {
         // put this object into the cache now so that restoring other objects below will pick it up
         self = [super initWithCache:cache];
-        [cache.users setObject:self forKey:userID.string];
+        [cache addUser:self withID:userID];
     }
 
     if (self)
