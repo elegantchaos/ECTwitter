@@ -113,7 +113,7 @@
 - (void)testUserInfo
 {
     NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:@"samdeane", @"screen_name", nil];
-    [self.engine callGetMethod: @"users/show" parameters: parameters handler:^(ECTwitterHandler *handler) {
+    [self.engine callGetMethod:@"users/show" parameters:parameters extra:nil handler:^(ECTwitterHandler *handler) {
 
         if (handler.status == StatusResults)
         {
