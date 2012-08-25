@@ -4,7 +4,7 @@
 <dict>
 	<key>--include</key>
 	<array>
-		<string>Documentation</string>
+		<string>Documentation/Text</string>
 	</array>
 	<key>--index-desc</key>
 	<array>
