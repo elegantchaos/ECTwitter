@@ -105,7 +105,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
         [parameters setObject:self.maxID.string forKey:@"since_id"];
     }
     
-    [self.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(searchHandler:)];
+    [self.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(searchHandler:) extra:nil];
 }
 
 - (void) searchHandler:(ECTwitterHandler*)handler

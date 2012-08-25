@@ -256,7 +256,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 								@"-1", @"cursor",
 								nil];
 	
-	[mCache.engine callGetMethod: @"friends/ids" parameters: parameters target: self selector: @selector(followerIDsHandler:)];
+	[mCache.engine callGetMethod: @"friends/ids" parameters: parameters target: self selector: @selector(followerIDsHandler:) extra:nil];
 }
 
 // --------------------------------------------------------------------------
@@ -273,7 +273,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 								@"-1", @"cursor",
 								nil];
 	
-	[mCache.engine callGetMethod: @"statuses/followers" parameters: parameters target: self selector: @selector(followersHandler:)];
+	[mCache.engine callGetMethod: @"statuses/followers" parameters: parameters target: self selector: @selector(followersHandler:) extra:nil];
 }
 
 // --------------------------------------------------------------------------
@@ -290,7 +290,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 								@"-1", @"cursor",
 								nil];
 	
-	[mCache.engine callGetMethod: @"statuses/friends" parameters: parameters target: self selector: @selector(friendsHandler:)];
+	[mCache.engine callGetMethod: @"statuses/friends" parameters: parameters target: self selector: @selector(friendsHandler:) extra:nil];
 }
 
 

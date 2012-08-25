@@ -270,7 +270,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
         [parameters setObject:self.oldestTweet.twitterID.string forKey:@"max_id"];
     }
          
-    [user.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(timelineHandler:)];
+    [user.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(timelineHandler:) extra:nil];
 }
 
 // --------------------------------------------------------------------------

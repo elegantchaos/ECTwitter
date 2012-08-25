@@ -21,6 +21,9 @@
 
 @interface ECTwitterEngine()
 
+@property (strong, nonatomic) MGTwitterEngine* engine;
+@property (strong, nonatomic) NSMutableDictionary* requests;
+
 - (void)setHandler:(ECTwitterHandler*)handler forRequest:(NSString*)request;
 - (ECTwitterHandler*)handlerForRequest:(NSString*)request;
 - (void)doneRequest:(NSString*)request;
@@ -194,54 +197,14 @@ ECDeclareLogChannel(ErrorChannel);
 #pragma mark -
 #pragma mark Twitter Method Calling
 
-// --------------------------------------------------------------------------
-/// Call a twitter method. 
-/// When it's done, the engine will call back to the specified target/selector.
-// --------------------------------------------------------------------------
-
-- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector
-{
-	[self callMethod: method httpMethod: nil parameters: parameters target: target selector: selector extra: nil];
-}
-
-// --------------------------------------------------------------------------
-/// Call a twitter method. 
-/// When it's done, the engine will call back to the specified target/selector.
-// --------------------------------------------------------------------------
-
 - (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
 {
 	[self callMethod: method httpMethod: nil parameters: parameters target: target selector: selector extra: extra];
 }
 
-// --------------------------------------------------------------------------
-/// Call a twitter method. 
-/// When it's done, the engine will call back to the specified target/selector.
-// --------------------------------------------------------------------------
-
-- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector
-{
-	[self callMethod: method httpMethod: @"POST" parameters: parameters target: target selector: selector extra: nil];
-}
-
-// --------------------------------------------------------------------------
-/// Call a twitter method. 
-/// When it's done, the engine will call back to the specified target/selector.
-// --------------------------------------------------------------------------
-
 - (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
 {
 	[self callMethod: method httpMethod:@"POST" parameters: parameters target: target selector: selector extra: extra];
-}
-
-- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters handler:(void (^)(ECTwitterHandler* handler))handler
-{
-    [self callMethod:method httpMethod:nil parameters:parameters extra:nil handler:handler];
-}
-
-- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters handler:(void (^)(ECTwitterHandler* handler))handler
-{
-    [self callMethod:method httpMethod:@"POST" parameters:parameters extra:nil handler:handler];
 }
 
 - (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler

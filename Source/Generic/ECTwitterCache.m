@@ -251,7 +251,7 @@ NSString *const AuthenticatedTokenKey = @"token";
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								userID.string, @"user_id",
 								nil];
-	[self.engine callGetMethod:@"users/show" parameters:parameters target:self selector:@selector(userInfoHandler:)];
+	[self.engine callGetMethod:@"users/show" parameters:parameters target:self selector:@selector(userInfoHandler:) extra:nil];
 }
 
 
