@@ -38,6 +38,11 @@
 	
 	
 	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/authentication">&nbsp;&nbsp;&nbsp;&nbsp;authentication</option>
+	
+	
 	
 	
 	
@@ -46,13 +51,13 @@
 	
 	<option value="//api/name/callGetMethod:parameters:extra:handler:">&nbsp;&nbsp;&nbsp;&nbsp;- callGetMethod:parameters:extra:handler:</option>
 	
-	<option value="//api/name/callGetMethod:parameters:target:selector:extra:">&nbsp;&nbsp;&nbsp;&nbsp;- callGetMethod:parameters:target:selector:extra:</option>
-	
 	<option value="//api/name/callPostMethod:parameters:extra:handler:">&nbsp;&nbsp;&nbsp;&nbsp;- callPostMethod:parameters:extra:handler:</option>
 	
 	<option value="//api/name/callPostMethod:parameters:target:selector:extra:">&nbsp;&nbsp;&nbsp;&nbsp;- callPostMethod:parameters:target:selector:extra:</option>
 	
 	<option value="//api/name/initWithConsumerKey:consumerSecret:clientName:version:url:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithConsumerKey:consumerSecret:clientName:version:url:</option>
+	
+	<option value="//api/name/registerError:inContext:">&nbsp;&nbsp;&nbsp;&nbsp;- registerError:inContext:</option>
 	
 	
 	
@@ -70,11 +75,23 @@
 
 <li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
 	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Creation">Creation</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Twitter API">Twitter API</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Error Reporting">Error Reporting</a></span></li>
+	
 </ul></li>
 
 
 
 
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/authentication">authentication</a></span></li>
+	
+</ul></li>
 
 
 
@@ -84,13 +101,13 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callGetMethod:parameters:extra:handler:">callGetMethod:parameters:extra:handler:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callGetMethod:parameters:target:selector:extra:">callGetMethod:parameters:target:selector:extra:</a></span></li>
-	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callPostMethod:parameters:extra:handler:">callPostMethod:parameters:extra:handler:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callPostMethod:parameters:target:selector:extra:">callPostMethod:parameters:target:selector:extra:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithConsumerKey:consumerSecret:clientName:version:url:">initWithConsumerKey:consumerSecret:clientName:version:url:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/registerError:inContext:">registerError:inContext:</a></span></li>
 	
 </ul></li>
 
@@ -150,7 +167,22 @@ Authentication is dealy with via the @ECAuthentication helper class.</p>
 						
 						
 						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/authentication">&nbsp;&nbsp;authentication</a></code>
+		<span class="tooltip"><p>Authentication object.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
 						
+						
+						<a title="Creation" name="task_Creation"></a>
+						<h3 class="subsubtitle task-title">Creation</h3>
 
 						<ul class="task-list">
 							<li>
@@ -161,14 +193,15 @@ Typically you only need one instance per application.</p></span>
 	</span>
 	
 	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/callGetMethod:parameters:target:selector:extra:">&ndash;&nbsp;callGetMethod:parameters:target:selector:extra:</a></code>
-		<span class="tooltip"><p>Call a twitter method, using http GET.</p></span>
-	</span>
-	
-	
-</li><li>
+</li>
+						</ul>
+						
+						
+						<a title="Twitter API" name="task_Twitter API"></a>
+						<h3 class="subsubtitle task-title">Twitter API</h3>
+
+						<ul class="task-list">
+							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/callPostMethod:parameters:target:selector:extra:">&ndash;&nbsp;callPostMethod:parameters:target:selector:extra:</a></code>
 		<span class="tooltip"><p>Call a twitter method, using http POST.</p></span>
@@ -192,11 +225,68 @@ Typically you only need one instance per application.</p></span>
 </li>
 						</ul>
 						
+						
+						<a title="Error Reporting" name="task_Error Reporting"></a>
+						<h3 class="subsubtitle task-title">Error Reporting</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/registerError:inContext:">&ndash;&nbsp;registerError:inContext:</a></code>
+		<span class="tooltip"><p>Report an error to the engine.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
 					</div>
 					
 					
 					
 					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/authentication" title="authentication"></a>
+	<h3 class="subsubtitle method-title">authentication</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Authentication object.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (strong, nonatomic) ECTwitterAuthentication *authentication</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">ECTwitterEngine.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
 					
 					
 					
@@ -237,83 +327,12 @@ Typically you only need one instance per application.</p></span>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>extra</em></dt>
-			<dd><p>Extra data to be passed back with the results.</p></dd>
+			<dd><p>Extra data to be passed back with the results (can be nil).</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>handler</em></dt>
 			<dd><p>Handler block to call back with the results.</p></dd>
-		</dl>
-		
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection discussion-section">
-		<h4 class="method-subtitle">Discussion</h4>
-		<p>When it&rsquo;s done, the engine will call back to the specified target/selector.</p>
-	</div>
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">ECTwitterEngine.h</code><br />
-	</div>				
-	
-	
-</div>
-						
-						<div class="section-method">
-	<a name="//api/name/callGetMethod:parameters:target:selector:extra:" title="callGetMethod:parameters:target:selector:extra:"></a>
-	<h3 class="subsubtitle method-title">callGetMethod:parameters:target:selector:extra:</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>Call a twitter method, using http GET.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>- (void)callGetMethod:(NSString *)<em>method</em> parameters:(NSDictionary *)<em>parameters</em> target:(id)<em>target</em> selector:(SEL)<em>selector</em> extra:(NSObject *)<em>extra</em></code></div>
-
-    
-	
-	<div class="method-subsection arguments-section parameters">
-		<h4 class="method-subtitle parameter-title">Parameters</h4>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>method</em></dt>
-			<dd><p>The twitter method to call.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>parameters</em></dt>
-			<dd><p>A dictionary of parameters to pass to Twitter.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>target</em></dt>
-			<dd><p>Object to call back with the results.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>selector</em></dt>
-			<dd><p>Selector to call with the results.</p></dd>
-		</dl>
-		
-		<dl class="argument-def parameter-def">
-			<dt><em>extra</em></dt>
-			<dd><p>Extra data to be passed back with the results.</p></dd>
 		</dl>
 		
 	</div>
@@ -374,7 +393,7 @@ Typically you only need one instance per application.</p></span>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>extra</em></dt>
-			<dd><p>Extra data to be passed back with the results.</p></dd>
+			<dd><p>Extra data to be passed back with the results (can be nil).</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -450,7 +469,7 @@ Typically you only need one instance per application.</p></span>
 		
 		<dl class="argument-def parameter-def">
 			<dt><em>extra</em></dt>
-			<dd><p>Extra data to be passed back with the results.</p></dd>
+			<dd><p>Extra data to be passed back with the results (can be nil).</p></dd>
 		</dl>
 		
 	</div>
@@ -537,6 +556,63 @@ Typically you only need one instance per application.</p>
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">ECTwitterEngine.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/registerError:inContext:" title="registerError:inContext:"></a>
+	<h3 class="subsubtitle method-title">registerError:inContext:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Report an error to the engine.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)registerError:(NSError *)<em>error</em> inContext:(NSObject *)<em>context</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>error</em></dt>
+			<dd><p>The error to report.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>context</em></dt>
+			<dd><p>An object (can be a string) describing the context in which the error occurred.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The engine chooses whether to report the error to the user,
+log it, or whatever.</p>
+	</div>
 	
 	
 	
