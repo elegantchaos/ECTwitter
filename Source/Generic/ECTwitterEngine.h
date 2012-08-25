@@ -18,9 +18,14 @@
 @class ECTwitterHandler;
 @class ECTwitterAuthentication;
 
-// --------------------------------------------------------------------------
-/// Higher level wrapper for MGTwitterEngine.
-// --------------------------------------------------------------------------
+/// --------------------------------------------------------------------------
+/// Simple Twitter Engine
+/// This engine exposes fairly raw access to the twitter api, but
+/// manages the process of sending requests, and parsing results.
+/// For each twitter call that you make, you supply a block (or target & selector)
+/// which the engine calls back when the call succeeds or fails.
+/// Authentication is dealy with via the @ECAuthentication helper class.
+/// --------------------------------------------------------------------------
 
 @interface ECTwitterEngine : NSObject <MGTwitterEngineDelegate> 
 

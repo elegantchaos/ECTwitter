@@ -153,6 +153,9 @@
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		223CBAE61205C6380008A641 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		225F3E3515E8F2C90009E152 /* Extras */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Extras; sourceTree = "<group>"; };
+		225F3E3715E8F2D40009E152 /* .appledoc.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = .appledoc.plist; sourceTree = "<group>"; };
+		225F3E3815E8F2E10009E152 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		228B562815E6935200EB8B54 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		228B567A15E69F5900EB8B54 /* ECTwitterIOS Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ECTwitterIOS Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		228B567B15E69F5900EB8B54 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -312,6 +315,9 @@
 		0867D691FE84028FC02AAC07 /* ECFoundation */ = {
 			isa = PBXGroup;
 			children = (
+				225F3E3715E8F2D40009E152 /* .appledoc.plist */,
+				225F3E3815E8F2E10009E152 /* README.md */,
+				225F3E3515E8F2C90009E152 /* Extras */,
 				22F08C6815E56A34003E8456 /* Source */,
 				22F08CFD15E56ABE003E8456 /* Resources */,
 				0867D69AFE84028FC02AAC07 /* Frameworks */,
@@ -949,6 +955,7 @@
 				228B568C15E69F5900EB8B54 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		22BA9D8B15E678CE00861F75 /* Build configuration list for PBXNativeTarget "ECTwitterMacTests" */ = {
 			isa = XCConfigurationList;

@@ -117,7 +117,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "228B567915E69F5900EB8B54"
-               BuildableName = ".bundle"
+               BuildableName = "ECTwitterIOS Tests.octest"
                BlueprintName = "ECTwitterIOS Tests"
                ReferencedContainer = "container:ECTwitter.xcodeproj">
             </BuildableReference>
