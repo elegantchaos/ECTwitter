@@ -420,11 +420,11 @@ NSString *const AuthenticatedTokenKey = @"token";
     if (data)
     {
         NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-
-        NSDictionary* authenticated = [unarchiver decodeObjectForKey:@"authenticated"];
+        NSMutableDictionary* authenticated = [[unarchiver decodeObjectForKey:@"authenticated"] mutableCopy];
         if (authenticated)
         {
-            self.authenticated = [authenticated mutableCopy];
+            self.authenticated = authenticated;
+            [authenticated release];
         }
 
         // unarchive the users & tweets

@@ -5,8 +5,8 @@
 /// --------------------------------------------------------------------------
 
 #import "MGTwitterEngineDelegate.h"
+#import "ECTwitterHandlerBlock.h"
 
-@class MGTwitterEngine;
 @class ECTwitterEngine;
 @class ECTwitterHandler;
 @class ECTwitterAuthentication;
@@ -100,7 +100,7 @@
 /// @param handler Handler block to call back with the results.
 /// --------------------------------------------------------------------------
 
-- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler;
+- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(ECTwitterHandlerBlock)handler;
 
 /// --------------------------------------------------------------------------
 /// Call a twitter method, using http POST.
@@ -112,7 +112,7 @@
 /// @param handler Handler block to call back with the results.
 /// --------------------------------------------------------------------------
 
-- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(void (^)(ECTwitterHandler* handler))handler;
+- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(ECTwitterHandlerBlock)handler;
 
 /// --------------------------------------------------------------------------
 /// @name Error Reporting

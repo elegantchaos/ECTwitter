@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		225F3E6315E921AC0009E152 /* ECTwitterHandlerBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 225F3E6215E921AC0009E152 /* ECTwitterHandlerBlock.h */; };
+		225F3E6415E921AC0009E152 /* ECTwitterHandlerBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 225F3E6215E921AC0009E152 /* ECTwitterHandlerBlock.h */; };
 		228B562915E6935200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
 		228B562B15E6937200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
 		228B567C15E69F5900EB8B54 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B567B15E69F5900EB8B54 /* SenTestingKit.framework */; };
@@ -156,6 +158,7 @@
 		225F3E3515E8F2C90009E152 /* Extras */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Extras; sourceTree = "<group>"; };
 		225F3E3715E8F2D40009E152 /* .appledoc.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = .appledoc.plist; sourceTree = "<group>"; };
 		225F3E3815E8F2E10009E152 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; wrapsLines = 1; };
+		225F3E6215E921AC0009E152 /* ECTwitterHandlerBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECTwitterHandlerBlock.h; sourceTree = "<group>"; };
 		228B562815E6935200EB8B54 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		228B567A15E69F5900EB8B54 /* ECTwitterIOS Tests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ECTwitterIOS Tests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		228B567B15E69F5900EB8B54 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
@@ -428,6 +431,7 @@
 				22F08C7B15E56A34003E8456 /* ECTwitterConnection.m */,
 				22F08C7C15E56A34003E8456 /* ECTwitterEngine.h */,
 				22F08C7D15E56A34003E8456 /* ECTwitterEngine.m */,
+				225F3E6215E921AC0009E152 /* ECTwitterHandlerBlock.h */,
 				22F08C7E15E56A34003E8456 /* ECTwitterHandler.h */,
 				22F08C7F15E56A34003E8456 /* ECTwitterHandler.m */,
 				22F08C8015E56A34003E8456 /* ECTwitterID.h */,
@@ -506,6 +510,7 @@
 				22F08E4915E62DDF003E8456 /* MGTwitterEngineDelegate.h in Headers */,
 				22F08E7115E63228003E8456 /* ECTwitterImage.h in Headers */,
 				22F08EAC15E64501003E8456 /* ECTwitter.h in Headers */,
+				225F3E6415E921AC0009E152 /* ECTwitterHandlerBlock.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -536,6 +541,7 @@
 				22F08EAB15E64501003E8456 /* ECTwitter.h in Headers */,
 				22F08CEB15E56A35003E8456 /* MGTwitterEngine.h in Headers */,
 				22F08CEF15E56A35003E8456 /* MGTwitterEngineDelegate.h in Headers */,
+				225F3E6315E921AC0009E152 /* ECTwitterHandlerBlock.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
