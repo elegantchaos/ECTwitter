@@ -877,10 +877,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22F08C6C15E56A34003E8456 /* IOSUnitTestDebug.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Caches/DerivedData/ECTwitterIntegration-glwemstufuxkgubkcegslkyvkzdr/Build/Products/Debug-iphonesimulator\"",
-				);
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
 			name = Debug;
@@ -889,10 +885,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 22F08C6D15E56A34003E8456 /* IOSUnitTestRelease.xcconfig */;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"/Caches/DerivedData/ECTwitterIntegration-glwemstufuxkgubkcegslkyvkzdr/Build/Products/Debug-iphonesimulator\"",
-				);
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
 			name = Release;
