@@ -400,7 +400,19 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (NSString*)longDisplayName
 {
-	return [NSString stringWithFormat:@"%@ (@%@)", [self name], [self twitterName]];
+    NSString* realName = self.name;
+    NSString* shortName = self.twitterName;
+    NSString* result;
+    if (realName)
+    {
+        result = [NSString stringWithFormat:@"%@ (@%@)", [self name], [self twitterName]];
+    }
+    else
+    {
+        result = shortName;
+    }
+
+    return result;
 }
 
 // --------------------------------------------------------------------------
