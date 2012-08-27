@@ -9,6 +9,7 @@
 
 @class ECTwitterEngine;
 @class ECTwitterCache;
+@class ECTwitterAuthentication;
 
 @interface ECTwitterCachedObject : NSObject 
 
@@ -34,5 +35,11 @@
 /// @return The engine that this object's cache is attached to.
 
 - (ECTwitterEngine*)engine;
+
+
+/// Return the authentication object to use for this object.
+/// @return The authentication object.
+
+- (ECTwitterAuthentication*)defaultAuthentication;
 
 @end

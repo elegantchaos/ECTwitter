@@ -10,6 +10,7 @@
 #import "ECTwitterCachedObject.h"
 #import "ECTwitterCache.h"
 #import "ECTwitterEngine.h"
+#import "ECTwitterUser.h"
 
 // ==============================================
 // Private Methods
@@ -62,14 +63,14 @@
 	return self;
 }
 
-
-// --------------------------------------------------------------------------
-/// Return our cache's engine.
-// --------------------------------------------------------------------------
-
 - (ECTwitterEngine*)engine
 {
     return self.cache.engine;
+}
+
+- (ECTwitterAuthentication*)defaultAuthentication
+{
+    return self.cache.defaultAuthenticatedUser.authentication;
 }
 
 @end

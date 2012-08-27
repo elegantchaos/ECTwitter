@@ -54,7 +54,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 	if ((self = [super initWithCache:cache]) != nil)
 	{
 		self.data = dictionary;
-		self.twitterID = [ECTwitterID idFromDictionary: dictionary];
+		self.twitterID = [ECTwitterID idFromDictionary:dictionary];
         [self makeTimelines];
 	}
 	
@@ -111,7 +111,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (id)initWithID:(ECTwitterID*)idIn inCache:(ECTwitterCache*)cache
 {
-	if ((self = [super initWithCache: cache]) != nil)
+	if ((self = [super initWithCache:cache]) != nil)
 	{
 		self.twitterID = idIn;
         [self makeTimelines];
@@ -145,19 +145,19 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (void)makeTimelines
 {
-    ECTwitterUserTimeline* homeTimeline = [[ECTwitterUserTimeline alloc] initWithCache:mCache];
+    ECTwitterUserTimeline* homeTimeline = [[ECTwitterUserTimeline alloc] initWithCache:self.cache];
     homeTimeline.user = self;
     self.timeline = homeTimeline;
     [homeTimeline trackHome];
     [homeTimeline release];
     
-    ECTwitterUserTimeline* postsTimeline = [[ECTwitterUserTimeline alloc] initWithCache:mCache];
+    ECTwitterUserTimeline* postsTimeline = [[ECTwitterUserTimeline alloc] initWithCache:self.cache];
     postsTimeline.user = self;
     self.posts = postsTimeline;
     [postsTimeline trackPosts];
     [postsTimeline release];
     
-    ECTwitterUserMentionsTimeline* mentionsTimeline = [[ECTwitterUserMentionsTimeline alloc] initWithCache:mCache];
+    ECTwitterUserMentionsTimeline* mentionsTimeline = [[ECTwitterUserMentionsTimeline alloc] initWithCache:self.cache];
     mentionsTimeline.user = self;
     self.mentions = mentionsTimeline;
     [mentionsTimeline release];
@@ -187,7 +187,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (NSString*)description
 {
-	return [NSString stringWithFormat: @"<TwitterUser: %@ %@ posts:%ld timeline:%ld mentions:%ld>", self.twitterName, self.twitterID, (long) [self.posts count], (long) [self.timeline count], (long) [self.mentions count]];
+	return [NSString stringWithFormat:@"<TwitterUser:%@ %@ posts:%ld timeline:%ld mentions:%ld>", self.twitterName, self.twitterID, (long) [self.posts count], (long) [self.timeline count], (long) [self.mentions count]];
 }
 
 // --------------------------------------------------------------------------
@@ -196,7 +196,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (NSString*)name
 {
-	return [self.data objectForKey: @"name"];
+	return [self.data objectForKey:@"name"];
 }
 
 // --------------------------------------------------------------------------
@@ -205,7 +205,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (NSString*)twitterName
 {
-	return [self.data objectForKey: @"screen_name"];
+	return [self.data objectForKey:@"screen_name"];
 }
 
 // --------------------------------------------------------------------------
@@ -256,7 +256,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 								@"-1", @"cursor",
 								nil];
 	
-	[mCache.engine callGetMethod: @"friends/ids" parameters: parameters target: self selector: @selector(followerIDsHandler:) extra:nil];
+	[self.cache.engine callGetMethod:@"friends/ids" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(followerIDsHandler:) extra:nil];
 }
 
 // --------------------------------------------------------------------------
@@ -273,7 +273,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 								@"-1", @"cursor",
 								nil];
 	
-	[mCache.engine callGetMethod: @"statuses/followers" parameters: parameters target: self selector: @selector(followersHandler:) extra:nil];
+	[self.cache.engine callGetMethod:@"statuses/followers" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(followersHandler:) extra:nil];
 }
 
 // --------------------------------------------------------------------------
@@ -290,7 +290,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 								@"-1", @"cursor",
 								nil];
 	
-	[mCache.engine callGetMethod: @"statuses/friends" parameters: parameters target: self selector: @selector(friendsHandler:) extra:nil];
+	[self.cache.engine callGetMethod:@"statuses/friends" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(friendsHandler:) extra:nil];
 }
 
 
@@ -303,26 +303,26 @@ ECDefineDebugChannel(TwitterUserChannel);
 {
 	if (handler.status == StatusResults)
 	{
-		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
+		ECDebug(TwitterUserChannel, @"received friends for:%@", self);
         ECAssertIsKindOfClass(handler.result, NSDictionary);
         
         NSDictionary* info = handler.result;
         NSArray* users = [info objectForKey:@"users"];
 		for (NSDictionary* userData in users)
 		{
-			ECTwitterUser* user = [mCache addOrRefreshUserWithInfo: userData];
-			[self addFriend: user];
+			ECTwitterUser* user = [self.cache addOrRefreshUserWithInfo:userData];
+			[self addFriend:user];
 			
-			ECDebug(TwitterUserChannel, @"friend info received: %@", user);
+			ECDebug(TwitterUserChannel, @"friend info received:%@", user);
 		}
 	}
 	else
 	{
-		ECDebug(TwitterUserChannel, @"error receiving friends for: %@", self);
+		ECDebug(TwitterUserChannel, @"error receiving friends for:%@", self);
 	}
     
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-	[nc postNotificationName: ECTwitterUserUpdated object: self];
+	[nc postNotificationName:ECTwitterUserUpdated object:self];
 }
 
 
@@ -335,26 +335,26 @@ ECDefineDebugChannel(TwitterUserChannel);
 {
 	if (handler.status == StatusResults)
 	{
-		ECDebug(TwitterUserChannel, @"received friends for: %@", self);
+		ECDebug(TwitterUserChannel, @"received friends for:%@", self);
         ECAssertIsKindOfClass(handler.result, NSDictionary);
 
         NSDictionary* result = handler.result;
         NSArray* users = [result objectForKey:@"users"];
 		for (NSDictionary* userData in users)
 		{
-			ECTwitterUser* user = [mCache addOrRefreshUserWithInfo: userData];
-			[self addFriend: user];
+			ECTwitterUser* user = [self.cache addOrRefreshUserWithInfo:userData];
+			[self addFriend:user];
 			
-			ECDebug(TwitterUserChannel, @"friend info received: %@", user);
+			ECDebug(TwitterUserChannel, @"friend info received:%@", user);
 		}
 	}
 	else
 	{
-		ECDebug(TwitterUserChannel, @"error receiving friends for: %@", self);
+		ECDebug(TwitterUserChannel, @"error receiving friends for:%@", self);
 	}
     
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-	[nc postNotificationName: ECTwitterUserUpdated object: self];
+	[nc postNotificationName:ECTwitterUserUpdated object:self];
 }
 
 // --------------------------------------------------------------------------
@@ -366,7 +366,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 {
 	if (handler.status == StatusResults)
 	{
-		ECDebug(TwitterUserChannel, @"received followers for: %@", self);
+		ECDebug(TwitterUserChannel, @"received followers for:%@", self);
         ECAssertIsKindOfClass(handler.result, NSDictionary);
 
         NSDictionary* result = handler.result;
@@ -377,21 +377,21 @@ ECDefineDebugChannel(TwitterUserChannel);
             NSString* userIDString = [value stringValue];
             ECTwitterID* userID = [[ECTwitterID alloc] initWithString:userIDString];
             
-            ECTwitterUser* user = [mCache userWithID:userID];
-			[self addFollower: user];
+            ECTwitterUser* user = [self.cache userWithID:userID];
+			[self addFollower:user];
             [userID release];
 			
-			ECDebug(TwitterUserChannel, @"follower info received: %@", user);
+			ECDebug(TwitterUserChannel, @"follower info received:%@", user);
 #endif
 		}
 	}
 	else
 	{
-		ECDebug(TwitterUserChannel, @"error receiving followers for: %@", self);
+		ECDebug(TwitterUserChannel, @"error receiving followers for:%@", self);
 	}
     
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-	[nc postNotificationName: ECTwitterUserUpdated object: self];
+	[nc postNotificationName:ECTwitterUserUpdated object:self];
 }
 
 // --------------------------------------------------------------------------
@@ -400,7 +400,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (NSString*)longDisplayName
 {
-	return [NSString stringWithFormat: @"%@ (@%@)", [self name], [self twitterName]];
+	return [NSString stringWithFormat:@"%@ (@%@)", [self name], [self twitterName]];
 }
 
 // --------------------------------------------------------------------------
@@ -410,7 +410,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (NSString*)bio
 {
-	return [self.data objectForKey: @"description"];
+	return [self.data objectForKey:@"description"];
 }
 
 // --------------------------------------------------------------------------
@@ -422,8 +422,8 @@ ECDefineDebugChannel(TwitterUserChannel);
 	ECTwitterImage* image = self.cachedImage;
 	if (!image)
 	{
-		NSURL* url = [NSURL URLWithString:[self.data objectForKey: @"profile_image_url"]];
-		image = [mCache imageWithID: self.twitterID URL: url];
+		NSURL* url = [NSURL URLWithString:[self.data objectForKey:@"profile_image_url"]];
+		image = [self.cache imageWithID:self.twitterID URL:url];
 		self.cachedImage = image;
 	}
 	
@@ -439,7 +439,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 	NSDictionary* info = self.data;
 	if (!info)
 	{
-		info = [NSDictionary dictionaryWithObject: self.twitterID.string forKey: @"id_str"];
+		info = [NSDictionary dictionaryWithObject:self.twitterID.string forKey:@"id_str"];
 	}
 	
     [coder encodeObject:info forKey:@"info"];
@@ -461,7 +461,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 	ECDebug(TwitterUserChannel, @"making favourite:%@", tweet);
 	NSString* format = state ? @"favorites/create/%@" :@"favorites/destroy/%@";
     NSString* method = [NSString stringWithFormat:format, tweet.twitterID.string];
-	[self.engine callPostMethod:method parameters:nil authentication:self.authentication extra:tweet handler:^(ECTwitterHandler* handler) {
+	[self.engine callPostMethod:method parameters:nil authentication:self.defaultAuthentication extra:tweet handler:^(ECTwitterHandler* handler) {
 
         if (handler.status == StatusResults)
         {
@@ -479,5 +479,21 @@ ECDefineDebugChannel(TwitterUserChannel);
     }];
 }
 
+// --------------------------------------------------------------------------
+/// If we're an authenticated user, return our information, otherwise
+/// return the default authenticated user's information.
+// --------------------------------------------------------------------------
+
+- (ECTwitterAuthentication*)defaultAuthentication
+{
+    ECTwitterAuthentication* result = self.authentication;
+
+    if (!result)
+    {
+        result = [super defaultAuthentication];
+    }
+
+    return result;
+}
 
 @end

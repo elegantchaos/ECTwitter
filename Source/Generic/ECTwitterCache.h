@@ -38,6 +38,7 @@
 /// user's info will be used instead.
 @property (strong, nonatomic) ECTwitterUser* defaultAuthenticatedUser;
 
+
 /// --------------------------------------------------------------------------
 /// @name Initialising new ECTwitterEngine objects
 /// --------------------------------------------------------------------------
@@ -48,8 +49,9 @@
 
 - (id)initWithEngine:(ECTwitterEngine*)engine;
 
+
 /// --------------------------------------------------------------------------
-/// @name Adding or Refreshing Object Data
+/// @name Refreshing Object Data
 /// --------------------------------------------------------------------------
 
 /// Given a dictionary of user information, update a user object in the cache
@@ -65,6 +67,7 @@
 /// @return The associated tweet object.
 
 - (ECTwitterTweet*)addOrRefreshTweetWithInfo:(NSDictionary*)info;
+
 
 /// --------------------------------------------------------------------------
 /// @name Obtaining Cached Objects
@@ -127,6 +130,11 @@
 - (ECTwitterUser*)existingUserWithID:(ECTwitterID*)userID;
 
 
+/// --------------------------------------------------------------------------
+/// @name Adding To The Cache
+/// --------------------------------------------------------------------------
+
+
 /// Add a tweet object to the cache.
 /// The tweet will replace any previous object with the same ID.
 /// @param tweet The tweet to add.
@@ -142,6 +150,11 @@
 
 - (void)addUser:(ECTwitterUser*)user withID:(ECTwitterID*)userID;
 
+
+
+/// --------------------------------------------------------------------------
+/// @name Authentication
+/// --------------------------------------------------------------------------
 
 /// Return an authenticated user with a given screen name.
 /// If we've already authenticated the user, it will be returned.
@@ -163,6 +176,11 @@
 
 - (void)authenticateUserWithName:(NSString*)name password:(NSString*)password;
 
+
+
+/// --------------------------------------------------------------------------
+/// @name Saving and Loading
+/// --------------------------------------------------------------------------
 
 /// Save all cached objects to disc.
 /// Should be called when the application is going away (or at any other appropriate time).

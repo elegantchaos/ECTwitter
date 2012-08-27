@@ -102,7 +102,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
         [parameters setObject:self.maxID.string forKey:@"since_id"];
     }
     
-    [self.engine callGetMethod:methodName parameters:parameters self.cache.defaultAuthenticatedUser target:self selector:@selector(searchHandler:) extra:nil];
+    [self.engine callGetMethod:methodName parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(searchHandler:) extra:nil];
 }
 
 - (void) searchHandler:(ECTwitterHandler*)handler
@@ -119,7 +119,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
         NSArray* results = [handler.result objectForKey:@"results"];
 		for (NSDictionary* tweetData in results)
 		{
-			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo:tweetData];
+			ECTwitterTweet* tweet = [self.cache addOrRefreshTweetWithInfo:tweetData];
 			[self addTweet:tweet];
 			
 			ECDebug(TwitterSearchTimelineChannel, @"tweet info received:%@", tweet);

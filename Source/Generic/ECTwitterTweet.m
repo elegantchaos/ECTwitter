@@ -244,7 +244,7 @@ ECDefineDebugChannel(TweetChannel);
 	
 	if (author == nil)
 	{
-		author = [mCache userWithID: self.authorID];
+		author = [self.cache userWithID:self.authorID];
 		self.cachedAuthor = author;
 	}
 	

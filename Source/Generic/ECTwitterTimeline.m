@@ -206,7 +206,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
         NSArray* results = handler.result;
 		for (NSDictionary* tweetData in results)
 		{
-			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
+			ECTwitterTweet* tweet = [self.cache addOrRefreshTweetWithInfo: tweetData];
 			[self addTweet: tweet];
 			
 			ECDebug(TwitterTimelineChannel, @"tweet info received: %@", tweet);
@@ -270,7 +270,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
         [parameters setObject:self.oldestTweet.twitterID.string forKey:@"max_id"];
     }
          
-    [user.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(timelineHandler:) extra:nil];
+    [user.engine callGetMethod:methodName parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(timelineHandler:) extra:nil];
 }
 
 // --------------------------------------------------------------------------

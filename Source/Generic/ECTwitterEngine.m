@@ -45,9 +45,10 @@ ECDeclareLogChannel(ErrorChannel);
 // Properties
 // --------------------------------------------------------------------------
 
-@synthesize authentication;
-@synthesize engine;
-@synthesize requests;
+@synthesize consumerKey = _consumerKey;
+@synthesize consumerSecret = _consumerSecret;
+@synthesize engine = _engine;
+@synthesize requests = _requests;
 
 // ==============================================
 // Lifecycle
@@ -87,9 +88,10 @@ ECDeclareLogChannel(ErrorChannel);
 
 - (void) dealloc 
 {
-    [authentication release];
-	[engine release];
-	[requests release];
+    [_consumerKey release];
+    [_consumerSecret release];
+	[_engine release];
+	[_requests release];
     
     [super dealloc];
 }
