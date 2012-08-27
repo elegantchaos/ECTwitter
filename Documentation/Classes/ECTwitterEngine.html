@@ -40,8 +40,6 @@
 	
 	<option value="properties">Properties</option>
 	
-	<option value="//api/name/authentication">&nbsp;&nbsp;&nbsp;&nbsp;authentication</option>
-	
 	<option value="//api/name/consumerKey">&nbsp;&nbsp;&nbsp;&nbsp;consumerKey</option>
 	
 	<option value="//api/name/consumerSecret">&nbsp;&nbsp;&nbsp;&nbsp;consumerSecret</option>
@@ -53,11 +51,13 @@
 	
 	<option value="instance_methods">Instance Methods</option>
 	
-	<option value="//api/name/callGetMethod:parameters:extra:handler:">&nbsp;&nbsp;&nbsp;&nbsp;- callGetMethod:parameters:extra:handler:</option>
+	<option value="//api/name/callGetMethod:parameters:authentication:extra:handler:">&nbsp;&nbsp;&nbsp;&nbsp;- callGetMethod:parameters:authentication:extra:handler:</option>
 	
-	<option value="//api/name/callPostMethod:parameters:extra:handler:">&nbsp;&nbsp;&nbsp;&nbsp;- callPostMethod:parameters:extra:handler:</option>
+	<option value="//api/name/callGetMethod:parameters:authentication:target:selector:extra:">&nbsp;&nbsp;&nbsp;&nbsp;- callGetMethod:parameters:authentication:target:selector:extra:</option>
 	
-	<option value="//api/name/callPostMethod:parameters:target:selector:extra:">&nbsp;&nbsp;&nbsp;&nbsp;- callPostMethod:parameters:target:selector:extra:</option>
+	<option value="//api/name/callPostMethod:parameters:authentication:extra:handler:">&nbsp;&nbsp;&nbsp;&nbsp;- callPostMethod:parameters:authentication:extra:handler:</option>
+	
+	<option value="//api/name/callPostMethod:parameters:authentication:target:selector:extra:">&nbsp;&nbsp;&nbsp;&nbsp;- callPostMethod:parameters:authentication:target:selector:extra:</option>
 	
 	<option value="//api/name/initWithConsumerKey:consumerSecret:clientName:version:url:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithConsumerKey:consumerSecret:clientName:version:url:</option>
 	
@@ -81,7 +81,7 @@
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Properties">Properties</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Creation">Creation</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Creating an ECTwitterEngine">Creating an ECTwitterEngine</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Twitter API">Twitter API</a></span></li>
 	
@@ -95,8 +95,6 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/authentication">authentication</a></span></li>
-	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/consumerKey">consumerKey</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/consumerSecret">consumerSecret</a></span></li>
@@ -109,11 +107,13 @@
 
 <li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callGetMethod:parameters:extra:handler:">callGetMethod:parameters:extra:handler:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callGetMethod:parameters:authentication:extra:handler:">callGetMethod:parameters:authentication:extra:handler:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callPostMethod:parameters:extra:handler:">callPostMethod:parameters:extra:handler:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callGetMethod:parameters:authentication:target:selector:extra:">callGetMethod:parameters:authentication:target:selector:extra:</a></span></li>
 	
-	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callPostMethod:parameters:target:selector:extra:">callPostMethod:parameters:target:selector:extra:</a></span></li>
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callPostMethod:parameters:authentication:extra:handler:">callPostMethod:parameters:authentication:extra:handler:</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/callPostMethod:parameters:authentication:target:selector:extra:">callPostMethod:parameters:authentication:target:selector:extra:</a></span></li>
 	
 	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithConsumerKey:consumerSecret:clientName:version:url:">initWithConsumerKey:consumerSecret:clientName:version:url:</a></span></li>
 	
@@ -167,7 +167,7 @@ manages the process of sending requests, and parsing results.</p>
 <p>For each twitter call that you make, you supply a block (or target &amp; selector)
 which the engine calls back when the call succeeds or fails.</p>
 
-<p>Authentication is dealy with via the <a href="../Classes/ECTwitterAuthentication.html">ECTwitterAuthentication</a> helper class.</p>
+<p>Authentication is dealt with via the <a href="../Classes/ECTwitterAuthentication.html">ECTwitterAuthentication</a> helper class.</p>
 					</div>
 					
 					
@@ -185,13 +185,6 @@ which the engine calls back when the call succeeds or fails.</p>
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/authentication">&nbsp;&nbsp;authentication</a></code>
-		<span class="tooltip"><p>The object responsible for performing authentication.</p></span>
-	</span>
-	<span class="task-item-suffix">property</span>
-	
-</li><li>
-	<span class="tooltip">
 		<code><a href="#//api/name/consumerKey">&nbsp;&nbsp;consumerKey</a></code>
 		<span class="tooltip"><p>The Twitter key for the client application.</p></span>
 	</span>
@@ -208,8 +201,8 @@ which the engine calls back when the call succeeds or fails.</p>
 						</ul>
 						
 						
-						<a title="Creation" name="task_Creation"></a>
-						<h3 class="subsubtitle task-title">Creation</h3>
+						<a title="Creating an ECTwitterEngine" name="task_Creating an ECTwitterEngine"></a>
+						<h3 class="subsubtitle task-title">Creating an ECTwitterEngine</h3>
 
 						<ul class="task-list">
 							<li>
@@ -230,21 +223,28 @@ Typically you only need one instance per application.</p></span>
 						<ul class="task-list">
 							<li>
 	<span class="tooltip">
-		<code><a href="#//api/name/callPostMethod:parameters:target:selector:extra:">&ndash;&nbsp;callPostMethod:parameters:target:selector:extra:</a></code>
-		<span class="tooltip"><p>Call a twitter method, using http POST.</p></span>
-	</span>
-	
-	
-</li><li>
-	<span class="tooltip">
-		<code><a href="#//api/name/callGetMethod:parameters:extra:handler:">&ndash;&nbsp;callGetMethod:parameters:extra:handler:</a></code>
+		<code><a href="#//api/name/callGetMethod:parameters:authentication:target:selector:extra:">&ndash;&nbsp;callGetMethod:parameters:authentication:target:selector:extra:</a></code>
 		<span class="tooltip"><p>Call a twitter method, using http GET.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
-		<code><a href="#//api/name/callPostMethod:parameters:extra:handler:">&ndash;&nbsp;callPostMethod:parameters:extra:handler:</a></code>
+		<code><a href="#//api/name/callPostMethod:parameters:authentication:target:selector:extra:">&ndash;&nbsp;callPostMethod:parameters:authentication:target:selector:extra:</a></code>
+		<span class="tooltip"><p>Call a twitter method, using http POST.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/callGetMethod:parameters:authentication:extra:handler:">&ndash;&nbsp;callGetMethod:parameters:authentication:extra:handler:</a></code>
+		<span class="tooltip"><p>Call a twitter method, using http GET.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/callPostMethod:parameters:authentication:extra:handler:">&ndash;&nbsp;callPostMethod:parameters:authentication:extra:handler:</a></code>
 		<span class="tooltip"><p>Call a twitter method, using http POST.</p></span>
 	</span>
 	
@@ -276,42 +276,6 @@ Typically you only need one instance per application.</p></span>
 					<div class="section section-methods">
 						<a title="Properties" name="properties"></a>
 						<h2 class="subtitle subtitle-methods">Properties</h2>
-						
-						<div class="section-method">
-	<a name="//api/name/authentication" title="authentication"></a>
-	<h3 class="subsubtitle method-title">authentication</h3>
-	
-	
-	
-	<div class="method-subsection brief-description">
-		<p>The object responsible for performing authentication.</p>
-	</div>		
-	
-    
-
-	<div class="method-subsection method-declaration"><code>@property (strong, nonatomic) ECTwitterAuthentication *authentication</code></div>
-
-    
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	<div class="method-subsection declared-in-section">
-		<h4 class="method-subtitle">Declared In</h4>
-		<code class="declared-in-ref">ECTwitterEngine.h</code><br />
-	</div>				
-	
-	
-</div>
 						
 						<div class="section-method">
 	<a name="//api/name/consumerKey" title="consumerKey"></a>
@@ -396,8 +360,8 @@ Typically you only need one instance per application.</p></span>
 						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
 						
 						<div class="section-method">
-	<a name="//api/name/callGetMethod:parameters:extra:handler:" title="callGetMethod:parameters:extra:handler:"></a>
-	<h3 class="subsubtitle method-title">callGetMethod:parameters:extra:handler:</h3>
+	<a name="//api/name/callGetMethod:parameters:authentication:extra:handler:" title="callGetMethod:parameters:authentication:extra:handler:"></a>
+	<h3 class="subsubtitle method-title">callGetMethod:parameters:authentication:extra:handler:</h3>
 	
 	
 	
@@ -407,7 +371,7 @@ Typically you only need one instance per application.</p></span>
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)callGetMethod:(NSString *)<em>method</em> parameters:(NSDictionary *)<em>parameters</em> extra:(NSObject *)<em>extra</em> handler:(void ( ^ ) ( ECTwitterHandler *handler ))<em>handler</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)callGetMethod:(NSString *)<em>method</em> parameters:(NSDictionary *)<em>parameters</em> authentication:(ECTwitterAuthentication *)<em>authentication</em> extra:(NSObject *)<em>extra</em> handler:(ECTwitterHandlerBlock)<em>handler</em></code></div>
 
     
 	
@@ -422,6 +386,11 @@ Typically you only need one instance per application.</p></span>
 		<dl class="argument-def parameter-def">
 			<dt><em>parameters</em></dt>
 			<dd><p>A dictionary of parameters to pass to Twitter.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>authentication</em></dt>
+			<dd><p>Authentication information for the Twitter call.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -462,18 +431,18 @@ Typically you only need one instance per application.</p></span>
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/callPostMethod:parameters:extra:handler:" title="callPostMethod:parameters:extra:handler:"></a>
-	<h3 class="subsubtitle method-title">callPostMethod:parameters:extra:handler:</h3>
+	<a name="//api/name/callGetMethod:parameters:authentication:target:selector:extra:" title="callGetMethod:parameters:authentication:target:selector:extra:"></a>
+	<h3 class="subsubtitle method-title">callGetMethod:parameters:authentication:target:selector:extra:</h3>
 	
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Call a twitter method, using http POST.</p>
+		<p>Call a twitter method, using http GET.</p>
 	</div>		
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)callPostMethod:(NSString *)<em>method</em> parameters:(NSDictionary *)<em>parameters</em> extra:(NSObject *)<em>extra</em> handler:(void ( ^ ) ( ECTwitterHandler *handler ))<em>handler</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)callGetMethod:(NSString *)<em>method</em> parameters:(NSDictionary *)<em>parameters</em> authentication:(ECTwitterAuthentication *)<em>authentication</em> target:(id)<em>target</em> selector:(SEL)<em>selector</em> extra:(NSObject *)<em>extra</em></code></div>
 
     
 	
@@ -488,6 +457,87 @@ Typically you only need one instance per application.</p></span>
 		<dl class="argument-def parameter-def">
 			<dt><em>parameters</em></dt>
 			<dd><p>A dictionary of parameters to pass to Twitter.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>authentication</em></dt>
+			<dd><p>Authentication information for the Twitter call.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>target</em></dt>
+			<dd><p>Object to call back with the results.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>selector</em></dt>
+			<dd><p>Selector to call with the results.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>extra</em></dt>
+			<dd><p>Extra data to be passed back with the results (can be nil).</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>When it&rsquo;s done, the engine will call back to the specified target/selector.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">ECTwitterEngine.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/callPostMethod:parameters:authentication:extra:handler:" title="callPostMethod:parameters:authentication:extra:handler:"></a>
+	<h3 class="subsubtitle method-title">callPostMethod:parameters:authentication:extra:handler:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Call a twitter method, using http POST.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (void)callPostMethod:(NSString *)<em>method</em> parameters:(NSDictionary *)<em>parameters</em> authentication:(ECTwitterAuthentication *)<em>authentication</em> extra:(NSObject *)<em>extra</em> handler:(ECTwitterHandlerBlock)<em>handler</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>method</em></dt>
+			<dd><p>The twitter method to call.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>parameters</em></dt>
+			<dd><p>A dictionary of parameters to pass to Twitter.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>authentication</em></dt>
+			<dd><p>Authentication information for the Twitter call.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -528,8 +578,8 @@ Typically you only need one instance per application.</p></span>
 </div>
 						
 						<div class="section-method">
-	<a name="//api/name/callPostMethod:parameters:target:selector:extra:" title="callPostMethod:parameters:target:selector:extra:"></a>
-	<h3 class="subsubtitle method-title">callPostMethod:parameters:target:selector:extra:</h3>
+	<a name="//api/name/callPostMethod:parameters:authentication:target:selector:extra:" title="callPostMethod:parameters:authentication:target:selector:extra:"></a>
+	<h3 class="subsubtitle method-title">callPostMethod:parameters:authentication:target:selector:extra:</h3>
 	
 	
 	
@@ -539,7 +589,7 @@ Typically you only need one instance per application.</p></span>
 	
     
 
-	<div class="method-subsection method-declaration"><code>- (void)callPostMethod:(NSString *)<em>method</em> parameters:(NSDictionary *)<em>parameters</em> target:(id)<em>target</em> selector:(SEL)<em>selector</em> extra:(NSObject *)<em>extra</em></code></div>
+	<div class="method-subsection method-declaration"><code>- (void)callPostMethod:(NSString *)<em>method</em> parameters:(NSDictionary *)<em>parameters</em> authentication:(ECTwitterAuthentication *)<em>authentication</em> target:(id)<em>target</em> selector:(SEL)<em>selector</em> extra:(NSObject *)<em>extra</em></code></div>
 
     
 	
@@ -554,6 +604,11 @@ Typically you only need one instance per application.</p></span>
 		<dl class="argument-def parameter-def">
 			<dt><em>parameters</em></dt>
 			<dd><p>A dictionary of parameters to pass to Twitter.</p></dd>
+		</dl>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>authentication</em></dt>
+			<dd><p>Authentication information for the Twitter call.</p></dd>
 		</dl>
 		
 		<dl class="argument-def parameter-def">
@@ -740,7 +795,7 @@ log it, or whatever.</p>
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Elegant Chaos. All rights reserved. (Last updated: 2012-08-25)</span><br />
+						<p><span class="copyright">&copy; 2012 Elegant Chaos. All rights reserved. (Last updated: 2012-08-27)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 789)</a>.</span></p>
 						

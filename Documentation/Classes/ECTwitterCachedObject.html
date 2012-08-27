@@ -32,12 +32,26 @@
 	
 	
 	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/cache">&nbsp;&nbsp;&nbsp;&nbsp;cache</option>
 	
 	
 	
 	
 	
 	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/engine">&nbsp;&nbsp;&nbsp;&nbsp;- engine</option>
+	
+	<option value="//api/name/initWithCache:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithCache:</option>
 	
 	
 	
@@ -53,13 +67,33 @@
 
 
 
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Initialising an ECTwitterCachedObject Instance">Initialising an ECTwitterCachedObject Instance</a></span></li>
+	
+</ul></li>
 
 
 
 
 
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/cache">cache</a></span></li>
+	
+</ul></li>
 
 
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/engine">engine</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithCache:">initWithCache:</a></span></li>
+	
+</ul></li>
 
 
 			</ul>
@@ -104,13 +138,191 @@
 					
 					
 					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						
+						<h3 class="subsubtitle task-title">Other Methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/cache">&nbsp;&nbsp;cache</a></code>
+		<span class="tooltip"><p>The cache that this object belongs to.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="Initialising an ECTwitterCachedObject Instance" name="task_Initialising an ECTwitterCachedObject Instance"></a>
+						<h3 class="subsubtitle task-title">Initialising an ECTwitterCachedObject Instance</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithCache:">&ndash;&nbsp;initWithCache:</a></code>
+		<span class="tooltip"><p>Create an object and associate it with a cache.</p></span>
+	</span>
+	
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/engine">&ndash;&nbsp;engine</a></code>
+		<span class="tooltip"><p>The engine that this object is associated with.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
 					
 					
 					
 					
 					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/cache" title="cache"></a>
+	<h3 class="subsubtitle method-title">cache</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The cache that this object belongs to.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (assign, nonatomic) ECTwitterCache *cache</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">ECTwitterCachedObject.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
 					
 					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/engine" title="engine"></a>
+	<h3 class="subsubtitle method-title">engine</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The engine that this object is associated with.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (ECTwitterEngine *)engine</code></div>
+
+    
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>The engine that this object&rsquo;s cache is attached to.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">ECTwitterCachedObject.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithCache:" title="initWithCache:"></a>
+	<h3 class="subsubtitle method-title">initWithCache:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Create an object and associate it with a cache.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (id)initWithCache:(ECTwitterCache *)<em>cache</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>cache</em></dt>
+			<dd><p>The cache that this object lives in.</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">ECTwitterCachedObject.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
 					
 					
 				</div>
@@ -123,7 +335,7 @@
 				<div id="footer">
 					<hr />
 					<div class="footer-copyright">
-						<p><span class="copyright">&copy; 2012 Elegant Chaos. All rights reserved. (Last updated: 2012-08-25)</span><br />
+						<p><span class="copyright">&copy; 2012 Elegant Chaos. All rights reserved. (Last updated: 2012-08-27)</span><br />
 						
 						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.0.5 (build 789)</a>.</span></p>
 						
