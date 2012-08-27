@@ -12,7 +12,6 @@
 #import "ECTwitterParser.h"
 #import "ECTwitterAuthentication.h"
 
-
 #pragma mark - Private Interface
 
 @interface MGTwitterEngine()

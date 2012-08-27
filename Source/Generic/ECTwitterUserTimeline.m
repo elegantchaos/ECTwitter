@@ -171,4 +171,11 @@ ECDefineDebugChannel(TwitterUserTimelineChannel);
     return [NSString stringWithFormat:@"<ECTwitterUserTimeline: %ld tweets for user %@ type %d>", (long) [self.tweets count], self.user, self.method];
 }
 
+- (ECTwitterAuthentication*) defaultAuthentication
+{
+    ECTwitterAuthentication* result = self.user.defaultAuthentication;
+
+    return result;
+}
+
 @end

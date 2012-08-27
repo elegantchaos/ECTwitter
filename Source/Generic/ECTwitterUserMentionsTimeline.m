@@ -110,4 +110,15 @@ ECDefineDebugChannel(TwitterUserMentionsTimelineChannel);
     return [NSString stringWithFormat:@"<ECTwitterUserMentionsTimeline: %ld tweets>", (long) [self.tweets count]];
 }
 
+// --------------------------------------------------------------------------
+/// Use the authentication from the user we're associated with.
+// --------------------------------------------------------------------------
+
+- (ECTwitterAuthentication*) defaultAuthentication
+{
+    ECTwitterAuthentication* result = self.user.defaultAuthentication;
+
+    return result;
+}
+
 @end

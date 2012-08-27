@@ -10,6 +10,8 @@
 #import "ECTwitterConnection.h"
 
 
+// TODO: remove identifier from connection and associate handler with it directly instead
+
 
 
 
