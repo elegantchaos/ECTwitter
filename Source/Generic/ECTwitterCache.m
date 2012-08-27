@@ -102,7 +102,7 @@ NSString *const AuthenticatedTokenKey = @"token";
 		self.usersByID = [NSMutableDictionary dictionary];
 		self.usersByName = [NSMutableDictionary dictionary];
 		self.authenticated = [NSMutableDictionary dictionary];
-        self.maxCached = 100; // temporary
+        self.maxCached = 512;
  	}
 	
 	return self;
@@ -479,7 +479,7 @@ NSString *const AuthenticatedTokenKey = @"token";
 - (NSURL*)mainCacheFile
 {
     NSURL* root = [self baseCacheFolder];
-    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitterEngine Cache V5.cache"];
+    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitter Cache V6.cache"];
     
 	return url;
 }
