@@ -364,9 +364,9 @@ NSString *const AuthenticatedTokenKey = @"token";
     }
 
     // save mentions of authenticated users
-    for (NSString* name in self.authenticated)
+    NSArray* users = [self authenticatedUsers];
+    for (ECTwitterUser* user in users)
     {
-        ECTwitterUser* user = [self.usersByName objectForKey:name];
         NSArray* mentions = user.mentions.tweets;
         for (ECTwitterTweet* tweet in mentions)
         {
@@ -572,6 +572,17 @@ NSString *const AuthenticatedTokenKey = @"token";
     [self.authenticated setObject:authenticationInfo forKey:name];
 
     [[NSNotificationCenter defaultCenter] postNotificationName:ECTwitterUserAuthenticated object:name];
+}
+
+- (NSArray*)authenticatedUsers
+{
+    NSMutableArray* result = [NSMutableArray arrayWithCapacity:self.authenticated.count];
+    for (NSString* name in self.authenticated)
+    {
+        [result addObject:[self authenticatedUserWithName:name]];
+    }
+
+    return result;
 }
 
 @end

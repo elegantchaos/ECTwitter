@@ -196,6 +196,9 @@
 - (void)authenticateUserWithName:(NSString*)name password:(NSString*)password;
 
 
+/// Return all authenticated users.
+/// @return An array containing all the users that we have authentication info for.
+- (NSArray*)authenticatedUsers;
 
 /// --------------------------------------------------------------------------
 /// @name Saving and Loading
