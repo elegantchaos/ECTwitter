@@ -496,4 +496,58 @@ ECDefineDebugChannel(TwitterUserChannel);
     return result;
 }
 
+// --------------------------------------------------------------------------
+//! Post a new tweet, possibly in reply to an existing one.
+// --------------------------------------------------------------------------
+
+- (void)postText:(NSString*)text inReplyTo:(ECTwitterTweet*)tweet
+{
+	ECDebug(TwitterUserChannel, @"posting reply:%@ to %@", text, tweet);
+
+	// Convert the status to Unicode Normalized Form C to conform to Twitter's character counting requirement. See http://apiwiki.twitter.com/Counting-Characters .
+	NSString* trimmedText = [text precomposedStringWithCanonicalMapping];
+	NSMutableDictionary* parameters = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       trimmedText, @"status",
+                                       @"1", @"trim_user",
+                                       nil];
+	if (tweet)
+	{
+		[parameters setObject:tweet.twitterID.string forKey:@"in_reply_to_status_id"];
+	}
+
+	[self.engine callPostMethod:@"statuses/update" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(postHandler:) extra:nil];
+}
+
+// --------------------------------------------------------------------------
+//! Retweeting an existing tweet.
+// --------------------------------------------------------------------------
+
+- (void)retweet:(ECTwitterTweet*)tweet
+{
+	ECDebug(TwitterUserChannel, @"retweeting @", tweet);
+
+	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
+                                @"1", @"trim_user",
+                                nil];
+    NSString* method = [NSString stringWithFormat:@"statuses/retweet/%@", tweet.twitterID.string];
+	[self.engine callPostMethod:method parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(postHandler:) extra:nil];
+}
+
+// --------------------------------------------------------------------------
+//! Handle a post or reply.
+// --------------------------------------------------------------------------
+
+- (void)postHandler:(ECTwitterHandler*)handler
+{
+	if (handler.status == StatusResults)
+	{
+		NSDictionary* postData = handler.result;
+		ECDebug(TwitterUserChannel, @"posted %@", postData); ECUnusedInRelease(postData);
+	}
+    else if (handler.status == StatusFailed)
+    {
+		ECDebug(TwitterUserChannel, @"post failed %@", handler.error);
+    }
+}
+
 @end

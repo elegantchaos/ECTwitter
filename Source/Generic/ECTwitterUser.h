@@ -37,27 +37,27 @@
 // Public Methods
 // --------------------------------------------------------------------------
 
-- (id)				initWithInfo:(NSDictionary*)info inCache:(ECTwitterCache*)cache;
-- (id)              initWithCoder:(NSCoder*)coder;
-- (id)				initWithID:(ECTwitterID*)tweetID inCache:(ECTwitterCache*)cache;
+- (id)initWithInfo:(NSDictionary*)info inCache:(ECTwitterCache*)cache;
+- (id)initWithCoder:(NSCoder*)coder;
+- (id)initWithID:(ECTwitterID*)tweetID inCache:(ECTwitterCache*)cache;
 
-- (void)			refreshWithInfo:(NSDictionary*)info;
+- (void)refreshWithInfo:(NSDictionary*)info;
 
-- (BOOL)			gotData;
+- (BOOL)gotData;
 
-- (NSString*)		description;
-- (NSString*)		name;
-- (NSString*)		twitterName;
-- (NSString*)		longDisplayName;
+- (NSString*)description;
+- (NSString*)name;
+- (NSString*)twitterName;
+- (NSString*)longDisplayName;
 
-- (NSString*)		bio;
+- (NSString*)bio;
 
-- (ECTwitterImage*)		image;
+- (ECTwitterImage*)image;
 
-- (void)			addFriend:(ECTwitterUser*)user;
-- (void)			addFollower:(ECTwitterUser*)user;
+- (void)addFriend:(ECTwitterUser*)user;
+- (void)addFollower:(ECTwitterUser*)user;
 
-- (void)            requestFollowers;
-- (void)            requestFriends;
+- (void)requestFollowers;
+- (void)requestFriends;
 
 @end

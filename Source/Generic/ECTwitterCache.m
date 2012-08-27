@@ -160,6 +160,18 @@ NSString *const AuthenticatedTokenKey = @"token";
 	return user;
 }
 
+- (ECTwitterUser*)userWithName:(NSString *)name
+{
+    ECTwitterUser* result = [self.usersByName objectForKey:name];
+    if (!result)
+    {
+        NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:name, @"screen_name", nil];
+        [self.engine callGetMethod:@"users/show" parameters:parameters authentication:self.defaultAuthenticatedUser.authentication target:self selector:@selector(userInfoHandler:) extra:nil];
+    }
+
+    return result;
+}
+
 - (ECTwitterTweet*)existingTweetWithID:(ECTwitterID*)tweetID
 {
     return [self.tweets objectForKey:tweetID.string];
@@ -263,7 +275,7 @@ NSString *const AuthenticatedTokenKey = @"token";
 /// We fire off a request for the list of friends for the user.
 // --------------------------------------------------------------------------
 
-- (void) userInfoHandler:(ECTwitterHandler*)handler
+- (void)userInfoHandler:(ECTwitterHandler*)handler
 {
 	if (handler.status == StatusResults)
 	{
@@ -281,6 +293,7 @@ NSString *const AuthenticatedTokenKey = @"token";
         ECDebug(TwitterCacheChannel, @"user info received:%@", user.name);
 	}
 }
+
 
 // --------------------------------------------------------------------------
 /// Return image for object with a given ID, at a given URL.
@@ -514,7 +527,9 @@ NSString *const AuthenticatedTokenKey = @"token";
             }
             else
             {
-                [[NSNotificationCenter defaultCenter] postNotificationName:ECTwitterUserAuthenticationFailed object:name];
+                NSDictionary* info = [NSDictionary dictionaryWithObject:handler.error forKey:@"error"];
+                NSNotification* notification = [NSNotification notificationWithName:ECTwitterUserAuthenticationFailed object:name userInfo:info];
+                [[NSNotificationCenter defaultCenter] postNotification:notification];
             }
         }];
     }

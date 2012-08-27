@@ -86,6 +86,7 @@
 
 - (ECTwitterTweet*)tweetWithID:(ECTwitterID*)tweetID;
 
+
 /// Return the user with a given id.
 /// If the user didn't exist in the cache, one will be created, so that
 /// this routine always returns a valid object. However, newly created
@@ -105,6 +106,20 @@
 /// @return A user object.
 
 - (ECTwitterUser*)userWithID:(ECTwitterID*)userID requestIfMissing:(BOOL)requestIfMissing;
+
+
+/// Return the user with a given name, or nil if we don't have a user with that name cached.
+/// If we can't find the user, we schedule a lookup for it, and return nil. In this situation,
+/// clients can listen for <ECTwitterUserUpdated> notifications and check to see if it's the
+/// user they're looking for.
+/// We can't just return a blank ECTwitterUser object here because every object needs to
+/// at least have the ID filled in, and we don't know what it is yet.
+///
+/// @param name The twitter name of the user we're looking for.
+/// @return The twitter user, or nil if we couldn't find it.
+
+- (ECTwitterUser*)userWithName:(NSString*)name;
+
 
 /// Return an image for the object with a given ID.
 /// The image may be fetched on demand, or cached locally.
