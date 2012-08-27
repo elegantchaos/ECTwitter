@@ -31,10 +31,10 @@
 @property (strong, nonatomic) NSMutableDictionary* usersByName;
 @property (strong, nonatomic) NSMutableDictionary* authenticated;
 @property (nonatomic, assign) NSUInteger maxCached;
+@property (strong, nonatomic) ECTwitterUser* defaultUser;
 
 - (void)requestUserByID:(ECTwitterID*)userID;
 - (void)userInfoHandler:(ECTwitterHandler*)handler;
-- (void)makeFavouriteHandler:(ECTwitterHandler*)handler;
 
 - (NSURL*)baseCacheFolder;
 - (NSURL*)mainCacheFile;
@@ -57,6 +57,7 @@ ECDefineDebugChannel(TwitterCacheChannel);
 // ==============================================
 
 @synthesize authenticated = _authenticated;
+@synthesize defaultAuthenticatedUser = _defaultAuthenticatedUser;
 @synthesize engine = _engine;
 @synthesize maxCached = _maxCached;
 @synthesize tweets = _tweets;
@@ -110,6 +111,7 @@ NSString *const AuthenticatedTokenKey = @"token";
 - (void)dealloc 
 {
     [_authenticated release];
+    [_defaultAuthenticatedUser release];
     [_engine release];
     [_tweets release];
     [_usersByName release];
@@ -251,23 +253,9 @@ NSString *const AuthenticatedTokenKey = @"token";
 	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
 								userID.string, @"user_id",
 								nil];
-	[self.engine callGetMethod:@"users/show" parameters:parameters target:self selector:@selector(userInfoHandler:) extra:nil];
-}
 
-
-// --------------------------------------------------------------------------
-/// Modify the favourited state of a tweet.
-// --------------------------------------------------------------------------
-
-- (void) setFavouritedStateForTweet:(ECTwitterTweet*)tweet to:(BOOL) state
-{
-	ECDebug(TwitterCacheChannel, @"making favourite:%@", tweet);
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								nil];
-	
-	NSString* format = state ? @"favorites/create/%@" :@"favorites/destroy/%@";
-	[self.engine callPostMethod:[NSString stringWithFormat:format, tweet.twitterID.string] parameters:parameters target:self selector:@selector(makeFavouriteHandler:) extra:tweet];
-	
+    ECTwitterAuthentication* authentication = self.defaultAuthenticatedUser.authentication;
+	[self.engine callGetMethod:@"users/show" parameters:parameters authentication:authentication target:self selector:@selector(userInfoHandler:) extra:nil];
 }
 
 // --------------------------------------------------------------------------
@@ -291,26 +279,6 @@ NSString *const AuthenticatedTokenKey = @"token";
         [nc postNotificationName:ECTwitterUserUpdated object:user];
 
         ECDebug(TwitterCacheChannel, @"user info received:%@", user.name);
-	}
-}
-
-// --------------------------------------------------------------------------
-/// Handle confirmation that we've made a favourite
-// --------------------------------------------------------------------------
-
-- (void) makeFavouriteHandler:(ECTwitterHandler*)handler
-{
-	if (handler.status == StatusResults)
-	{
-        ECAssertIsKindOfClass(handler.result, NSArray);
-
-        NSArray* favourites = handler.result;
-		for (NSDictionary* tweetData in favourites)
-		{
-
-			ECTwitterTweet* tweet = [self addOrRefreshTweetWithInfo:tweetData];
-			ECDebug(TwitterCacheChannel, @"made tweet favourite:%@", tweet); ECUnusedInRelease(tweet);
-		}
 	}
 }
 
@@ -495,12 +463,6 @@ NSString *const AuthenticatedTokenKey = @"token";
     [[NSFileManager defaultManager] createDirectoryAtURL:url withIntermediateDirectories:YES attributes:nil error:&error];
 
 	return url;
-}
-
-- (void)setDefaultAuthenticatedUser:(ECTwitterUser*)user
-{
-    ECAssertNonNil(user.authentication);
-    self.engine.authentication = user.authentication;
 }
 
 - (ECTwitterUser*)authenticatedUserWithName:(NSString*)userName

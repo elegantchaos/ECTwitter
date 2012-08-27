@@ -451,4 +451,33 @@ ECDefineDebugChannel(TwitterUserChannel);
     [coder encodeObject:self.followers forKey:@"followers"];
 }
 
+
+// --------------------------------------------------------------------------
+/// Modify the favourited state of a tweet.
+// --------------------------------------------------------------------------
+
+- (void)setFavouritedStateForTweet:(ECTwitterTweet*)tweet to:(BOOL)state
+{
+	ECDebug(TwitterUserChannel, @"making favourite:%@", tweet);
+	NSString* format = state ? @"favorites/create/%@" :@"favorites/destroy/%@";
+    NSString* method = [NSString stringWithFormat:format, tweet.twitterID.string];
+	[self.engine callPostMethod:method parameters:nil authentication:self.authentication extra:tweet handler:^(ECTwitterHandler* handler) {
+
+        if (handler.status == StatusResults)
+        {
+            ECAssertIsKindOfClass(handler.result, NSArray);
+
+            NSArray* favourites = handler.result;
+            for (NSDictionary* tweetData in favourites)
+            {
+
+                ECTwitterTweet* tweet = [self.cache addOrRefreshTweetWithInfo:tweetData];
+                ECDebug(TwitterUserChannel, @"made tweet favourite:%@", tweet); ECUnusedInRelease(tweet);
+            }
+        }
+
+    }];
+}
+
+
 @end

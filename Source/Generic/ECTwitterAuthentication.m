@@ -180,7 +180,6 @@ ECDefineDebugChannel(AuthenticationChannel);
     }
     
     [self.engine registerError:error inContext:@"authentication error"];
-    self.engine.authentication = nil;
 }
 
 #pragma mark - Connection Delegate Methods

@@ -11,22 +11,28 @@
 @class ECTwitterCache;
 
 @interface ECTwitterCachedObject : NSObject 
-{
-@protected
-	ECTwitterCache*	mCache;
-}
+
+/// The cache that this object belongs to.
+
+@property (assign, nonatomic) ECTwitterCache* cache; // weak reference
 
 // --------------------------------------------------------------------------
-// Public Properties
+/// @name Initialising an ECTwitterCachedObject Instance
 // --------------------------------------------------------------------------
+
+/// Create an object and associate it with a cache.
+///
+/// @param cache The cache that this object lives in.
 
 - (id) initWithCache:(ECTwitterCache*)cache;
 
 // --------------------------------------------------------------------------
-// Public Methods
+// @name Getting Information About The Object
 // --------------------------------------------------------------------------
 
+/// The engine that this object is associated with.
+/// @return The engine that this object's cache is attached to.
+
 - (ECTwitterEngine*)engine;
-- (ECTwitterCache*)cache;
 
 @end

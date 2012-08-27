@@ -1,7 +1,4 @@
 // --------------------------------------------------------------------------
-/// @author Sam Deane
-/// @date 13/09/2010
-//
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
 //  liberal license: http://www.elegantchaos.com/license/liberal
@@ -27,8 +24,6 @@
 - (void)setHandler:(ECTwitterHandler*)handler forRequest:(NSString*)request;
 - (ECTwitterHandler*)handlerForRequest:(NSString*)request;
 - (void)doneRequest:(NSString*)request;
-- (void)callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id)target selector:(SEL)selector extra:(NSObject*)extra;
-- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(ECTwitterHandlerBlock)handler;
 
 @end
 
@@ -114,7 +109,7 @@ ECDeclareLogChannel(ErrorChannel);
 
 - (void) setHandler:(ECTwitterHandler*)handler forRequest:(NSString*)request
 {
-	[self.requests setObject: handler forKey: request];
+	[self.requests setObject:handler forKey:request];
 }
 
 // --------------------------------------------------------------------------
@@ -123,7 +118,7 @@ ECDeclareLogChannel(ErrorChannel);
 
 - (ECTwitterHandler*)handlerForRequest:(NSString*)request
 {
-	return [self.requests objectForKey: request];
+	return [self.requests objectForKey:request];
 }
 
 // --------------------------------------------------------------------------
@@ -132,9 +127,9 @@ ECDeclareLogChannel(ErrorChannel);
 
 - (void) doneRequest:(NSString*)request
 {
-	ECTwitterHandler* handler = [self.requests objectForKey: request];
+	ECTwitterHandler* handler = [self.requests objectForKey:request];
 	handler.operation = nil;
-	[self.requests removeObjectForKey: request];
+	[self.requests removeObjectForKey:request];
 }
 
 // --------------------------------------------------------------------------
@@ -150,7 +145,7 @@ ECDeclareLogChannel(ErrorChannel);
 
 - (void)requestSucceeded:(NSString *)request
 {
-	ECTwitterHandler* handler EC_HINT_UNUSED = [self handlerForRequest: request];
+	ECTwitterHandler* handler EC_HINT_UNUSED = [self handlerForRequest:request];
 	ECAssertNonNil(handler);
 	
 	ECDebug(TwitterChannel, @"request %@ for handler %@ succeeded", request, handler);
@@ -162,14 +157,14 @@ ECDeclareLogChannel(ErrorChannel);
 
 - (void)requestFailed:(NSString*)request withError:(NSError*)error
 {
-	ECTwitterHandler* handler = [self handlerForRequest: request];
+	ECTwitterHandler* handler = [self handlerForRequest:request];
 	ECAssertNonNil(handler);
 	
 	ECDebug(TwitterChannel, @"request %@ for handler %@ failed with error %@ %@", request, handler, error, error.userInfo);
     [self registerError:error inContext:handler];
 	handler.error = error;
-	[handler invokeWithStatus: StatusFailed];
-	[self doneRequest: request];
+	[handler invokeWithStatus:StatusFailed];
+	[self doneRequest:request];
 }
 
 
@@ -181,13 +176,13 @@ ECDeclareLogChannel(ErrorChannel);
 {
 	ECDebug(TwitterChannel, @"generic results %@ for request %@", results, request);
     
-	ECTwitterHandler* handler = [self handlerForRequest: request];
+	ECTwitterHandler* handler = [self handlerForRequest:request];
     for (NSObject* result in results)
     {
-        [handler invokeWithResult: result];
+        [handler invokeWithResult:result];
     }
 	
-	[self doneRequest: request];
+	[self doneRequest:request];
 }
 
 // --------------------------------------------------------------------------
@@ -197,67 +192,49 @@ ECDeclareLogChannel(ErrorChannel);
 #pragma mark -
 #pragma mark Twitter Method Calling
 
-- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
+- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters authentication:(ECTwitterAuthentication*)authentication target:(id) target selector:(SEL) selector extra:(NSObject*)extra
 {
-	[self callMethod: method httpMethod: nil parameters: parameters target: target selector: selector extra: extra];
-}
-
-- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
-{
-	[self callMethod: method httpMethod:@"POST" parameters: parameters target: target selector: selector extra: extra];
-}
-
-- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(ECTwitterHandlerBlock)handler
-{
-    [self callMethod:method httpMethod:nil parameters:parameters extra:extra handler:handler];
-}
-
-- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(ECTwitterHandlerBlock)handler
-{
-    [self callMethod:method httpMethod:@"POST" parameters:parameters extra:extra handler:handler];
-}
-
-
-// --------------------------------------------------------------------------
-/// Call a twitter method.
-/// When it's done, the engine will call back to the specified target/selector.
-// --------------------------------------------------------------------------
-
-- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters extra:(NSObject*)extra handler:(ECTwitterHandlerBlock)handler
-{
-	ECTwitterHandler* internalHandler = [[ECTwitterHandler alloc] initWithEngine:self handler:handler];
-	internalHandler.extra = extra;
-    [self callMethod:method httpMethod:httpMethod parameters:parameters internalHandler:internalHandler];
+	ECTwitterHandler* internalHandler = [[ECTwitterHandler alloc] initWithEngine:self target:target selector:selector];
+	[self callMethod:method httpMethod:nil parameters:parameters authentication:authentication extra:extra internalHandler:internalHandler];
     [internalHandler release];
 }
 
-
-// --------------------------------------------------------------------------
-/// Call a twitter method.
-/// When it's done, the engine will call back to the specified target/selector.
-// --------------------------------------------------------------------------
-
-- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters target:(id) target selector:(SEL) selector extra:(NSObject*)extra
+- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters authentication:(ECTwitterAuthentication*)authentication target:(id) target selector:(SEL) selector extra:(NSObject*)extra
 {
-	ECTwitterHandler* internalHandler = [[ECTwitterHandler alloc] initWithEngine: self target: target selector: selector];
-	internalHandler.extra = extra;
-    [self callMethod:method httpMethod:httpMethod parameters:parameters internalHandler:internalHandler];
+	ECTwitterHandler* internalHandler = [[ECTwitterHandler alloc] initWithEngine:self target:target selector:selector];
+	[self callMethod:method httpMethod:@"POST" parameters:parameters authentication:authentication extra:extra internalHandler:internalHandler];
+    [internalHandler release];
+}
+
+- (void) callGetMethod:(NSString*)method parameters:(NSDictionary*)parameters authentication:(ECTwitterAuthentication*)authentication extra:(NSObject*)extra handler:(ECTwitterHandlerBlock)handler
+{
+	ECTwitterHandler* internalHandler = [[ECTwitterHandler alloc] initWithEngine:self handler:handler];
+    [self callMethod:method httpMethod:nil parameters:parameters authentication:authentication extra:extra internalHandler:internalHandler];
+    [internalHandler release];
+}
+
+- (void) callPostMethod:(NSString*)method parameters:(NSDictionary*)parameters authentication:(ECTwitterAuthentication*)authentication extra:(NSObject*)extra handler:(ECTwitterHandlerBlock)handler
+{
+	ECTwitterHandler* internalHandler = [[ECTwitterHandler alloc] initWithEngine:self handler:handler];
+    [self callMethod:method httpMethod:@"POST" parameters:parameters authentication:authentication extra:extra internalHandler:internalHandler];
     [internalHandler release];
 }
 
 // --------------------------------------------------------------------------
 /// Call a twitter method. 
-/// When it's done, the engine will call back to the specified target/selector.
+/// When it's done, the engine will call back to the specified handler.
 // --------------------------------------------------------------------------
 
-- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters internalHandler:(ECTwitterHandler*)internalHandler
+- (void) callMethod:(NSString*)method httpMethod:(NSString*)httpMethod parameters:(NSDictionary*)parameters authentication:(ECTwitterAuthentication*)authentication extra:(NSObject*)extra internalHandler:(ECTwitterHandler*)internalHandler
 {
+	internalHandler.extra = extra;
+
 	if (parameters == nil)
 	{
 		parameters = [NSDictionary dictionary];
 	}
 	
-    NSString* request = [self.engine request:method parameters:parameters method:httpMethod authentication:self.authentication];
+    NSString* request = [self.engine request:method parameters:parameters method:httpMethod authentication:authentication];
 	[self setHandler:internalHandler forRequest:request];
 }
 

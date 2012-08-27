@@ -1,7 +1,4 @@
 // --------------------------------------------------------------------------
-/// @author Sam Deane
-/// @date 24/01/2011
-//
 //  Copyright 2012 Sam Deane, Elegant Chaos. All rights reserved.
 //  This source code is distributed under the terms of Elegant Chaos's 
 //  liberal license: http://www.elegantchaos.com/license/liberal
@@ -105,7 +102,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
         [parameters setObject:self.maxID.string forKey:@"since_id"];
     }
     
-    [self.engine callGetMethod:methodName parameters: parameters target: self selector: @selector(searchHandler:) extra:nil];
+    [self.engine callGetMethod:methodName parameters:parameters self.cache.defaultAuthenticatedUser target:self selector:@selector(searchHandler:) extra:nil];
 }
 
 - (void) searchHandler:(ECTwitterHandler*)handler
@@ -113,7 +110,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
 	if (handler.status == StatusResults)
 	{
         
-		ECDebug(TwitterSearchTimelineChannel, @"received timeline for: %@", self);
+		ECDebug(TwitterSearchTimelineChannel, @"received timeline for:%@", self);
         ECAssertIsKindOfClass(handler.result, NSDictionary);
         
         NSDictionary* result = handler.result;
@@ -122,19 +119,19 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
         NSArray* results = [handler.result objectForKey:@"results"];
 		for (NSDictionary* tweetData in results)
 		{
-			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo: tweetData];
-			[self addTweet: tweet];
+			ECTwitterTweet* tweet = [mCache addOrRefreshTweetWithInfo:tweetData];
+			[self addTweet:tweet];
 			
-			ECDebug(TwitterSearchTimelineChannel, @"tweet info received: %@", tweet);
+			ECDebug(TwitterSearchTimelineChannel, @"tweet info received:%@", tweet);
 		}
 	}
 	else
 	{
-		ECDebug(TwitterSearchTimelineChannel, @"error receiving search results for: %@", self);
+		ECDebug(TwitterSearchTimelineChannel, @"error receiving search results for:%@", self);
 	}
     
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-	[nc postNotificationName: ECTwitterTimelineUpdated object: self];
+	[nc postNotificationName:ECTwitterTimelineUpdated object:self];
 }
 
 // --------------------------------------------------------------------------
@@ -143,7 +140,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
 
 - (NSString*)description
 {
-    return [NSString stringWithFormat:@"<ECTwitterSearchTimeline: %ld tweets for text %@>", (long) [self.tweets count], self.text];
+    return [NSString stringWithFormat:@"<ECTwitterSearchTimeline:%ld tweets for text %@>", (long) [self.tweets count], self.text];
 }
 
 @end

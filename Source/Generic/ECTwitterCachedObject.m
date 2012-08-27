@@ -25,6 +25,8 @@
 
 @implementation ECTwitterCachedObject
 
+@synthesize cache = _cache;
+
 // ==============================================
 // Properties
 // ==============================================
@@ -54,20 +56,12 @@
 {
 	if ((self = [super init]) != nil)
 	{
-		mCache = cache;
+		self.cache = cache;
 	}
 	
 	return self;
 }
 
-// --------------------------------------------------------------------------
-/// Clean up and release retained objects.
-// --------------------------------------------------------------------------
-
-- (void) dealloc
-{
-	[super dealloc];
-}
 
 // --------------------------------------------------------------------------
 /// Return our cache's engine.
@@ -75,16 +69,7 @@
 
 - (ECTwitterEngine*)engine
 {
-    return mCache.engine;
-}
-
-// --------------------------------------------------------------------------
-/// Return our cache.
-// --------------------------------------------------------------------------
-
-- (ECTwitterCache*)cache
-{
-    return mCache;
+    return self.cache.engine;
 }
 
 @end

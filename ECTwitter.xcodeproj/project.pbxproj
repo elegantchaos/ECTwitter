@@ -548,9 +548,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		228B567915E69F5900EB8B54 /* ECTwitterIOS Tests */ = {
+		228B567915E69F5900EB8B54 /* ECTwitterIOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 228B568D15E69F5900EB8B54 /* Build configuration list for PBXNativeTarget "ECTwitterIOS Tests" */;
+			buildConfigurationList = 228B568D15E69F5900EB8B54 /* Build configuration list for PBXNativeTarget "ECTwitterIOSTests" */;
 			buildPhases = (
 				228B567515E69F5900EB8B54 /* Sources */,
 				228B567615E69F5900EB8B54 /* Frameworks */,
@@ -562,7 +562,7 @@
 			dependencies = (
 				228B569615E6A40F00EB8B54 /* PBXTargetDependency */,
 			);
-			name = "ECTwitterIOS Tests";
+			name = ECTwitterIOSTests;
 			productName = "IOS Testing";
 			productReference = 228B567A15E69F5900EB8B54 /* ECTwitterIOS Tests.octest */;
 			productType = "com.apple.product-type.bundle";
@@ -648,7 +648,7 @@
 				8DC2EF4F0486A6940098B216 /* ECTwitterMac */,
 				22F08E1715E62D04003E8456 /* ECTwitterIOS */,
 				22BA9D7715E678CD00861F75 /* ECTwitterMacTests */,
-				228B567915E69F5900EB8B54 /* ECTwitterIOS Tests */,
+				228B567915E69F5900EB8B54 /* ECTwitterIOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -946,7 +946,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		228B568D15E69F5900EB8B54 /* Build configuration list for PBXNativeTarget "ECTwitterIOS Tests" */ = {
+		228B568D15E69F5900EB8B54 /* Build configuration list for PBXNativeTarget "ECTwitterIOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				228B568B15E69F5900EB8B54 /* Debug */,
