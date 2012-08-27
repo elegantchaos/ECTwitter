@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		225F3E6315E921AC0009E152 /* ECTwitterHandlerBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 225F3E6215E921AC0009E152 /* ECTwitterHandlerBlock.h */; };
-		225F3E6415E921AC0009E152 /* ECTwitterHandlerBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 225F3E6215E921AC0009E152 /* ECTwitterHandlerBlock.h */; };
+		225F3E6315E921AC0009E152 /* ECTwitterHandlerBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 225F3E6215E921AC0009E152 /* ECTwitterHandlerBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		225F3E6415E921AC0009E152 /* ECTwitterHandlerBlock.h in Headers */ = {isa = PBXBuildFile; fileRef = 225F3E6215E921AC0009E152 /* ECTwitterHandlerBlock.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		228B562915E6935200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
 		228B562B15E6937200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
 		228B567C15E69F5900EB8B54 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B567B15E69F5900EB8B54 /* SenTestingKit.framework */; };
