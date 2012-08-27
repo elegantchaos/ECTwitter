@@ -182,6 +182,11 @@ NSString *const AuthenticatedTokenKey = @"token";
     return [self.usersByID objectForKey:userID.string];
 }
 
+- (NSArray*)allUsers
+{
+    return [self.usersByID allValues];
+}
+
 - (void)addTweet:(ECTwitterTweet*)tweet withID:(ECTwitterID*)tweetID
 {
     [self.tweets setObject:tweetID forKey:tweetID.string];

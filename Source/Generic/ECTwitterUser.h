@@ -60,4 +60,8 @@
 - (void)requestFollowers;
 - (void)requestFriends;
 
+- (void)setFavouritedStateForTweet:(ECTwitterTweet*)tweet to:(BOOL)state;
+- (void)postText:(NSString*)text inReplyTo:(ECTwitterTweet*)tweet;
+- (void)retweet:(ECTwitterTweet*)tweet;
+
 @end

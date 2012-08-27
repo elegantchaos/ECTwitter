@@ -144,6 +144,10 @@
 
 - (ECTwitterUser*)existingUserWithID:(ECTwitterID*)userID;
 
+/// Return all the users that we know about.
+/// @return An array of all cached users.
+
+- (NSArray*)allUsers;
 
 /// --------------------------------------------------------------------------
 /// @name Adding To The Cache
