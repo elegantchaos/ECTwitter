@@ -343,6 +343,40 @@ NSString *const AuthenticatedTokenKey = @"token";
     }
 
 }
+
+// --------------------------------------------------------------------------
+//! Return a dictionary of the tweets to save.
+// --------------------------------------------------------------------------
+
+- (NSDictionary*)tweetsToSave
+{
+    NSArray* allTweets = [self.tweets allValues];
+    NSArray* sortedTweets = [allTweets sortedArrayUsingSelector:@selector(compareByViewsDateDescending:)];
+    NSUInteger count = [sortedTweets count];
+    NSMutableDictionary* tweets = [NSMutableDictionary dictionaryWithCapacity:count];
+    for (ECTwitterTweet* tweet in sortedTweets)
+    {
+        [tweets setObject:tweet forKey:tweet.twitterID.string];
+        if (--count == 0)
+        {
+            break;
+        }
+    }
+
+    // save mentions of authenticated users
+    for (NSString* name in self.authenticated)
+    {
+        ECTwitterUser* user = [self.usersByName objectForKey:name];
+        NSArray* mentions = user.mentions.tweets;
+        for (ECTwitterTweet* tweet in mentions)
+        {
+            [tweets setObject:tweet forKey:tweet.twitterID.string];
+        }
+    }
+    
+    return tweets;
+}
+
 // --------------------------------------------------------------------------
 /// Save current users and tweets to a local cache.
 // --------------------------------------------------------------------------
@@ -352,35 +386,16 @@ NSString *const AuthenticatedTokenKey = @"token";
     NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
 
+    // archive all users
     [archiver encodeObject:self.usersByID forKey:@"users"];
 
-    // save recent tweets
-    NSArray* allTweets = [self.tweets allValues];
-    NSArray* sortedTweets = [allTweets sortedArrayUsingSelector:@selector(compareByViewsDateDescending:)];
-    NSUInteger count = [sortedTweets count];
-    count = MIN(count, self.maxCached);
-    NSMutableDictionary* recentTweets = [NSMutableDictionary dictionaryWithCapacity:count];
-    for (ECTwitterTweet* tweet in sortedTweets)
-    {
-        [recentTweets setObject:tweet forKey:tweet.twitterID.string];
-        if (--count == 0)
-        {
-            break;
-        }
-    }
+    // archive recent tweets
+    NSDictionary* tweets = [self tweetsToSave];
+    [archiver encodeObject:tweets forKey:@"tweets"];
 
-    // save mentions of authenticated users
-    for (ECTwitterUser* user in [self.authenticated allValues])
-    {
-        NSArray* mentions = user.mentions.tweets;
-        for (ECTwitterTweet* tweet in mentions)
-        {
-            [recentTweets setObject:tweet forKey:tweet.twitterID.string];
-        }
-    }
-    
-    [archiver encodeObject:recentTweets forKey:@"tweets"];
+    // archive authentication information
     [archiver encodeObject:self.authenticated forKey:@"authenticated"];
+
     [archiver finishEncoding];
     
     NSURL* url = [self mainCacheFile];
