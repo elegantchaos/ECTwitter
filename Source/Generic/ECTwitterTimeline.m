@@ -86,10 +86,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
         for (ECTwitterID* tweetId in tweetIds)
         {
             ECTwitterTweet* tweet = [cache tweetWithID:tweetId];
-            if (![tweet isKindOfClass:[ECTwitterTweet class]])
-            {
-                NSLog(@"blah");
-            }
+            ECAssertIsKindOfClass(tweet, ECTwitterTweet);
             [cachedTweets addObject:tweet];
         }
 
@@ -154,10 +151,6 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 
 - (void) addTweet:(ECTwitterTweet*)tweet
 {
-    if (tweet && ![tweet isKindOfClass:[ECTwitterTweet class]])
-    {
-        NSLog(@"blah");
-    }
     ECAssertIsKindOfClass(tweet, ECTwitterTweet);
 
 	NSMutableArray* array = self.tweets;

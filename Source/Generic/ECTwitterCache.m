@@ -190,10 +190,6 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
 - (void)addTweet:(ECTwitterTweet*)tweet withID:(ECTwitterID*)tweetID
 {
-    if (![tweet isKindOfClass:[ECTwitterTweet class]])
-    {
-        NSLog(@"blah");
-    }
     ECAssertIsKindOfClass(tweet, ECTwitterTweet);
     [self.tweets setObject:tweet forKey:tweetID.string];
 }
@@ -208,10 +204,6 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 {
 	ECTwitterID* tweetID = [ECTwitterID idFromDictionary:info];
 	ECTwitterTweet* tweet = [self.tweets objectForKey:tweetID.string];
-    if (tweet && ![tweet isKindOfClass:[ECTwitterTweet class]])
-    {
-        NSLog(@"blah");
-    }
     ECAssertIsKindOfClass(tweet, ECTwitterTweet);
 	if (!tweet)
 	{
@@ -437,6 +429,19 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
 }
 
+- (void)validateCachedData
+{
+    for (ECTwitterTweet* tweet in [self.tweets allValues])
+    {
+        ECAssertIsKindOfClass(tweet, ECTwitterTweet);
+    }
+
+    for (ECTwitterUser* user in [self.usersByID allValues])
+    {
+        ECAssertIsKindOfClass(user, ECTwitterUser);
+    }
+}
+
 // --------------------------------------------------------------------------
 /// Load users and tweets from a local cache.
 // --------------------------------------------------------------------------
@@ -457,14 +462,9 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     {
         NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
 
-        for (ECTwitterTweet* tweet in self.tweets)
-        {
-            if (tweet && ![tweet isKindOfClass:[ECTwitterTweet class]])
-            {
-                NSLog(@"blah");
-            }
-            ECAssertIsKindOfClass(tweet, ECTwitterTweet);
-        }
+#if EC_DEBUG
+        [self validateCachedData];
+#endif
 
         // unarchive the users & tweets
         // just loading them in is enough to add them to the cache,
@@ -479,23 +479,9 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
         
         [unarchiver release];
 
-        for (ECTwitterTweet* tweet in [self.tweets allValues])
-        {
-            if (tweet && ![tweet isKindOfClass:[ECTwitterTweet class]])
-            {
-                NSLog(@"blah");
-            }
-            ECAssertIsKindOfClass(tweet, ECTwitterTweet);
-        }
-
-        for (ECTwitterUser* user in [self.usersByID allValues])
-        {
-            if (![user isKindOfClass:[ECTwitterUser class]])
-            {
-                NSLog(@"blah");
-            }
-            ECAssertIsKindOfClass(user, ECTwitterUser);
-        }
+#if EC_DEBUG
+        [self validateCachedData];
+#endif
         
         [self removeMissingTweets];
         
