@@ -84,10 +84,10 @@ static ECTwitterCache* gDecodingCache = nil;
 // Constants
 // ==============================================
 
-NSString *const kProvider = @"ECTwitterEngine";
-
 NSString *const AuthenticatedIDKey = @"id";
 NSString *const AuthenticatedTokenKey = @"token";
+
+NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
 // ==============================================
 // Methods
@@ -163,6 +163,7 @@ NSString *const AuthenticatedTokenKey = @"token";
 - (ECTwitterUser*)userWithName:(NSString *)name
 {
     ECTwitterUser* result = [self.usersByName objectForKey:name];
+    ECAssertIsKindOfClass(result, ECTwitterUser);
     if (!result)
     {
         NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:name, @"screen_name", nil];
@@ -189,7 +190,12 @@ NSString *const AuthenticatedTokenKey = @"token";
 
 - (void)addTweet:(ECTwitterTweet*)tweet withID:(ECTwitterID*)tweetID
 {
-    [self.tweets setObject:tweetID forKey:tweetID.string];
+    if (![tweet isKindOfClass:[ECTwitterTweet class]])
+    {
+        NSLog(@"blah");
+    }
+    ECAssertIsKindOfClass(tweet, ECTwitterTweet);
+    [self.tweets setObject:tweet forKey:tweetID.string];
 }
 
 - (void)addUser:(ECTwitterUser*)user withID:(ECTwitterID*)userID
@@ -202,6 +208,11 @@ NSString *const AuthenticatedTokenKey = @"token";
 {
 	ECTwitterID* tweetID = [ECTwitterID idFromDictionary:info];
 	ECTwitterTweet* tweet = [self.tweets objectForKey:tweetID.string];
+    if (tweet && ![tweet isKindOfClass:[ECTwitterTweet class]])
+    {
+        NSLog(@"blah");
+    }
+    ECAssertIsKindOfClass(tweet, ECTwitterTweet);
 	if (!tweet)
 	{
 		tweet = [[ECTwitterTweet alloc] initWithInfo:info inCache:self];
@@ -210,7 +221,14 @@ NSString *const AuthenticatedTokenKey = @"token";
 	}
 	else
 	{
-		[tweet refreshWithInfo:info];
+		@try
+        {
+            [tweet refreshWithInfo:info];
+        }
+        @catch (NSException*exception) {
+
+            NSLog(@"blah");
+        }
 	}
 	
 	NSDictionary* authorData = [info objectForKey:@"user"];
@@ -383,18 +401,27 @@ NSString *const AuthenticatedTokenKey = @"token";
 
 - (void) save
 {
+    // authentication info goes into user preferences
+    [[NSUserDefaults standardUserDefaults] setObject:self.authenticated forKey:@"authenticated"];
+
     NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-
+    [archiver setOutputFormat:NSPropertyListXMLFormat_v1_0];
+    
     // archive all users
     [archiver encodeObject:self.usersByID forKey:@"users"];
 
     // archive recent tweets
     NSDictionary* tweets = [self tweetsToSave];
-    [archiver encodeObject:tweets forKey:@"tweets"];
+    for (ECTwitterTweet* tweet in [tweets allValues])
+    {
+        if (tweet && ![tweet isKindOfClass:[ECTwitterTweet class]])
+        {
+            NSLog(@"blah");
+        }
+    }
 
-    // archive authentication information
-    [archiver encodeObject:self.authenticated forKey:@"authenticated"];
+    [archiver encodeObject:tweets forKey:@"tweets"];
 
     [archiver finishEncoding];
     
@@ -416,16 +443,27 @@ NSString *const AuthenticatedTokenKey = @"token";
 
 - (void) load
 {
+    // authentication info comes from the user defaults
+    NSMutableDictionary* authenticated = [[[NSUserDefaults standardUserDefaults] objectForKey:@"authenticated"] mutableCopy];
+    if (authenticated)
+    {
+        self.authenticated = authenticated;
+        [authenticated release];
+    }
+
     NSURL* url = [self mainCacheFile];
     NSData* data = [NSData dataWithContentsOfURL:url];
     if (data)
     {
         NSKeyedUnarchiver* unarchiver = [[NSKeyedUnarchiver alloc] initForReadingWithData:data];
-        NSMutableDictionary* authenticated = [[unarchiver decodeObjectForKey:@"authenticated"] mutableCopy];
-        if (authenticated)
+
+        for (ECTwitterTweet* tweet in self.tweets)
         {
-            self.authenticated = authenticated;
-            [authenticated release];
+            if (tweet && ![tweet isKindOfClass:[ECTwitterTweet class]])
+            {
+                NSLog(@"blah");
+            }
+            ECAssertIsKindOfClass(tweet, ECTwitterTweet);
         }
 
         // unarchive the users & tweets
@@ -440,6 +478,24 @@ NSString *const AuthenticatedTokenKey = @"token";
         }
         
         [unarchiver release];
+
+        for (ECTwitterTweet* tweet in [self.tweets allValues])
+        {
+            if (tweet && ![tweet isKindOfClass:[ECTwitterTweet class]])
+            {
+                NSLog(@"blah");
+            }
+            ECAssertIsKindOfClass(tweet, ECTwitterTweet);
+        }
+
+        for (ECTwitterUser* user in [self.usersByID allValues])
+        {
+            if (![user isKindOfClass:[ECTwitterUser class]])
+            {
+                NSLog(@"blah");
+            }
+            ECAssertIsKindOfClass(user, ECTwitterUser);
+        }
         
         [self removeMissingTweets];
         
@@ -479,7 +535,7 @@ NSString *const AuthenticatedTokenKey = @"token";
 - (NSURL*)mainCacheFile
 {
     NSURL* root = [self baseCacheFolder];
-    NSURL* url = [root URLByAppendingPathComponent:@"ECTwitter Cache V6.cache"];
+    NSURL* url = [root URLByAppendingPathComponent:CacheFilename];
     
 	return url;
 }

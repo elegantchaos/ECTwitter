@@ -73,6 +73,10 @@ ECDefineDebugChannel(TweetChannel);
     ECTwitterTweet* existing = [cache existingTweetWithID:tweetID];
     if (existing)
     {
+        if (![existing isKindOfClass:[ECTwitterTweet class]])
+        {
+            NSLog(@"blah");
+        }
         // use the cached instance instead of this one
         [self release];
         self = [existing retain];

@@ -114,16 +114,19 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
         ECAssertIsKindOfClass(handler.result, NSDictionary);
         
         NSDictionary* result = handler.result;
-        self.maxID = [ECTwitterID idFromKey:@"max_id_str" dictionary:result];
-        
-        NSArray* results = [handler.result objectForKey:@"results"];
-		for (NSDictionary* tweetData in results)
-		{
-			ECTwitterTweet* tweet = [self.cache addOrRefreshTweetWithInfo:tweetData];
-			[self addTweet:tweet];
-			
-			ECDebug(TwitterSearchTimelineChannel, @"tweet info received:%@", tweet);
-		}
+        if (result)
+        {
+            self.maxID = [ECTwitterID idFromKey:@"max_id_str" dictionary:result];
+
+            NSArray* results = [handler.result objectForKey:@"results"];
+            for (NSDictionary* tweetData in results)
+            {
+                ECTwitterTweet* tweet = [self.cache addOrRefreshTweetWithInfo:tweetData];
+                [self addTweet:tweet];
+
+                ECDebug(TwitterSearchTimelineChannel, @"tweet info received:%@", tweet);
+            }
+        }
 	}
 	else
 	{

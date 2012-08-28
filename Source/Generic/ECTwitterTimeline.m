@@ -85,7 +85,12 @@ ECDefineDebugChannel(TwitterTimelineChannel);
         NSMutableArray* cachedTweets = [NSMutableArray arrayWithCapacity:[tweetIds count]];
         for (ECTwitterID* tweetId in tweetIds)
         {
-            [cachedTweets addObject:[cache tweetWithID:tweetId]];
+            ECTwitterTweet* tweet = [cache tweetWithID:tweetId];
+            if (![tweet isKindOfClass:[ECTwitterTweet class]])
+            {
+                NSLog(@"blah");
+            }
+            [cachedTweets addObject:tweet];
         }
 
         ECTwitterID* oldestId = [coder decodeObjectForKey:@"oldest"];
@@ -149,6 +154,12 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 
 - (void) addTweet:(ECTwitterTweet*)tweet
 {
+    if (tweet && ![tweet isKindOfClass:[ECTwitterTweet class]])
+    {
+        NSLog(@"blah");
+    }
+    ECAssertIsKindOfClass(tweet, ECTwitterTweet);
+
 	NSMutableArray* array = self.tweets;
 	if (!array)
 	{
