@@ -51,6 +51,7 @@
 // ==============================================
 
 ECDefineDebugChannel(TwitterCacheChannel);
+ECDefineDebugChannel(TwitterCacheCodingChannel);
 
 // ==============================================
 // Properties
@@ -398,7 +399,6 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
     NSMutableData *data = [[NSMutableData alloc] init];
     NSKeyedArchiver *archiver = [[NSKeyedArchiver alloc] initForWritingWithMutableData:data];
-    [archiver setOutputFormat:NSPropertyListXMLFormat_v1_0];
     
     // archive all users
     [archiver encodeObject:self.usersByID forKey:@"users"];
@@ -542,25 +542,29 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
 - (ECTwitterUser*)authenticatedUserWithName:(NSString*)userName
 {
-    ECTwitterUser* result = nil;
-    NSDictionary* authenticationInfo = [self.authenticated objectForKey:userName];
-    if (authenticationInfo)
+    ECTwitterUser* result = [self userWithName:userName];
+    if (result.authentication == nil)
     {
-        ECTwitterID* savedID = [ECTwitterID idFromKey:AuthenticatedIDKey dictionary:authenticationInfo];
-        NSData* savedToken = [authenticationInfo objectForKey:AuthenticatedTokenKey];
-        if (savedID && savedToken)
+        NSDictionary* authenticationInfo = [self.authenticated objectForKey:userName];
+        if (authenticationInfo)
         {
-            OAToken* token = [NSKeyedUnarchiver unarchiveObjectWithData:savedToken];
-            if ([token isValid])
+            ECTwitterID* savedID = [ECTwitterID idFromKey:AuthenticatedIDKey dictionary:authenticationInfo];
+            NSData* savedToken = [authenticationInfo objectForKey:AuthenticatedTokenKey];
+            if (savedID && savedToken)
             {
-                ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] initWithEngine:self.engine];
-                authentication.token = token;
-                authentication.user = userName;
+                OAToken* token = [NSKeyedUnarchiver unarchiveObjectWithData:savedToken];
+                if ([token isValid])
+                {
+                    ECTwitterAuthentication* authentication = [[ECTwitterAuthentication alloc] initWithEngine:self.engine];
+                    authentication.token = token;
+                    authentication.user = userName;
 
-                result = [self userWithID:savedID requestIfMissing:NO];
-                result.authentication = authentication;
-
-                [authentication release];
+                    result = [self userWithID:savedID requestIfMissing:NO];
+                    result.authentication = authentication;
+                    result.twitterName = userName;
+                    [self.usersByName setObject:result forKey:userName];
+                    [authentication release];
+                }
             }
         }
     }
@@ -600,10 +604,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 - (void)finishAuthentication:(ECTwitterAuthentication*)authentication forUser:(ECTwitterUser*)user name:(NSString*)name
 {
     user.authentication = authentication;
-    if (!user.twitterName)
-    {
-        [user refreshWithInfo:[NSDictionary dictionaryWithObject:name forKey:@"screen_name"]];
-    }
+    user.twitterName = name;
 
     NSString* userID = user.twitterID.string;
     NSData* userToken = [NSKeyedArchiver archivedDataWithRootObject:authentication.token];

@@ -30,6 +30,7 @@
 @implementation ECTwitterUser
 
 ECDefineDebugChannel(TwitterUserChannel);
+ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 // --------------------------------------------------------------------------
 // Properties
@@ -101,7 +102,8 @@ ECDefineDebugChannel(TwitterUserChannel);
         ECAssert(self.posts.user == self);
         ECAssert(self.mentions.user == self);
     }
-    
+
+    ECDebug(TwitterCacheCodingChannel, @"decoded %@", self);
     return self;
 }
 
@@ -206,6 +208,31 @@ ECDefineDebugChannel(TwitterUserChannel);
 - (NSString*)twitterName
 {
 	return [self.data objectForKey:@"screen_name"];
+}
+
+// --------------------------------------------------------------------------
+//! Set the twitter name of the user.
+//! Generally this should be set already, but if we've got no data,
+//! we fill in a minimal data dictionary with the name, along with
+//! the ID.
+// --------------------------------------------------------------------------
+
+- (void)setTwitterName:(NSString *)twitterName
+{
+    if ([self gotData])
+    {
+        ECAssert([self.twitterName isEqualToString:twitterName]);
+    }
+    else
+    {
+        NSDictionary* data = [NSDictionary dictionaryWithObjectsAndKeys:
+                              twitterName, @"screen_name",
+                              self.twitterID.string, @"id_str",
+                              nil];
+
+        self.data = data;
+        [self.cache cacheUserName:self];
+    }
 }
 
 // --------------------------------------------------------------------------
@@ -448,6 +475,7 @@ ECDefineDebugChannel(TwitterUserChannel);
 
 - (void)encodeWithCoder:(NSCoder*)coder
 {
+    ECDebug(TwitterCacheCodingChannel, @"encoded %@", self);
 	NSDictionary* info = self.data;
 	if (!info)
 	{

@@ -121,6 +121,15 @@
 - (ECTwitterUser*)userWithName:(NSString*)name;
 
 
+/// Ensure that the name for the given user is cached, so that it
+/// can be looked up by name as well as id.
+/// @note This is for internal use, and shouldn't need to be called by client code.
+///
+/// @param user The user who's name we want to cache.
+
+- (void)cacheUserName:(ECTwitterUser*)user;
+
+
 /// Return an image for the object with a given ID.
 /// The image may be fetched on demand, or cached locally.
 ///

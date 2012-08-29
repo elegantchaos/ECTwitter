@@ -49,6 +49,7 @@
 - (NSString*)name;
 - (NSString*)twitterName;
 - (NSString*)longDisplayName;
+- (void)setTwitterName:(NSString*)twitterName;
 
 - (NSString*)bio;
 

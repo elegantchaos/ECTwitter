@@ -19,6 +19,7 @@
 @interface ECTwitterEngine()
 
 @property (strong, nonatomic) MGTwitterEngine* engine;
+@property (strong, nonatomic) NSMutableArray* errors;
 @property (strong, nonatomic) NSMutableDictionary* requests;
 
 - (void)setHandler:(ECTwitterHandler*)handler forRequest:(NSString*)request;
@@ -41,12 +42,15 @@ ECDeclareLogChannel(ErrorChannel);
 // Constants
 // --------------------------------------------------------------------------
 
+static const BOOL xkReportErrors = NO;
+
 // --------------------------------------------------------------------------
 // Properties
 // --------------------------------------------------------------------------
 
 @synthesize consumerKey = _consumerKey;
 @synthesize consumerSecret = _consumerSecret;
+@synthesize errors = _errors;
 @synthesize engine = _engine;
 @synthesize requests = _requests;
 
@@ -70,6 +74,7 @@ ECDeclareLogChannel(ErrorChannel);
         self.consumerKey = consumerKey;
         self.consumerSecret = consumerSecret;
 		self.engine = newEngine;
+        self.errors = [NSMutableArray array];
         
 		[newEngine release];
         
@@ -249,7 +254,13 @@ ECDeclareLogChannel(ErrorChannel);
     NSString* es = [error description];
     NSString* us = [error.userInfo description];
     NSString* ds = [context description];
-    [ECErrorReporter reportError:error message:@"%@ - %@ (in context %@)", es, us, ds];
+    [self.errors addObject:error];
+
+    ECErrorAndMessage* eam = [[ECErrorAndMessage alloc] init];
+    eam.error = error;
+    eam.message = [NSString stringWithFormat:@"%@ - %@ (in context %@)", es, us, ds];
+    ECLog(ErrorChannel, eam);
+    [eam release];
 }
 
 @end

@@ -32,6 +32,7 @@
 #pragma mark - Channels
 
 ECDefineDebugChannel(TwitterTimelineChannel);
+ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 // ==============================================
 // Properties
@@ -104,6 +105,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
         self.tweets = cachedTweets;
     }
     
+    ECDebug(TwitterCacheCodingChannel, @"decoded %@", self);
     return self;
 }
 
@@ -126,6 +128,7 @@ ECDefineDebugChannel(TwitterTimelineChannel);
 
 - (void)encodeWithCoder:(NSCoder*)coder
 {
+    ECDebug(TwitterCacheCodingChannel, @"encoded %@", self);
     NSMutableArray* tweetIds = [NSMutableArray arrayWithCapacity:[self.tweets count]];
     for (ECTwitterTweet* tweet in self.tweets)
     {

@@ -26,6 +26,9 @@
 
 @implementation ECTwitterUserList
 
+ECDefineDebugChannel(TwitterUserListChannel);
+ECDeclareDebugChannel(TwitterCacheCodingChannel);
+
 // ==============================================
 // Properties
 // ==============================================
@@ -82,6 +85,7 @@
         self.users = cachedUsers;
     }
     
+    ECDebug(TwitterCacheCodingChannel, @"decoded %@", self);
     return self;
 }
 
@@ -104,6 +108,7 @@
 
 - (void)encodeWithCoder:(NSCoder*)coder
 {
+    ECDebug(TwitterCacheCodingChannel, @"encoded %@", self);
     NSMutableArray* userIds = [NSMutableArray arrayWithCapacity:[self.users count]];
     for (ECTwitterUser* user in self.users)
     {

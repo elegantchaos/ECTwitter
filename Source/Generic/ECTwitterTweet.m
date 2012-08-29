@@ -19,6 +19,7 @@
 @implementation ECTwitterTweet
 
 ECDefineDebugChannel(TweetChannel);
+ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 // --------------------------------------------------------------------------
 // Properties
@@ -97,6 +98,7 @@ ECDefineDebugChannel(TweetChannel);
         [self refreshWithInfo:info];
     }
     
+    ECDebug(TwitterCacheCodingChannel, @"decoded %@", self);
     return self;
 }
 
@@ -357,6 +359,7 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 
 - (void)encodeWithCoder:(NSCoder*)coder
 {
+    ECDebug(TwitterCacheCodingChannel, @"encoded %@", self);
 	NSDictionary* info = self.data;
 	if (!info)
 	{
