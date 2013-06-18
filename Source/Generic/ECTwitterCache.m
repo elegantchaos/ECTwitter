@@ -164,11 +164,14 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 - (ECTwitterUser*)userWithName:(NSString *)name
 {
     ECTwitterUser* result = [self.usersByName objectForKey:name];
-    ECAssertIsKindOfClass(result, ECTwitterUser);
     if (!result)
     {
         NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:name, @"screen_name", nil];
         [self.engine callGetMethod:@"users/show" parameters:parameters authentication:self.defaultAuthenticatedUser.authentication target:self selector:@selector(userInfoHandler:) extra:nil];
+    }
+    else
+    {
+        ECAssertIsKindOfClass(result, ECTwitterUser);
     }
 
     return result;
