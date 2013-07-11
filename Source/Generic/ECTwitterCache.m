@@ -151,10 +151,13 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 	if (!user)
 	{
 		user = [[[ECTwitterUser alloc] initWithID:userID inCache:self] autorelease];
-		(self.usersByID)[userID.string] = user;
-        if (requestIfMissing)
+        if (user && userID)
         {
-            [self requestUserByID:userID];
+            self.usersByID[userID.string] = user;
+            if (requestIfMissing)
+            {
+                [self requestUserByID:userID];
+            }
         }
 	}
 	

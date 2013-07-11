@@ -295,7 +295,8 @@ static yajl_callbacks callbacks = {
         }
         
         ECDebug(MGTwitterEngineParsingChannel, @"added item: %@ (%@) to dictionary as key %@", value, [value class], self.currentKey);
-        (self.currentDictionary)[self.currentKey] = value;
+        if (value)
+            self.currentDictionary[self.currentKey] = value;
     }
 	else
     {
