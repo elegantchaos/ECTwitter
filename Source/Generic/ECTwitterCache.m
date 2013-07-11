@@ -147,7 +147,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     ECAssertNonNil(userID);
     ECAssertNonNil(userID.string);
     
-	ECTwitterUser* user = (self.usersByID)[userID.string];
+	ECTwitterUser* user = self.usersByID[userID.string];
 	if (!user)
 	{
 		user = [[[ECTwitterUser alloc] initWithID:userID inCache:self] autorelease];
@@ -312,6 +312,10 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
         ECDebug(TwitterCacheChannel, @"user info received:%@", user.name);
 	}
+    else
+    {
+        ECDebug(TwitterCacheChannel, @"user info failed:%@", handler.error);
+    }
 }
 
 
@@ -549,7 +553,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     ECTwitterUser* result = [self userWithName:userName];
     if (result.authentication == nil)
     {
-        NSDictionary* authenticationInfo = (self.authenticated)[userName];
+        NSDictionary* authenticationInfo = self.authenticated[userName];
         if (authenticationInfo)
         {
             ECTwitterID* savedID = [ECTwitterID idFromKey:AuthenticatedIDKey dictionary:authenticationInfo];
@@ -592,8 +596,8 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
             {
                 NSDictionary* info = handler.result;
                 ECTwitterID* userID = [ECTwitterID idFromKey:@"user_id" dictionary:info];
-                ECTwitterUser* user2 = [self userWithID:userID requestIfMissing:YES];
-                [self finishAuthentication:authentication forUser:user2 name:name];
+                ECTwitterUser* authenticatedUser = [self userWithID:userID requestIfMissing:YES];
+                [self finishAuthentication:authentication forUser:authenticatedUser name:name];
             }
             else
             {
@@ -614,7 +618,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     NSData* userToken = [NSKeyedArchiver archivedDataWithRootObject:authentication.token];
     NSDictionary* authenticationInfo = @{AuthenticatedIDKey: userID,
                               AuthenticatedTokenKey: userToken};
-    (self.authenticated)[name] = authenticationInfo;
+    self.authenticated[name] = authenticationInfo;
 
     [[NSNotificationCenter defaultCenter] postNotificationName:ECTwitterUserAuthenticated object:name];
 }

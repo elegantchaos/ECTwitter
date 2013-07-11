@@ -22,6 +22,8 @@
 
 @implementation ECTwitterCacheTests
 
+ECDeclareDebugChannel(TwitterCacheChannel);
+
 - (NSString*)readSetting:(NSString*)name
 {
     [[NSUserDefaults standardUserDefaults] setObject:@"test" forKey:@"test"];
@@ -39,6 +41,8 @@
 
 - (void)setUp
 {
+    ECEnableChannel(TwitterCacheChannel);
+
     NSString* name = @"ECTwitter Unit Tests";
     NSString* version = @"1.0";
     NSURL* url = [NSURL URLWithString:@"https://http://elegantchaos.github.com/ECTwitter/Documentation"];

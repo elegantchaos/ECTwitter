@@ -49,7 +49,7 @@ ECDefineDebugChannel(MGTwitterEngineChannel);
 #pragma mark - Constants
 
 static NSString *const kAPIFormat              = @"json";
-static NSString *const kTwitterDomain          = @"api.twitter.com/1";
+static NSString *const kTwitterDomain          = @"api.twitter.com/1.1";
 static NSString *const kSearchDomain           = @"search.twitter.com";
 static NSString *const kPostMethod             = @"POST";
 
