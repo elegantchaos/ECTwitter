@@ -627,7 +627,8 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
                               AuthenticatedTokenKey: userToken};
     self.authenticated[name] = authenticationInfo;
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:ECTwitterUserAuthenticated object:name];
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+    [nc postNotificationName:ECTwitterUserAuthenticated object:name];
 }
 
 - (NSArray*)authenticatedUsers
