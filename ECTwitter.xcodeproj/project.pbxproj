@@ -12,20 +12,16 @@
 		228B562915E6935200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
 		228B562B15E6937200EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
 		228B567C15E69F5900EB8B54 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B567B15E69F5900EB8B54 /* SenTestingKit.framework */; };
-		228B567E15E69F5900EB8B54 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B567D15E69F5900EB8B54 /* UIKit.framework */; };
-		228B568015E69F5900EB8B54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B567F15E69F5900EB8B54 /* Foundation.framework */; };
 		228B568F15E69F8000EB8B54 /* ECTwitterEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */; };
 		228B569015E69F8900EB8B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
 		228B569115E69F8A00EB8B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
 		228B569215E69F8A00EB8B54 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 22F08CFE15E56ABE003E8456 /* InfoPlist.strings */; };
-		228B569815E6A81A00EB8B54 /* ECConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA015E67F3D00861F75 /* ECConfig.framework */; };
 		228B569915E6A81A00EB8B54 /* ECCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA115E67F3D00861F75 /* ECCore.framework */; };
 		228B569A15E6A81A00EB8B54 /* ECLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA215E67F3D00861F75 /* ECLogging.framework */; };
 		228B569B15E6A81A00EB8B54 /* ECOAuthConsumer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA315E67F3D00861F75 /* ECOAuthConsumer.framework */; };
 		228B569C15E6A81A00EB8B54 /* ECRegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA415E67F3D00861F75 /* ECRegexKitLite.framework */; };
 		228B569D15E6A81A00EB8B54 /* ECUnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA515E67F3D00861F75 /* ECUnitTests.framework */; };
 		228B56A015E6A84400EB8B54 /* YAJL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B562815E6935200EB8B54 /* YAJL.framework */; };
-		228B56A215E6A96B00EB8B54 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56A115E6A96B00EB8B54 /* UIKit.framework */; };
 		228B56A415E6A97A00EB8B54 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56A315E6A97A00EB8B54 /* QuartzCore.framework */; };
 		228B56A615E6A98800EB8B54 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B56A515E6A98800EB8B54 /* CoreGraphics.framework */; };
 		228B56A815E6A9E600EB8B54 /* ECTwitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* ECTwitter.framework */; };
@@ -34,21 +30,19 @@
 		228B56AE15E7934400EB8B54 /* ECTwitterCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 228B56AD15E7934400EB8B54 /* ECTwitterCacheTests.m */; };
 		228B56AF15E7934400EB8B54 /* ECTwitterCacheTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 228B56AD15E7934400EB8B54 /* ECTwitterCacheTests.m */; };
 		2290468F12E87585006D8278 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2290468E12E87585006D8278 /* CoreLocation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		22BA9D7A15E678CE00861F75 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9D7915E678CE00861F75 /* SenTestingKit.framework */; };
 		22BA9D8E15E678F100861F75 /* ECTwitterEngineTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */; };
 		22BA9D9F15E67F3D00861F75 /* ECTwitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8DC2EF5B0486A6940098B216 /* ECTwitter.framework */; };
-		22BA9DA615E67F3D00861F75 /* ECConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA015E67F3D00861F75 /* ECConfig.framework */; };
 		22BA9DA715E67F3D00861F75 /* ECCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA115E67F3D00861F75 /* ECCore.framework */; };
 		22BA9DA815E67F3D00861F75 /* ECLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA215E67F3D00861F75 /* ECLogging.framework */; };
 		22BA9DA915E67F3D00861F75 /* ECOAuthConsumer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA315E67F3D00861F75 /* ECOAuthConsumer.framework */; };
 		22BA9DAA15E67F3D00861F75 /* ECRegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA415E67F3D00861F75 /* ECRegexKitLite.framework */; };
 		22BA9DAB15E67F3D00861F75 /* ECUnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA515E67F3D00861F75 /* ECUnitTests.framework */; };
 		22BA9DD915E6922600861F75 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
-		22BA9DDA15E6925800861F75 /* ECConfig.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA015E67F3D00861F75 /* ECConfig.framework */; };
 		22BA9DDB15E6925C00861F75 /* ECCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA115E67F3D00861F75 /* ECCore.framework */; };
 		22BA9DDC15E6925E00861F75 /* ECLogging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA215E67F3D00861F75 /* ECLogging.framework */; };
 		22BA9DDD15E6926100861F75 /* ECOAuthConsumer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA315E67F3D00861F75 /* ECOAuthConsumer.framework */; };
 		22BA9DDE15E6926400861F75 /* ECRegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22BA9DA415E67F3D00861F75 /* ECRegexKitLite.framework */; };
+		22BFA205178F04E8005D5A03 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228B567B15E69F5900EB8B54 /* SenTestingKit.framework */; };
 		22F08CAB15E56A35003E8456 /* ECTwitterAuthentication.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7415E56A34003E8456 /* ECTwitterAuthentication.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		22F08CAD15E56A35003E8456 /* ECTwitterAuthentication.m in Sources */ = {isa = PBXBuildFile; fileRef = 22F08C7515E56A34003E8456 /* ECTwitterAuthentication.m */; };
 		22F08CAF15E56A35003E8456 /* ECTwitterCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 22F08C7615E56A34003E8456 /* ECTwitterCache.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -143,9 +137,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
-		223CBAE61205C6380008A641 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		225F3E3515E8F2C90009E152 /* Extras */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Extras; sourceTree = "<group>"; };
 		225F3E3715E8F2D40009E152 /* .appledoc.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = .appledoc.plist; sourceTree = "<group>"; };
 		225F3E3815E8F2E10009E152 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; wrapsLines = 1; };
@@ -153,9 +145,6 @@
 		228B562815E6935200EB8B54 /* YAJL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = YAJL.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		228B567A15E69F5900EB8B54 /* ECTwitterIOSTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECTwitterIOSTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		228B567B15E69F5900EB8B54 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		228B567D15E69F5900EB8B54 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		228B567F15E69F5900EB8B54 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		228B56A115E6A96B00EB8B54 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		228B56A315E6A97A00EB8B54 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		228B56A515E6A98800EB8B54 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		228B56A915E6A9FF00EB8B54 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.0.sdk/System/Library/Frameworks/CoreLocation.framework; sourceTree = DEVELOPER_DIR; };
@@ -164,9 +153,7 @@
 		2290468E12E87585006D8278 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = /System/Library/Frameworks/CoreLocation.framework; sourceTree = "<absolute>"; };
 		22BA9D7215E6782400861F75 /* ECTwitterEngineTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ECTwitterEngineTests.m; sourceTree = "<group>"; };
 		22BA9D7815E678CD00861F75 /* ECTwitterMacTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECTwitterMacTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		22BA9D7915E678CE00861F75 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		22BA9D8F15E679B800861F75 /* Tests.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Tests.plist; sourceTree = "<group>"; };
-		22BA9DA015E67F3D00861F75 /* ECConfig.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ECConfig.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22BA9DA115E67F3D00861F75 /* ECCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ECCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22BA9DA215E67F3D00861F75 /* ECLogging.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ECLogging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		22BA9DA315E67F3D00861F75 /* ECOAuthConsumer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ECOAuthConsumer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -222,7 +209,6 @@
 		22F08CFF15E56ABE003E8456 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		22F08D0015E56ABE003E8456 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22F08E1815E62D04003E8456 /* ECTwitter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ECTwitter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		22F08E1915E62D04003E8456 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
 		22F08E6E15E63228003E8456 /* ECTwitterImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECTwitterImage.h; sourceTree = "<group>"; };
 		22F08E6F15E63228003E8456 /* ECTwitterImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ECTwitterImage.m; sourceTree = "<group>"; };
 		22F08EAA15E64501003E8456 /* ECTwitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ECTwitter.h; sourceTree = "<group>"; };
@@ -238,16 +224,12 @@
 				228B56AA15E6A9FF00EB8B54 /* CoreLocation.framework in Frameworks */,
 				228B56A615E6A98800EB8B54 /* CoreGraphics.framework in Frameworks */,
 				228B56A415E6A97A00EB8B54 /* QuartzCore.framework in Frameworks */,
-				228B56A215E6A96B00EB8B54 /* UIKit.framework in Frameworks */,
-				228B569815E6A81A00EB8B54 /* ECConfig.framework in Frameworks */,
 				228B569915E6A81A00EB8B54 /* ECCore.framework in Frameworks */,
 				228B569A15E6A81A00EB8B54 /* ECLogging.framework in Frameworks */,
 				228B569B15E6A81A00EB8B54 /* ECOAuthConsumer.framework in Frameworks */,
 				228B569C15E6A81A00EB8B54 /* ECRegexKitLite.framework in Frameworks */,
 				228B569D15E6A81A00EB8B54 /* ECUnitTests.framework in Frameworks */,
 				228B567C15E69F5900EB8B54 /* SenTestingKit.framework in Frameworks */,
-				228B567E15E69F5900EB8B54 /* UIKit.framework in Frameworks */,
-				228B568015E69F5900EB8B54 /* Foundation.framework in Frameworks */,
 				228B56A815E6A9E600EB8B54 /* ECTwitter.framework in Frameworks */,
 				228B56A015E6A84400EB8B54 /* YAJL.framework in Frameworks */,
 			);
@@ -258,14 +240,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				228B562915E6935200EB8B54 /* YAJL.framework in Frameworks */,
-				22BA9DA615E67F3D00861F75 /* ECConfig.framework in Frameworks */,
 				22BA9DA715E67F3D00861F75 /* ECCore.framework in Frameworks */,
 				22BA9DA815E67F3D00861F75 /* ECLogging.framework in Frameworks */,
 				22BA9DA915E67F3D00861F75 /* ECOAuthConsumer.framework in Frameworks */,
 				22BA9DAA15E67F3D00861F75 /* ECRegexKitLite.framework in Frameworks */,
+				22BFA205178F04E8005D5A03 /* SenTestingKit.framework in Frameworks */,
 				22BA9DAB15E67F3D00861F75 /* ECUnitTests.framework in Frameworks */,
 				22BA9D9F15E67F3D00861F75 /* ECTwitter.framework in Frameworks */,
-				22BA9D7A15E678CE00861F75 /* SenTestingKit.framework in Frameworks */,
 				22BA9DD915E6922600861F75 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -283,7 +264,6 @@
 			files = (
 				8DC2EF570486A6940098B216 /* Cocoa.framework in Frameworks */,
 				2290468F12E87585006D8278 /* CoreLocation.framework in Frameworks */,
-				22BA9DDA15E6925800861F75 /* ECConfig.framework in Frameworks */,
 				22BA9DDB15E6925C00861F75 /* ECCore.framework in Frameworks */,
 				22BA9DDC15E6925E00861F75 /* ECLogging.framework in Frameworks */,
 				22BA9DDD15E6926100861F75 /* ECOAuthConsumer.framework in Frameworks */,
@@ -323,44 +303,24 @@
 		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				228B562815E6935200EB8B54 /* YAJL.framework */,
-				22BA9DA015E67F3D00861F75 /* ECConfig.framework */,
-				22BA9DA115E67F3D00861F75 /* ECCore.framework */,
-				22BA9DA215E67F3D00861F75 /* ECLogging.framework */,
-				22BA9DA315E67F3D00861F75 /* ECOAuthConsumer.framework */,
-				22BA9DA415E67F3D00861F75 /* ECRegexKitLite.framework */,
-				22BA9DA515E67F3D00861F75 /* ECUnitTests.framework */,
-				223CBAE11205C5930008A641 /* iOS */,
-				1058C7B0FEA5585E11CA2CBB /* MacOS */,
-				22F08E1915E62D04003E8456 /* CoreFoundation.framework */,
-				228B567B15E69F5900EB8B54 /* SenTestingKit.framework */,
-				228B567D15E69F5900EB8B54 /* UIKit.framework */,
-				228B567F15E69F5900EB8B54 /* Foundation.framework */,
-				22BA9D7D15E678CE00861F75 /* Other Frameworks */,
+				22BFA203178F04A8005D5A03 /* Third Party */,
+				1058C7B0FEA5585E11CA2CBB /* System */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		1058C7B0FEA5585E11CA2CBB /* MacOS */ = {
-			isa = PBXGroup;
-			children = (
-				0867D69BFE84028FC02AAC07 /* Foundation.framework */,
-				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
-			);
-			name = MacOS;
-			sourceTree = "<group>";
-		};
-		223CBAE11205C5930008A641 /* iOS */ = {
+		1058C7B0FEA5585E11CA2CBB /* System */ = {
 			isa = PBXGroup;
 			children = (
 				228B56AB15E6AA0D00EB8B54 /* libicucore.dylib */,
 				228B56A915E6A9FF00EB8B54 /* CoreLocation.framework */,
 				228B56A515E6A98800EB8B54 /* CoreGraphics.framework */,
 				228B56A315E6A97A00EB8B54 /* QuartzCore.framework */,
-				228B56A115E6A96B00EB8B54 /* UIKit.framework */,
-				223CBAE61205C6380008A641 /* Foundation.framework */,
+				228B567B15E69F5900EB8B54 /* SenTestingKit.framework */,
+				2290468E12E87585006D8278 /* CoreLocation.framework */,
+				1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */,
 			);
-			name = iOS;
+			name = System;
 			sourceTree = "<group>";
 		};
 		22BA9D7115E6782400861F75 /* Tests */ = {
@@ -372,13 +332,17 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		22BA9D7D15E678CE00861F75 /* Other Frameworks */ = {
+		22BFA203178F04A8005D5A03 /* Third Party */ = {
 			isa = PBXGroup;
 			children = (
-				22BA9D7915E678CE00861F75 /* SenTestingKit.framework */,
-				2290468E12E87585006D8278 /* CoreLocation.framework */,
+				228B562815E6935200EB8B54 /* YAJL.framework */,
+				22BA9DA115E67F3D00861F75 /* ECCore.framework */,
+				22BA9DA215E67F3D00861F75 /* ECLogging.framework */,
+				22BA9DA315E67F3D00861F75 /* ECOAuthConsumer.framework */,
+				22BA9DA415E67F3D00861F75 /* ECRegexKitLite.framework */,
+				22BA9DA515E67F3D00861F75 /* ECUnitTests.framework */,
 			);
-			name = "Other Frameworks";
+			name = "Third Party";
 			sourceTree = "<group>";
 		};
 		22F08C6815E56A34003E8456 /* Source */ = {
@@ -585,7 +549,7 @@
 				22F08E2615E62DD5003E8456 /* Headers */,
 				22F08E1515E62D04003E8456 /* Frameworks */,
 				22F08E1615E62D04003E8456 /* Resources */,
-				22F08E4A15E62DF7003E8456 /* ShellScript */,
+				22F08E4A15E62DF7003E8456 /* Package Framework */,
 			);
 			buildRules = (
 			);
@@ -723,18 +687,19 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
-		22F08E4A15E62DF7003E8456 /* ShellScript */ = {
+		22F08E4A15E62DF7003E8456 /* Package Framework */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "Package Framework";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${ECCONFIG_SCRIPTS_PATH}/package-pseudo-framework.sh\"";
+			shellScript = "\"${ECLOGGING_SCRIPTS_PATH}/package-pseudo-framework.sh\"";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -882,6 +847,10 @@
 			baseConfigurationReference = 22F08C7015E56A34003E8456 /* MacUnitTestDebug.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
 			name = Debug;
@@ -891,6 +860,10 @@
 			baseConfigurationReference = 22F08C7115E56A34003E8456 /* MacUnitTestRelease.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				INFOPLIST_FILE = Resources/Tests.plist;
 			};
 			name = Release;
