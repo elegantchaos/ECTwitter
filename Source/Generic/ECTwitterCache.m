@@ -166,11 +166,14 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
 - (ECTwitterUser*)userWithName:(NSString *)name
 {
-    ECTwitterUser* result = (self.usersByName)[name];
+    ECTwitterUser* result = self.usersByName[name];
     if (!result)
     {
-        NSDictionary* parameters = @{@"screen_name": name};
-        [self.engine callGetMethod:@"users/show" parameters:parameters authentication:self.defaultAuthenticatedUser.authentication target:self selector:@selector(userInfoHandler:) extra:nil];
+        if (self.defaultAuthenticatedUser)
+        {
+            NSDictionary* parameters = @{@"screen_name": name};
+            [self.engine callGetMethod:@"users/show" parameters:parameters authentication:self.defaultAuthenticatedUser.authentication target:self selector:@selector(userInfoHandler:) extra:nil];
+        }
     }
     else
     {
@@ -596,8 +599,12 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
             {
                 NSDictionary* info = handler.result;
                 ECTwitterID* userID = [ECTwitterID idFromKey:@"user_id" dictionary:info];
-                ECTwitterUser* authenticatedUser = [self userWithID:userID requestIfMissing:YES];
+                ECTwitterUser* authenticatedUser = [self userWithID:userID requestIfMissing:NO];
                 [self finishAuthentication:authentication forUser:authenticatedUser name:name];
+                if (self.defaultAuthenticatedUser == nil)
+                    self.defaultAuthenticatedUser = authenticatedUser;
+                if (![authenticatedUser gotData])
+                    [self requestUserByID:userID];
             }
             else
             {

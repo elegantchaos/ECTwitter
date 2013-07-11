@@ -23,6 +23,7 @@
 @implementation ECTwitterCacheTests
 
 ECDeclareDebugChannel(TwitterCacheChannel);
+ECDeclareDebugChannel(AuthenticationChannel);
 
 - (NSString*)readSetting:(NSString*)name
 {
@@ -42,6 +43,8 @@ ECDeclareDebugChannel(TwitterCacheChannel);
 - (void)setUp
 {
     ECEnableChannel(TwitterCacheChannel);
+    ECEnableChannel(AuthenticationChannel);
+
 
     NSString* name = @"ECTwitter Unit Tests";
     NSString* version = @"1.0";
