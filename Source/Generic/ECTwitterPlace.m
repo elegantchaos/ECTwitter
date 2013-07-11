@@ -44,7 +44,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 		self.data = dictionary;
 		
 		NSMutableArray* newContainers = [[NSMutableArray alloc] init];
-		NSArray* containersInfo = [dictionary objectForKey: @"contained_within"];
+		NSArray* containersInfo = dictionary[@"contained_within"];
 		for (NSDictionary* containerInfo in containersInfo)
 		{
 			ECTwitterPlace* place = [[ECTwitterPlace alloc] initWithPlaceInfo: containerInfo];
@@ -87,7 +87,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 
 - (NSString*)name
 {
-	return [self.data objectForKey: @"name"];
+	return (self.data)[@"name"];
 }
 
 // --------------------------------------------------------------------------
@@ -96,7 +96,7 @@ ECDefineDebugChannel(TwitterPlaceChannel);
 
 - (NSString*)type
 {
-	return [self.data objectForKey: @"place_type"];
+	return (self.data)[@"place_type"];
 }
 
 @end

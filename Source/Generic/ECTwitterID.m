@@ -43,7 +43,7 @@
 
 + (ECTwitterID*)idFromKey:(NSString *)key dictionary:(NSDictionary *)dictionary
 {
-	NSString* string = [dictionary objectForKey: key];
+	NSString* string = dictionary[key];
     return [self idFromString:string];
 }
 

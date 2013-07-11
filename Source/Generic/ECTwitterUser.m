@@ -180,7 +180,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 - (BOOL) gotData
 {
-	return (self.data != nil) && ([self.data objectForKey:@"name"] != nil);
+	return (self.data != nil) && ((self.data)[@"name"] != nil);
 }
 
 // --------------------------------------------------------------------------
@@ -198,7 +198,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 - (NSString*)name
 {
-	return [self.data objectForKey:@"name"];
+	return (self.data)[@"name"];
 }
 
 // --------------------------------------------------------------------------
@@ -207,7 +207,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 - (NSString*)twitterName
 {
-	return [self.data objectForKey:@"screen_name"];
+	return (self.data)[@"screen_name"];
 }
 
 // --------------------------------------------------------------------------
@@ -225,10 +225,8 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
     }
     else
     {
-        NSDictionary* data = [NSDictionary dictionaryWithObjectsAndKeys:
-                              twitterName, @"screen_name",
-                              self.twitterID.string, @"id_str",
-                              nil];
+        NSDictionary* data = @{@"screen_name": twitterName,
+                              @"id_str": self.twitterID.string};
 
         self.data = data;
         [self.cache cacheUserName:self];
@@ -278,10 +276,8 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 	ECDebug(TwitterUserChannel, @"requesting followers for %@", self);
     ECAssertNonNil(self.twitterID.string);
 
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								self.twitterID.string, @"user_id",
-								@"-1", @"cursor",
-								nil];
+	NSDictionary* parameters = @{@"user_id": self.twitterID.string,
+								@"cursor": @"-1"};
 	
 	[self.cache.engine callGetMethod:@"friends/ids" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(followerIDsHandler:) extra:nil];
 }
@@ -295,10 +291,8 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 	ECDebug(TwitterUserChannel, @"requesting followers for %@", self);
     ECAssertNonNil(self.twitterID.string);
 	
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								self.twitterID.string, @"user_id",
-								@"-1", @"cursor",
-								nil];
+	NSDictionary* parameters = @{@"user_id": self.twitterID.string,
+								@"cursor": @"-1"};
 	
 	[self.cache.engine callGetMethod:@"statuses/followers" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(followersHandler:) extra:nil];
 }
@@ -312,10 +306,8 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 	ECDebug(TwitterUserChannel, @"requesting friends for %@", self);
     ECAssertNonNil(self.twitterID.string);
 	
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								self.twitterID.string, @"user_id",
-								@"-1", @"cursor",
-								nil];
+	NSDictionary* parameters = @{@"user_id": self.twitterID.string,
+								@"cursor": @"-1"};
 	
 	[self.cache.engine callGetMethod:@"statuses/friends" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(friendsHandler:) extra:nil];
 }
@@ -334,7 +326,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
         ECAssertIsKindOfClass(handler.result, NSDictionary);
         
         NSDictionary* info = handler.result;
-        NSArray* users = [info objectForKey:@"users"];
+        NSArray* users = info[@"users"];
 		for (NSDictionary* userData in users)
 		{
 			ECTwitterUser* user = [self.cache addOrRefreshUserWithInfo:userData];
@@ -366,7 +358,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
         ECAssertIsKindOfClass(handler.result, NSDictionary);
 
         NSDictionary* result = handler.result;
-        NSArray* users = [result objectForKey:@"users"];
+        NSArray* users = result[@"users"];
 		for (NSDictionary* userData in users)
 		{
 			ECTwitterUser* user = [self.cache addOrRefreshUserWithInfo:userData];
@@ -397,7 +389,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
         ECAssertIsKindOfClass(handler.result, NSDictionary);
 
         NSDictionary* result = handler.result;
-        NSArray* userIDs = [result objectForKey:@"ids"];
+        NSArray* userIDs = result[@"ids"];
 		for (NSNumber* value in userIDs)
 		{
 #if 0
@@ -449,7 +441,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 - (NSString*)bio
 {
-	return [self.data objectForKey:@"description"];
+	return (self.data)[@"description"];
 }
 
 // --------------------------------------------------------------------------
@@ -461,7 +453,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 	ECTwitterImage* image = self.cachedImage;
 	if (!image)
 	{
-		NSURL* url = [NSURL URLWithString:[self.data objectForKey:@"profile_image_url"]];
+		NSURL* url = [NSURL URLWithString:(self.data)[@"profile_image_url"]];
 		image = [self.cache imageWithID:self.twitterID URL:url];
 		self.cachedImage = image;
 	}
@@ -479,7 +471,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 	NSDictionary* info = self.data;
 	if (!info)
 	{
-		info = [NSDictionary dictionaryWithObject:self.twitterID.string forKey:@"id_str"];
+		info = @{@"id_str": self.twitterID.string};
 	}
 	
     [coder encodeObject:info forKey:@"info"];
@@ -511,8 +503,8 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
             for (NSDictionary* tweetData in favourites)
             {
 
-                ECTwitterTweet* tweet = [self.cache addOrRefreshTweetWithInfo:tweetData];
-                ECDebug(TwitterUserChannel, @"made tweet favourite:%@", tweet); ECUnusedInRelease(tweet);
+                ECTwitterTweet* favourite = [self.cache addOrRefreshTweetWithInfo:tweetData];
+                ECDebug(TwitterUserChannel, @"made tweet favourite:%@", favourite); ECUnusedInRelease(favourite);
             }
         }
 
@@ -552,7 +544,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
                                        nil];
 	if (tweet)
 	{
-		[parameters setObject:tweet.twitterID.string forKey:@"in_reply_to_status_id"];
+		parameters[@"in_reply_to_status_id"] = tweet.twitterID.string;
 	}
 
 	[self.engine callPostMethod:@"statuses/update" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(postHandler:) extra:nil];
@@ -566,9 +558,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 {
 	ECDebug(TwitterUserChannel, @"retweeting @", tweet);
 
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"1", @"trim_user",
-                                nil];
+	NSDictionary* parameters = @{@"trim_user": @"1"};
     NSString* method = [NSString stringWithFormat:@"statuses/retweet/%@", tweet.twitterID.string];
 	[self.engine callPostMethod:method parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(postHandler:) extra:nil];
 }

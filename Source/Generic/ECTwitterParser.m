@@ -164,11 +164,11 @@ static yajl_callbacks callbacks = {
         
         if ([jsonString isEqualToString:@"\"ok\""])
         {
-            [dictionary setObject:[NSNumber numberWithBool:YES] forKey:@"ok"];
+            dictionary[@"ok"] = @YES;
         }
         else
         {
-            [dictionary setObject:[NSNumber numberWithBool:[jsonString isEqualToString:@"true"]] forKey:@"friends"];
+            dictionary[@"friends"] = @([jsonString isEqualToString:@"true"]);
         }
         
         [self parsedObject:dictionary];
@@ -198,7 +198,7 @@ static yajl_callbacks callbacks = {
         {
             unsigned char *errorMessage = yajl_get_error(handle, 0, [data bytes], (unsigned int) [data length]);
             ECDebug(MGTwitterEngineParsingChannel, @"MGTwitterYAJLParser: error = %s", errorMessage);
-            NSError* error = [NSError errorWithDomain:@"YAJL" code:status userInfo:[NSDictionary dictionaryWithObject:[NSString stringWithUTF8String:(char *)errorMessage] forKey:@"errorMessage"]];
+            NSError* error = [NSError errorWithDomain:@"YAJL" code:status userInfo:@{@"errorMessage": @((char *)errorMessage)}];
             [mDelegate requestFailed:self.identifier withError:error];
             yajl_free_error(handle, errorMessage);
         }
@@ -295,7 +295,7 @@ static yajl_callbacks callbacks = {
         }
         
         ECDebug(MGTwitterEngineParsingChannel, @"added item: %@ (%@) to dictionary as key %@", value, [value class], self.currentKey);
-        [self.currentDictionary setObject:value forKey:self.currentKey];
+        (self.currentDictionary)[self.currentKey] = value;
     }
 	else
     {
@@ -332,7 +332,7 @@ int process_yajl_null(void *ctx)
 int process_yajl_boolean(void * ctx, int boolVal)
 {
 	ECTwitterParser* self = ctx;
-    [self addValue:[NSNumber numberWithBool:(BOOL)boolVal]];
+    [self addValue:@((BOOL)boolVal)];
     
     return 1;
 }
@@ -345,12 +345,12 @@ int process_yajl_number(void *ctx, const char *numberVal, unsigned int numberLen
     // if there's a decimal, assume it's a double
     if([stringValue rangeOfString:@"."].location != NSNotFound)
     {
-        NSNumber *doubleValue = [NSNumber numberWithDouble:[stringValue doubleValue]];
+        NSNumber *doubleValue = @([stringValue doubleValue]);
         [self addValue:doubleValue];
     }
     else
     {
-        NSNumber *longLongValue = [NSNumber numberWithLongLong:[stringValue longLongValue]];
+        NSNumber *longLongValue = @([stringValue longLongValue]);
         [self addValue:longLongValue];
     }
     
@@ -386,7 +386,7 @@ int process_yajl_string(void *ctx, const unsigned char * stringVal, unsigned int
         }
         time_t epochTime = timegm(&theTime);
         // save the date as a long with the number of seconds since the epoch in 1970
-        [parser addValue:[NSNumber numberWithLong:epochTime]];
+        [parser addValue:@(epochTime)];
         // this value can be converted to a date with [NSDate dateWithTimeIntervalSince1970:epochTime]
     }
     else

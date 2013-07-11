@@ -116,7 +116,7 @@ static const BOOL xkReportErrors = NO;
 
 - (void) setHandler:(ECTwitterHandler*)handler forRequest:(NSString*)request
 {
-	[self.requests setObject:handler forKey:request];
+	(self.requests)[request] = handler;
 }
 
 // --------------------------------------------------------------------------
@@ -125,7 +125,7 @@ static const BOOL xkReportErrors = NO;
 
 - (ECTwitterHandler*)handlerForRequest:(NSString*)request
 {
-	return [self.requests objectForKey:request];
+	return (self.requests)[request];
 }
 
 // --------------------------------------------------------------------------
@@ -134,7 +134,7 @@ static const BOOL xkReportErrors = NO;
 
 - (void) doneRequest:(NSString*)request
 {
-	ECTwitterHandler* handler = [self.requests objectForKey:request];
+	ECTwitterHandler* handler = (self.requests)[request];
 	handler.operation = nil;
 	[self.requests removeObjectForKey:request];
 }
@@ -238,7 +238,7 @@ static const BOOL xkReportErrors = NO;
 
 	if (parameters == nil)
 	{
-		parameters = [NSDictionary dictionary];
+		parameters = @{};
 	}
 	
     NSString* request = [self.engine request:method parameters:parameters method:httpMethod authentication:authentication];

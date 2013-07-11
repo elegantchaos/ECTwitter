@@ -265,16 +265,16 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
     if (method != MethodMentions)
     {
         ECAssertNonNil(user.twitterID.string);
-        [parameters setObject:user.twitterID.string forKey:@"user_id"];
+        parameters[@"user_id"] = user.twitterID.string;
     }
     
     if ((type == FetchLatest) && ([self.tweets count] > 0))
     {
-        [parameters setObject:self.newestTweet.twitterID.string forKey:@"since_id"];
+        parameters[@"since_id"] = self.newestTweet.twitterID.string;
     }
     else if (type == FetchOlder)
     {
-        [parameters setObject:self.oldestTweet.twitterID.string forKey:@"max_id"];
+        parameters[@"max_id"] = self.oldestTweet.twitterID.string;
     }
          
     [user.engine callGetMethod:methodName parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(timelineHandler:) extra:nil];
@@ -307,7 +307,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
     NSUInteger n = [self.tweets count];
     while(n--)
     {
-        ECTwitterTweet* tweet = [self.tweets objectAtIndex:n];
+        ECTwitterTweet* tweet = (self.tweets)[n];
         if (![tweet gotData])
         {
             [self.tweets removeObjectAtIndex:n];

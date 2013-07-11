@@ -140,7 +140,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 
 - (void)closeConnection:(NSString*)connectionIdentifier
 {
-    ECTwitterConnection* connection = [mConnections objectForKey:connectionIdentifier];
+    ECTwitterConnection* connection = mConnections[connectionIdentifier];
     if (connection) {
         [connection cancel];
         [mConnections removeObjectForKey:connectionIdentifier];
@@ -184,9 +184,9 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
             } else if (i > 0) {
                 [str appendString:@"&"];
             }
-            NSString *name = [names objectAtIndex:i];
+            NSString *name = names[i];
             [str appendString:[NSString stringWithFormat:@"%@=%@", 
-             name, [self encodeString:[params objectForKey:name]]]];
+             name, [self encodeString:params[name]]]];
         }
     }
     
@@ -223,7 +223,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
     if (!connection) {
         return nil;
     } else {
-        [mConnections setObject:connection forKey:[connection identifier]];
+        mConnections[[connection identifier]] = connection;
         [connection release];
     }
 	
@@ -263,7 +263,7 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 
 - (NSMutableURLRequest *)requestWithMethod:(NSString*)method path:(NSString*)path parameters:(NSDictionary *)params authentication:(ECTwitterAuthentication*)authentication
 {
-	NSString *contentType = [params objectForKey:@"Content-Type"];
+	NSString *contentType = params[@"Content-Type"];
 	if(contentType)
     {
 		params = [params dictionaryWithoutKey:@"Content-Type"];
@@ -448,10 +448,8 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
         NSData *receivedData = [connection data];
         NSString *body = [receivedData length] ? [NSString stringWithUTF8String:[receivedData bytes]] : @"";
 
-        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                                  [connection response], @"response",
-                                  body, @"body",
-                                  nil];
+        NSDictionary *userInfo = @{@"response": [connection response],
+                                  @"body": body};
         NSError *error = [NSError errorWithDomain:@"HTTP" code:statusCode userInfo:userInfo];
 		if ([self isValidDelegateForSelector:@selector(requestFailed:withError:)])
 			[mDelegate requestFailed:[connection identifier] withError:error];

@@ -835,6 +835,7 @@
 			baseConfigurationReference = 22F08C6E15E56A34003E8456 /* MacDebug.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -843,6 +844,7 @@
 			baseConfigurationReference = 22F08C6F15E56A34003E8456 /* MacRelease.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};

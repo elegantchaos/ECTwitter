@@ -119,11 +119,9 @@ ECDefineDebugChannel(AuthenticationChannel);
 	
 	[request setHTTPMethod:@"POST"];
 	
-	[request setParameters:[NSArray arrayWithObjects:
-							[OARequestParameter requestParameter:@"x_auth_mode" value:@"client_auth"],
+	[request setParameters:@[[OARequestParameter requestParameter:@"x_auth_mode" value:@"client_auth"],
 							[OARequestParameter requestParameter:@"x_auth_username" value:self.user],
-							[OARequestParameter requestParameter:@"x_auth_password" value:password],
-							nil]];		
+							[OARequestParameter requestParameter:@"x_auth_password" value:password]]];		
 	
     // Create a connection using this request, with the default timeout and caching policy, 
     // and appropriate Twitter request and response types for parsing and error reporting.
@@ -163,7 +161,7 @@ ECDefineDebugChannel(AuthenticationChannel);
         if (data)
         {
             NSString* body = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            [info setObject:body forKey:@"body"];
+            info[@"body"] = body;
             [body release];
         }
         error = [NSError errorWithDomain:@"HTTP" code:statusCode userInfo:info];
@@ -240,13 +238,13 @@ ECDefineDebugChannel(AuthenticationChannel);
         NSString* body = [[NSString alloc] initWithData:[self.connection data] encoding:NSUTF8StringEncoding];
         OAToken* token = [[OAToken alloc] initWithHTTPResponseBody:body];
         NSMutableDictionary* results = [NSMutableDictionary dictionary];
-        [results setObject:token forKey:@"token"];
+        results[@"token"] = token;
         for (NSString* pair in [body componentsSeparatedByString:@"&"])
         {
             NSArray* keyValue = [pair componentsSeparatedByString:@"="];
             if ([keyValue count] > 1)
             {
-                [results setObject:[keyValue objectAtIndex:1] forKey:[keyValue objectAtIndex:0]];
+                results[keyValue[0]] = keyValue[1];
             }
         }
         self.token = token;

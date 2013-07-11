@@ -109,7 +109,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 - (void) refreshWithInfo:(NSDictionary *)info
 {
 	self.data = info;
-    NSDictionary* authorInfo = [info objectForKey: @"user"];
+    NSDictionary* authorInfo = info[@"user"];
     if (authorInfo)
     {
         // this is a normal tweet
@@ -117,7 +117,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
     }
     else
     {
-        NSString* searchAuthor = [info objectForKey:@"from_user_id_str"];
+        NSString* searchAuthor = info[@"from_user_id_str"];
         if (searchAuthor)
         {
             // this is a search result - the author is given in a different format
@@ -158,7 +158,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 - (NSString*)text
 {
-	return [self.data objectForKey: @"text"];
+	return (self.data)[@"text"];
 }
 
 //- (NSString*)source
@@ -168,12 +168,12 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 - (BOOL) gotLocation
 {
-	return [self.data objectForKey: @"geo"] || [self.data objectForKey: @"coordinate"];
+	return (self.data)[@"geo"] || (self.data)[@"coordinate"];
 }
 
 - (BOOL) isFavourited
 {
-	NSNumber* value = [self.data objectForKey: @"favorited"];
+	NSNumber* value = (self.data)[@"favorited"];
 	return [value boolValue];
 }
 
@@ -188,14 +188,14 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 {
 	CLLocation* result = nil;
 	
-	id value = [self.data objectForKey: @"geo"];
+	id value = (self.data)[@"geo"];
 	if (value && (value != [NSNull null]))
 	{
-		value = [(NSDictionary*)value objectForKey: @"coordinates"];
+		value = ((NSDictionary*)value)[@"coordinates"];
 	}
 	else
 	{
-		value = [self.data objectForKey: @"coordinate"];
+		value = (self.data)[@"coordinate"];
 	}
 	
 	if (value && (value != [NSNull null]))
@@ -211,8 +211,8 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 			items = value;
 		}
 
-		CLLocationDegrees latitude = [[items objectAtIndex: 0] doubleValue];
-		CLLocationDegrees longitude = [[items objectAtIndex: 1] doubleValue];
+		CLLocationDegrees latitude = [items[0] doubleValue];
+		CLLocationDegrees longitude = [items[1] doubleValue];
 		result = [[[CLLocation alloc] initWithLatitude: latitude longitude: longitude] autorelease];
 	}
 	
@@ -222,7 +222,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 - (NSDate*)created
 {
 	NSDate* date;
-	id value = [self.data objectForKey: @"created_at"];
+	id value = (self.data)[@"created_at"];
 	if ([value isKindOfClass: [NSString class]])
 	{
 		NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
@@ -287,13 +287,13 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 
 - (NSString*)inReplyToTwitterName
 {
-	return [self.data objectForKey: @"in_reply_to_screen_name"];
+	return (self.data)[@"in_reply_to_screen_name"];
 }
 
 - (ECTwitterID*)inReplyToMessageID
 {
 	ECTwitterID* result = nil;
-	NSString* string = [self.data objectForKey: @"in_reply_to_status_id_str"];
+	NSString* string = (self.data)[@"in_reply_to_status_id_str"];
 	if (string)
 	{
 		result = [ECTwitterID idFromString:string];
@@ -305,7 +305,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 - (ECTwitterID*)inReplyToAuthorID
 {
 	ECTwitterID* result = nil;
-	NSString* string = [self.data objectForKey: @"in_reply_to_user_id_str"];
+	NSString* string = (self.data)[@"in_reply_to_user_id_str"];
 	if (string)
 	{
 		result = [ECTwitterID idFromString:string];
@@ -318,12 +318,12 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 
 - (NSString*)sourceName
 {
-	NSString* source = [self.data objectForKey: @"source"];
+	NSString* source = (self.data)[@"source"];
 	NSArray* captures = [source captureComponentsMatchedByRegex: kSourceExpression];
 	NSString* result = nil;
 	if ([captures count] == 3)
 	{
-		result = [captures objectAtIndex: 2];
+		result = captures[2];
 	}
 
 	return result;
@@ -333,12 +333,12 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 
 - (NSURL*)sourceURL
 {
-	NSString* source = [self.data objectForKey: @"source"];
+	NSString* source = (self.data)[@"source"];
 	NSArray* captures = [source captureComponentsMatchedByRegex: kSourceExpression];
 	NSURL* result = nil;
 	if ([captures count] == 3)
 	{
-		result = [NSURL URLWithString: [captures objectAtIndex: 1]];
+		result = [NSURL URLWithString: captures[1]];
 	}
 	
 	return result;
@@ -363,7 +363,7 @@ static NSString *const kSourceExpression = @"<a.+href=\"(.*)\".*>(.*)</a>";
 	NSDictionary* info = self.data;
 	if (!info)
 	{
-		info = [NSDictionary dictionaryWithObject: self.twitterID.string forKey: @"id_str"];
+		info = @{@"id_str": self.twitterID.string};
 	}
     
     [coder encodeObject:self.twitterID forKey:@"id"];

@@ -123,11 +123,11 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
 - (ECTwitterTweet*)tweetWithID:(ECTwitterID*)tweetID
 {
-	ECTwitterTweet* tweet = [self.tweets objectForKey:tweetID.string];
+	ECTwitterTweet* tweet = (self.tweets)[tweetID.string];
 	if (!tweet)
 	{
 		tweet = [[[ECTwitterTweet alloc] initWithID:tweetID inCache:self] autorelease];
-		[self.tweets setObject:tweet forKey:tweetID.string];
+		(self.tweets)[tweetID.string] = tweet;
 	}
 	
 	return tweet;
@@ -147,11 +147,11 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     ECAssertNonNil(userID);
     ECAssertNonNil(userID.string);
     
-	ECTwitterUser* user = [self.usersByID objectForKey:userID.string];
+	ECTwitterUser* user = (self.usersByID)[userID.string];
 	if (!user)
 	{
 		user = [[[ECTwitterUser alloc] initWithID:userID inCache:self] autorelease];
-		[self.usersByID setObject:user forKey:userID.string];
+		(self.usersByID)[userID.string] = user;
         if (requestIfMissing)
         {
             [self requestUserByID:userID];
@@ -163,10 +163,10 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
 - (ECTwitterUser*)userWithName:(NSString *)name
 {
-    ECTwitterUser* result = [self.usersByName objectForKey:name];
+    ECTwitterUser* result = (self.usersByName)[name];
     if (!result)
     {
-        NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:name, @"screen_name", nil];
+        NSDictionary* parameters = @{@"screen_name": name};
         [self.engine callGetMethod:@"users/show" parameters:parameters authentication:self.defaultAuthenticatedUser.authentication target:self selector:@selector(userInfoHandler:) extra:nil];
     }
     else
@@ -179,12 +179,12 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
 - (ECTwitterTweet*)existingTweetWithID:(ECTwitterID*)tweetID
 {
-    return [self.tweets objectForKey:tweetID.string];
+    return (self.tweets)[tweetID.string];
 }
 
 - (ECTwitterUser*)existingUserWithID:(ECTwitterID*)userID
 {
-    return [self.usersByID objectForKey:userID.string];
+    return (self.usersByID)[userID.string];
 }
 
 - (NSArray*)allUsers
@@ -195,24 +195,24 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 - (void)addTweet:(ECTwitterTweet*)tweet withID:(ECTwitterID*)tweetID
 {
     ECAssertIsKindOfClass(tweet, ECTwitterTweet);
-    [self.tweets setObject:tweet forKey:tweetID.string];
+    (self.tweets)[tweetID.string] = tweet;
 }
 
 - (void)addUser:(ECTwitterUser*)user withID:(ECTwitterID*)userID
 {
-    [self.usersByID setObject:user forKey:userID.string];
+    (self.usersByID)[userID.string] = user;
     [self cacheUserName:user];
 }
 
 - (ECTwitterTweet*)addOrRefreshTweetWithInfo:(NSDictionary*)info
 {
 	ECTwitterID* tweetID = [ECTwitterID idFromDictionary:info];
-	ECTwitterTweet* tweet = [self.tweets objectForKey:tweetID.string];
+	ECTwitterTweet* tweet = (self.tweets)[tweetID.string];
     ECAssertIsKindOfClass(tweet, ECTwitterTweet);
 	if (!tweet)
 	{
 		tweet = [[ECTwitterTweet alloc] initWithInfo:info inCache:self];
-		[self.tweets setObject:tweet forKey:tweetID.string];
+		(self.tweets)[tweetID.string] = tweet;
 		[tweet release];
 	}
 	else
@@ -227,7 +227,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
         }
 	}
 	
-	NSDictionary* authorData = [info objectForKey:@"user"];
+	NSDictionary* authorData = info[@"user"];
 	if ([authorData count] > 2)
 	{
 		[self addOrRefreshUserWithInfo:authorData];
@@ -245,18 +245,18 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     NSString* name = user.twitterName;
     if (name)
     {
-        [self.usersByName setObject:user forKey:name];
+        (self.usersByName)[name] = user;
     }
 }
 
 - (ECTwitterUser*)addOrRefreshUserWithInfo:(NSDictionary*)info
 {
 	ECTwitterID* userID = [ECTwitterID idFromDictionary:info];
-	ECTwitterUser* user = [self.usersByID objectForKey:userID.string];
+	ECTwitterUser* user = (self.usersByID)[userID.string];
 	if (!user)
 	{
 		user = [[ECTwitterUser alloc] initWithInfo:info inCache:self];
-		[self.usersByID setObject:user forKey:userID.string];
+		(self.usersByID)[userID.string] = user;
 		[user release];
 	}
 	else
@@ -281,9 +281,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 	ECDebug(TwitterCacheChannel, @"requesting user info");
     ECAssertNonNil(userID.string);
 	
-	NSDictionary* parameters = [NSDictionary dictionaryWithObjectsAndKeys:
-								userID.string, @"user_id",
-								nil];
+	NSDictionary* parameters = @{@"user_id": userID.string};
 
     ECTwitterAuthentication* authentication = self.defaultAuthenticatedUser.authentication;
 	[self.engine callGetMethod:@"users/show" parameters:parameters authentication:authentication target:self selector:@selector(userInfoHandler:) extra:nil];
@@ -303,7 +301,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
         NSDictionary* userData = handler.result;
         ECTwitterID* userID = [ECTwitterID idFromDictionary:userData];
         
-        ECTwitterUser* user = [self.usersByID objectForKey:userID.string];
+        ECTwitterUser* user = (self.usersByID)[userID.string];
         [user refreshWithInfo:userData];
         
         NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
@@ -349,7 +347,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     NSUInteger n = [allTweets count];
     while (n--)
     {
-        ECTwitterTweet* tweet = [allTweets objectAtIndex:0];
+        ECTwitterTweet* tweet = allTweets[0];
         if (![tweet gotData])
         {
             [self.tweets removeObjectForKey:tweet.twitterID.string];
@@ -370,7 +368,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     NSMutableDictionary* tweets = [NSMutableDictionary dictionaryWithCapacity:count];
     for (ECTwitterTweet* tweet in sortedTweets)
     {
-        [tweets setObject:tweet forKey:tweet.twitterID.string];
+        tweets[tweet.twitterID.string] = tweet;
         if (--count == 0)
         {
             break;
@@ -384,7 +382,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
         NSArray* mentions = user.mentions.tweets;
         for (ECTwitterTweet* tweet in mentions)
         {
-            [tweets setObject:tweet forKey:tweet.twitterID.string];
+            tweets[tweet.twitterID.string] = tweet;
         }
     }
     
@@ -510,7 +508,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 - (NSURL*)baseCacheFolder
 {
     NSArray* urls = [[NSFileManager defaultManager] URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask];
-    NSURL* root = [urls objectAtIndex:0];
+    NSURL* root = urls[0];
     NSURL* url = [root URLByAppendingPathComponent:@"com.elegantchaos.ambientweet"];
 
     return url;
@@ -548,11 +546,11 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     ECTwitterUser* result = [self userWithName:userName];
     if (result.authentication == nil)
     {
-        NSDictionary* authenticationInfo = [self.authenticated objectForKey:userName];
+        NSDictionary* authenticationInfo = (self.authenticated)[userName];
         if (authenticationInfo)
         {
             ECTwitterID* savedID = [ECTwitterID idFromKey:AuthenticatedIDKey dictionary:authenticationInfo];
-            NSData* savedToken = [authenticationInfo objectForKey:AuthenticatedTokenKey];
+            NSData* savedToken = authenticationInfo[AuthenticatedTokenKey];
             if (savedID && savedToken)
             {
                 OAToken* token = [NSKeyedUnarchiver unarchiveObjectWithData:savedToken];
@@ -565,7 +563,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
                     result = [self userWithID:savedID requestIfMissing:NO];
                     result.authentication = authentication;
                     result.twitterName = userName;
-                    [self.usersByName setObject:result forKey:userName];
+                    (self.usersByName)[userName] = result;
                     [authentication release];
                 }
             }
@@ -591,12 +589,12 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
             {
                 NSDictionary* info = handler.result;
                 ECTwitterID* userID = [ECTwitterID idFromKey:@"user_id" dictionary:info];
-                ECTwitterUser* user = [self userWithID:userID requestIfMissing:YES];
-                [self finishAuthentication:authentication forUser:user name:name];
+                ECTwitterUser* user2 = [self userWithID:userID requestIfMissing:YES];
+                [self finishAuthentication:authentication forUser:user2 name:name];
             }
             else
             {
-                NSDictionary* info = [NSDictionary dictionaryWithObject:handler.error forKey:@"error"];
+                NSDictionary* info = @{@"error": handler.error};
                 NSNotification* notification = [NSNotification notificationWithName:ECTwitterUserAuthenticationFailed object:name userInfo:info];
                 [[NSNotificationCenter defaultCenter] postNotification:notification];
             }
@@ -611,11 +609,9 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
 
     NSString* userID = user.twitterID.string;
     NSData* userToken = [NSKeyedArchiver archivedDataWithRootObject:authentication.token];
-    NSDictionary* authenticationInfo = [NSDictionary dictionaryWithObjectsAndKeys:
-                              userID, AuthenticatedIDKey,
-                              userToken, AuthenticatedTokenKey,
-                              nil];
-    [self.authenticated setObject:authenticationInfo forKey:name];
+    NSDictionary* authenticationInfo = @{AuthenticatedIDKey: userID,
+                              AuthenticatedTokenKey: userToken};
+    (self.authenticated)[name] = authenticationInfo;
 
     [[NSNotificationCenter defaultCenter] postNotificationName:ECTwitterUserAuthenticated object:name];
 }
