@@ -26,15 +26,6 @@
 
 @implementation ECTwitterCachedObject
 
-@synthesize cache = _cache;
-
-// ==============================================
-// Properties
-// ==============================================
-
-#pragma mark -
-#pragma mark Properties
-
 // ==============================================
 // Constants
 // ==============================================
