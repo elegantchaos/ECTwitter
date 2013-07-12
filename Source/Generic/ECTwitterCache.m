@@ -295,7 +295,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
         NSDictionary* userData = handler.result;
         ECTwitterID* userID = [ECTwitterID idFromDictionary:userData];
         
-        ECTwitterUser* user = (self.usersByID)[userID.string];
+        ECTwitterUser* user = [self userWithID:userID requestIfMissing:NO];
         [user refreshWithInfo:userData];
         
         NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
