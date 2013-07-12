@@ -88,7 +88,7 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
 {
     ECDebug(TwitterSearchTimelineChannel, @"requesting timeline for search %@", self.text);
     
-    NSString* methodName = @"search";
+    NSString* methodName = @"search/tweets";
     NSUInteger count = 100;
     
     
@@ -116,9 +116,10 @@ ECDefineDebugChannel(TwitterSearchTimelineChannel);
         NSDictionary* result = handler.result;
         if (result)
         {
-            self.maxID = [ECTwitterID idFromKey:@"max_id_str" dictionary:result];
+            NSDictionary* meta = result[@"search_metadata"];
+            self.maxID = [ECTwitterID idFromKey:@"max_id_str" dictionary:meta];
 
-            NSArray* results = result[@"results"];
+            NSArray* results = result[@"statuses"];
             for (NSDictionary* tweetData in results)
             {
                 ECTwitterTweet* tweet = [self.cache addOrRefreshTweetWithInfo:tweetData];
