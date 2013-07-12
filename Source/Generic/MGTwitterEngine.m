@@ -380,7 +380,6 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
     NSHTTPURLResponse *resp = (NSHTTPURLResponse *)response;
     [connection setResponse:resp];
     NSInteger statusCode = [resp statusCode];
-    
     if (statusCode == 304)
     {
         // Not modified, or generic success.
@@ -440,16 +439,23 @@ static const NSTimeInterval kRequestTimeout = 25.0; // Twitter usually fails qui
 
 - (void)connectionDidFinishLoading:(ECTwitterConnection*)connection
 {
-
-    NSInteger statusCode = [[connection response] statusCode];
-
+    NSHTTPURLResponse* response = connection.response;
+    NSInteger statusCode = response.statusCode;
     if (statusCode >= 400) {
         // Assume failure, and report to delegate.
         NSData *receivedData = [connection data];
-        NSString *body = [receivedData length] ? [NSString stringWithUTF8String:[receivedData bytes]] : @"";
 
-        NSDictionary *userInfo = @{@"response": [connection response],
-                                  @"body": body};
+        NSStringEncoding encoding = CFStringConvertEncodingToNSStringEncoding(CFStringConvertIANACharSetNameToEncoding((CFStringRef)[response textEncodingName]));
+        NSString *body = [[[NSString alloc] initWithData:receivedData encoding:encoding] autorelease];
+        if (!body)
+            body = @"";
+
+        NSDictionary *userInfo =
+        @{
+          @"response": [connection response],
+          @"body": body
+          };
+
         NSError *error = [NSError errorWithDomain:@"HTTP" code:statusCode userInfo:userInfo];
 		if ([self isValidDelegateForSelector:@selector(requestFailed:withError:)])
 			[mDelegate requestFailed:[connection identifier] withError:error];
