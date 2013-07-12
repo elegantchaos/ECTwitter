@@ -54,18 +54,6 @@ ECDefineDebugChannel(TwitterCacheChannel);
 ECDefineDebugChannel(TwitterCacheCodingChannel);
 
 // ==============================================
-// Properties
-// ==============================================
-
-@synthesize authenticated = _authenticated;
-@synthesize defaultAuthenticatedUser = _defaultAuthenticatedUser;
-@synthesize engine = _engine;
-@synthesize maxCached = _maxCached;
-@synthesize tweets = _tweets;
-@synthesize usersByID = _usersByID;
-@synthesize usersByName = _usersByName;
-
-// ==============================================
 // Notifications
 // ==============================================
 
@@ -575,6 +563,13 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
                     result.twitterName = userName;
                     self.usersByName[userName] = result;
                     [authentication release];
+
+                    // if we don't have info for this user yet, may as well request it now...
+                    if (![result gotData])
+                    {
+                        NSDictionary* parameters = @{@"screen_name": userName};
+                        [self.engine callGetMethod:@"users/show" parameters:parameters authentication:authentication target:self selector:@selector(userInfoHandler:) extra:nil];
+                    }
                 }
             }
         }
