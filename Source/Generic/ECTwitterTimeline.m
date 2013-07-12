@@ -213,19 +213,19 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
         NSArray* results = handler.result;
 		for (NSDictionary* tweetData in results)
 		{
-			ECTwitterTweet* tweet = [self.cache addOrRefreshTweetWithInfo: tweetData];
-			[self addTweet: tweet];
+			ECTwitterTweet* tweet = [self.cache addOrRefreshTweetWithInfo:tweetData];
+			[self addTweet:tweet];
 			
 			ECDebug(TwitterTimelineChannel, @"tweet info received: %@", tweet);
 		}
 	}
 	else
 	{
-		ECDebug(TwitterTimelineChannel, @"error receiving timeline for: %@", self);
+		ECDebug(TwitterTimelineChannel, @"error receiving timeline for: %@ %@", self, handler.error);
 	}
     
 	NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-	[nc postNotificationName: ECTwitterTimelineUpdated object: self];
+	[nc postNotificationName:ECTwitterTimelineUpdated object:self];
 }
 
 
@@ -242,7 +242,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
     switch (method)
     {
         case MethodMentions:
-            methodName = @"statuses/mentions";
+            methodName = @"statuses/mentions_timeline";
             count = 10;
             break;
             

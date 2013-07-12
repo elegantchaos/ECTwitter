@@ -251,7 +251,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
     NSString* name = user.twitterName;
     if (name)
     {
-        (self.usersByName)[name] = user;
+        self.usersByName[name] = user;
     }
 }
 
@@ -573,7 +573,7 @@ NSString *const CacheFilename = @"ECTwitter Cache V8.cache";
                     result = [self userWithID:savedID requestIfMissing:NO];
                     result.authentication = authentication;
                     result.twitterName = userName;
-                    (self.usersByName)[userName] = result;
+                    self.usersByName[userName] = result;
                     [authentication release];
                 }
             }
