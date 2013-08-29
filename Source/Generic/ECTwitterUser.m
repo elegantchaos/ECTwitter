@@ -294,7 +294,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 	NSDictionary* parameters = @{@"user_id": self.twitterID.string,
 								@"cursor": @"-1"};
 	
-	[self.cache.engine callGetMethod:@"statuses/followers" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(followersHandler:) extra:nil];
+	[self.cache.engine callGetMethod:@"followers/ids" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(followersHandler:) extra:nil];
 }
 
 // --------------------------------------------------------------------------
@@ -309,7 +309,7 @@ ECDeclareDebugChannel(TwitterCacheCodingChannel);
 	NSDictionary* parameters = @{@"user_id": self.twitterID.string,
 								@"cursor": @"-1"};
 	
-	[self.cache.engine callGetMethod:@"statuses/friends" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(friendsHandler:) extra:nil];
+	[self.cache.engine callGetMethod:@"friends/ids" parameters:parameters authentication:self.defaultAuthentication target:self selector:@selector(friendsHandler:) extra:nil];
 }
 
 
